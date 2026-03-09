@@ -1,108 +1,87 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
-import { Menu, X } from "lucide-react";
+import { useState } from "react";
+
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+export const navItems: NavItem[] = [
+  { label: "Home", href: "#home" },
+  { label: "Destinations", href: "#destinations" },
+  { label: "About Us", href: "#about" },
+  { label: "Contact Us", href: "#contact" },
+  { label: "Testimonials", href: "#testimonials" }
+];
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 60);
-    };
+  const [language, setLanguage] = useState("ENG");
+  const [open, setOpen] = useState(false);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navLinks = [
-    { href: "#about", label: "About" },
-    { href: "#why-us", label: "Why Us" },
-    { href: "#destinations", label: "Destinations" },
-    { href: "#contact", label: "Contact" },
+  const languages = [
+    { code: "English", label: "English" },
+    { code: "Spanish", label: "Spanish" },
+    { code: "French", label: "French" }
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "backdrop-blur-md bg-white/70 shadow-sm py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <span className="font-serif text-xl font-semibold text-[var(--text-primary)]">
-            Fantastic <span className="text-[var(--accent)]">Adventure</span> Nepal
-          </span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[var(--text-primary)] hover:text-[var(--accent)] transition"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <Button variant="glass">Contact Us</Button>
-        </div>
-
-        {/* Mobile Controls */}
-        <div className="md:hidden flex items-center gap-3">
-
-          <Button variant="glass" className="px-4 py-2 text-sm">
-            Contact
-          </Button>
-
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-full backdrop-blur-md bg-white/20 border border-white/30"
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? (
-              <X size={20} />
-            ) : (
-              <Menu size={20} />
-            )}
-          </button>
-
-        </div>
+    <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-10 py-5">
+      {/* Logo */}
+      <div className="flex items-center gap-2">
+        <span className="text-white text-2xl">Fantastic Advenutre Nepal</span>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden mt-4 px-6">
-          <div className="backdrop-blur-xl bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+      {/* Center Nav */}
+      <div className="hidden md:flex items-center rounded-full px-2 py-1.5 gap-1">
+        {navItems.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="px-4 py-1.5 rounded-full text-sm font-light tracking-wide transition-all duration-200 font-sans cursor-pointer text-white/80 hover:text-white hover:bg-white/10"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
 
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-lg font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
 
-            <Button fullWidth>Book Now</Button>
+      {/* Right */}
+      <div className="flex items-center gap-3">
 
-          </div>
+        {/* Language Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-white/70 text-[12px]"
+          >
+            {language} ▾
+          </button>
+
+          {open && (
+            <div className="absolute right-0 mt-2 w-32 rounded-lg bg-white text-black shadow-lg">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    setLanguage(lang.code);
+                    setOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                >
+                  {lang.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+
+        <button className="bg-white text-black text-[11px] font-sans font-medium tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all duration-300 hover:bg-white/90 cursor-pointer">
+          Contact Us
+        </button>
+      </div>
     </nav>
   );
 }

@@ -1,119 +1,150 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const destinations = [
   {
     id: 1,
-    name: "Kathmandu Valley",
-    description: "Ancient temples, vibrant markets, and rich cultural heritage",
-    image: "https://images.unsplash.com/photo-1565429221253-3a6f28234cfc?w=800&q=80",
-    price: "From $299",
-    duration: "3-5 Days"
+    name: "Italy",
+    count: "12 Destination",
+    image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80",
   },
   {
     id: 2,
-    name: "Pokhara",
-    description: "Gateway to the Annapurna Circuit with stunning lake views",
-    image: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80",
-    price: "From $349",
-    duration: "4-6 Days"
+    name: "Japan",
+    count: "15 Destination",
+    image: "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&q=80",
   },
   {
     id: 3,
-    name: "Chitwan National Park",
-    description: "Wildlife safaris and nature experiences in the lowlands",
-    image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80",
-    price: "From $279",
-    duration: "2-4 Days"
+    name: "Indonesia",
+    count: "14 Destination",
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
   },
   {
     id: 4,
-    name: "Everest Base Camp",
-    description: "Trek to the foot of the world's highest peak",
-    image: "https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=800&q=80",
-    price: "From $1,499",
-    duration: "14-21 Days"
+    name: "Nepal",
+    count: "18 Destination",
+    image: "https://images.unsplash.com/photo-1565429221253-3a6f28234cfc?w=800&q=80",
   },
   {
     id: 5,
-    name: "Lumbini",
-    description: "Birthplace of Buddha and spiritual pilgrimage site",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-    price: "From $199",
-    duration: "2-3 Days"
+    name: "Switzerland",
+    count: "9 Destination",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
   },
   {
     id: 6,
-    name: "Annapurna Region",
-    description: "Spectacular mountain trails and diverse landscapes",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-    price: "From $899",
-    duration: "7-12 Days"
-  }
+    name: "Maldives",
+    count: "11 Destination",
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
+  },
 ];
 
 export default function DestinationsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headerRef.current, { opacity: 0, y: 30 }, {
+        opacity: 1, y: 0, duration: 1, ease: "power4.out",
+        scrollTrigger: { trigger: headerRef.current, start: "top 85%" },
+      });
+      const cards = cardsRef.current?.children;
+      if (cards) {
+        Array.from(cards).forEach((card, i) => {
+          gsap.fromTo(card, { opacity: 0, y: 40 }, {
+            opacity: 1, y: 0, duration: 0.6, delay: i * 0.08, ease: "power3.out",
+            scrollTrigger: { trigger: card, start: "top 90%" },
+          });
+        });
+      }
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="destinations" className="section bg-[var(--bg-primary)]">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="caps">Destinations</span>
-          <h2 className="mt-2 mb-6">
-            Explore the Beauty of Nepal
-          </h2>
-          <p className="text-[var(--text-secondary)]">
-            From the bustling streets of Kathmandu to the serene heights of the Himalayas, 
-            discover the diverse landscapes and rich culture that make Nepal truly extraordinary.
+    <section
+      id="destinations"
+      ref={sectionRef}
+      className="relative bg-white overflow-hidden px-6 md:px-10 py-16 md:py-24"
+    >
+      {/* ── HEADER ── */}
+      <div ref={headerRef} className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between mb-12 gap-8">
+        <div className="max-w-xl">
+          <p className="text-[11px] tracking-[3px] uppercase text-black/35 font-light mb-4 font-sans">
+            /Our Destination
           </p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-black leading-[1.1] tracking-tight">
+            Your Next Favorite <br className="hidden md:block" /> Place Awaits
+          </h2>
         </div>
 
-        {/* Destinations Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinations.map((destination) => (
-            <div 
-              key={destination.id}
-              className="card p-0 overflow-hidden group cursor-pointer"
-            >
-              {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={destination.image}
-                  alt={destination.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+        <div className="flex flex-col items-start md:items-end gap-6 md:max-w-xs md:text-right">
+          <p className="text-black/45 text-[15px] leading-relaxed font-light font-sans">
+            Get the best value for your trips with exclusive discounts, seasonal promotions, and deals to save while exploring the world!
+          </p>
 
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide">
-                    {destination.duration}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--text-primary)]">
-                    {destination.price}
-                  </span>
-                </div>
-                <h3 className="mb-2 group-hover:text-[var(--accent)] transition-colors">
-                  {destination.name}
-                </h3>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  {destination.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <button className="btn btn-secondary">
-            View All Destinations
+          {/* Updated Button to match image style */}
+          <button className="group bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans font-medium pl-6 pr-2 py-2 rounded-full transition-all duration-300 hover:bg-black/90 cursor-pointer flex items-center gap-4">
+            See All
+            <span className="bg-white/15 w-10 h-10 rounded-full flex items-center justify-center text-[12px] group-hover:bg-white/25 transition-colors">
+              <span className="translate-y-[-1px]">›››</span>
+            </span>
           </button>
         </div>
+      </div>
+
+      {/* ── GRID ── */}
+      <div
+        ref={cardsRef}
+        className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5"
+      >
+        {destinations.map((destination) => (
+          <div
+            key={destination.id}
+            className="group relative rounded-xl overflow-hidden cursor-pointer h-[320px] md:h-[400px]"
+          >
+            <Image
+              src={destination.image}
+              alt={destination.name}
+              fill
+              className="object-cover transition-transform duration-1000 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              priority={destination.id <= 3}
+              onError={(e) => {
+                console.error("Image failed to load:", destination.image);
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement?.classList.add('bg-gray-200');
+              }}
+            />
+
+            {/* Subtle Dark Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80" />
+
+            {/* Badge: White Pill with "Count Destination" */}
+            <div className="absolute top-5 left-5">
+              <div className="bg-white/95 backdrop-blur-md text-black px-4 py-2 rounded-full shadow-sm flex items-center gap-2">
+                <span className="text-[12px] font-semibold font-sans">
+                  {destination.count}
+                </span>
+              </div>
+            </div>
+
+            {/* Name: Bottom-Left with specific typography */}
+            <div className="absolute bottom-7 left-7">
+              <h3 className="text-white text-2xl font-medium font-sans tracking-wide">
+                {destination.name}
+              </h3>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -1,11 +1,12 @@
-import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 import DestinationsSection from "@/components/sections/DestinationsSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import TestimonialSection from "@/components/sections/TestimonialSection";
 import ContactSection from "@/components/sections/ContactSection";
-import Footer from "@/components/layout/Footer";
+import FooterCTASection from "@/components/sections/FooterCTASection";
+import TopTours from "@/components/sections/TopTours";
+import Navbar from "@/components/layout/Navbar";
 
 export default function Home() {
   return (
@@ -13,11 +14,12 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <AboutSection />
-      <WhyChooseUsSection />
       <DestinationsSection />
-      <TestimonialsSection />
+      <TopTours />
+      <WhyChooseUsSection />
+      <TestimonialSection />
       <ContactSection />
-      <Footer />
+      <FooterCTASection />
     </main>
   );
 }
