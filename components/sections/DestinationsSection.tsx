@@ -4,50 +4,29 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
-const destinations = [
-  {
-    id: 1,
-    name: "Italy",
-    count: "12 Destination",
-    image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80",
-  },
-  {
-    id: 2,
-    name: "Japan",
-    count: "15 Destination",
-    image: "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&q=80",
-  },
-  {
-    id: 3,
-    name: "Indonesia",
-    count: "14 Destination",
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
-  },
-  {
-    id: 4,
-    name: "Nepal",
-    count: "18 Destination",
-    image: "https://images.unsplash.com/photo-1565429221253-3a6f28234cfc?w=800&q=80",
-  },
-  {
-    id: 5,
-    name: "Switzerland",
-    count: "9 Destination",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-  },
-  {
-    id: 6,
-    name: "Maldives",
-    count: "11 Destination",
-    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
-  },
+const destinationImages = [
+  "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80",
+  "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&q=80",
+  "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
+  "https://images.unsplash.com/photo-1565429221253-3a6f28234cfc?w=800&q=80",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+  "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
 ];
 
 export default function DestinationsSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].destinations;
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+
+  const destinations = copy.items.map((destination, index) => ({
+    ...destination,
+    image: destinationImages[index],
+  }));
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -79,21 +58,21 @@ export default function DestinationsSection() {
       <div ref={headerRef} className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between mb-12 gap-8">
         <div className="max-w-xl">
           <p className="text-[11px] tracking-[3px] uppercase text-black/35 font-light mb-4 font-sans">
-            /Our Destination
+            {copy.label}
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-black leading-[1.1] tracking-tight">
-            Your Next Favorite <br className="hidden md:block" /> Place Awaits
+            {copy.title}
           </h2>
         </div>
 
         <div className="flex flex-col items-start md:items-end gap-6 md:max-w-xs md:text-right">
           <p className="text-black/45 text-[15px] leading-relaxed font-light font-sans">
-            Get the best value for your trips with exclusive discounts, seasonal promotions, and deals to save while exploring the world!
+            {copy.description}
           </p>
 
           {/* Updated Button to match image style */}
           <button className="group bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans font-medium pl-6 pr-2 py-2 rounded-full transition-all duration-300 hover:bg-black/90 cursor-pointer flex items-center gap-4">
-            See All
+            {copy.button}
             <span className="bg-white/15 w-10 h-10 rounded-full flex items-center justify-center text-[12px] group-hover:bg-white/25 transition-colors">
               <span className="translate-y-[-1px]">›››</span>
             </span>

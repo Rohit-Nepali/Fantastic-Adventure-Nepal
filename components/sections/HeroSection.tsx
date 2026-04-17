@@ -2,8 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
 export default function HeroSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].hero;
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -42,17 +46,17 @@ export default function HeroSection() {
       <div className="relative z-10 h-full px-6 md:px-10 pb-16 flex flex-col justify-end">
         <div className="max-w-2xl">
           <h2
+            ref={titleRef}
             className="font-sans text-white font-semibold leading-[1.1] tracking-tight mb-4 text-[clamp(2.2rem,6vw,4.5rem)]"
           >
-            Pack Your Bags,{" "} Let's Go Explore
-            Somewhere Amazing
+            {copy.title}
           </h2>
           <p ref={subtitleRef} className="text-white/60 font-sans font-light text-[14px] md:text-base leading-relaxed max-w-sm opacity-0 mb-8">
-            Hidden gems, breathtaking views, unforgettable adventures — where will you go next?
+            {copy.subtitle}
           </p>
           <div ref={buttonRef} className="opacity-0 flex items-center gap-4">
             <button className="bg-white text-black font-sans font-medium text-[12px] tracking-[0.15em] uppercase px-7 py-3.5 rounded-full transition-all duration-300 hover:bg-white/90 cursor-pointer flex items-center gap-3">
-              Book Now
+              {copy.button}
               <span className="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px]">››</span>
             </button>
           </div>

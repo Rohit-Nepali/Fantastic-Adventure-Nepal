@@ -3,44 +3,17 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-const features = [
-  {
-    number: "01",
-    title: "Expert Local Guides",
-    description: "Our experienced guides are born and raised in Nepal, offering insider knowledge and authentic cultural experiences.",
-  },
-  {
-    number: "02",
-    title: "Safety First",
-    description: "Your safety is our top priority. We maintain the highest safety standards and always prioritize secure travel arrangements.",
-  },
-  {
-    number: "03",
-    title: "Flexible Itineraries",
-    description: "We customize every trip to match your preferences, ensuring a perfect balance of adventure and relaxation.",
-  },
-  {
-    number: "04",
-    title: "Unique Experiences",
-    description: "From hidden temples to remote mountain villages, we take you beyond the typical tourist paths.",
-  },
-  {
-    number: "05",
-    title: "Best Value",
-    description: "Competitive pricing with no hidden costs. We offer transparent pricing and exceptional quality for your money.",
-  },
-  {
-    number: "06",
-    title: "24/7 Support",
-    description: "Round-the-clock support throughout your journey. We're always just a call away whenever you need assistance.",
-  },
-];
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
 export default function WhyChooseUsSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].whyChooseUs;
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+
+  const features = copy.features;
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -94,16 +67,15 @@ export default function WhyChooseUsSection() {
         <div ref={headerRef} className="flex items-end justify-between mb-16">
           <div className="max-w-xl">
             <p className="text-[11px] tracking-[4px] uppercase text-black/35 font-light mb-5 font-sans">
-              Why Choose Us
+              {copy.label}
             </p>
             <div className="why-line w-12 h-px bg-black mb-6 origin-left block" />
             <h2 className="text-5xl lg:text-6xl font-light text-black leading-[1.1] tracking-tight">
-              Your Adventure{" "}
-              <em className="not-italic font-light text-black/40">Starts Here</em>
+              {copy.titleLead} <em className="not-italic font-light text-black/40">{copy.titleAccent}</em>
             </h2>
           </div>
           <p className="hidden lg:block max-w-xs text-black/45 text-[15px] leading-relaxed font-light font-sans pb-1">
-            We go above and beyond to ensure your Nepal experience exceeds all expectations.
+            {copy.description}
           </p>
         </div>
 

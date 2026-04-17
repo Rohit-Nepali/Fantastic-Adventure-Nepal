@@ -5,52 +5,31 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
-const cards = [
-  {
-    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
-    number: "01",
-    title: "Everest Base Camp",
-    description: "We don't just plan vacations; we create journeys tailored to your dreams, ensuring every moment is unforgettable.",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1526761122248-c31c93f8b2b9?w=800&q=90",
-    number: "02",
-    title: "Annapurna Circuit",
-    description: "With our trusted local partners, you'll discover hidden spots and cultural experiences that most travelers never get to see.",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=90",
-    number: "03",
-    title: "Upper Mustang",
-    description: "Step into the 'Forbidden Kingdom' to witness ancient monasteries and a landscape that feels like another planet.",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=90",
-    number: "04",
-    title: "Mardi Himal Trek",
-    description: "A short, pristine trek providing spectacular face-to-face views of the sacred Machhapuchhre peak.",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
-    number: "05",
-    title: "Annapurna Base Camp",
-    description: "The ABC trek takes you deep into the Annapurna Sanctuary, surrounded by a 360-degree wall of giant peaks.",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=90",
-    number: "06",
-    title: "Chitwan Jungle Safari",
-    description: "Trade the mountains for the jungle. Spot one-horned rhinos, tigers, and exotic birds on a safari adventure.",
-  },
+const aboutImages = [
+  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
+  "https://images.unsplash.com/photo-1526761122248-c31c93f8b2b9?w=800&q=90",
+  "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=90",
+  "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=90",
+  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
+  "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=90",
 ];
 
 export default function AboutSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].about;
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const cards = copy.cards.map((card, index) => ({
+    ...card,
+    image: aboutImages[index],
+  }));
 
   const visibleCards = 2;
   const maxIndex = cards.length - visibleCards;
@@ -98,19 +77,17 @@ export default function AboutSection() {
             {/* 1. Label */}
             <div className="flex-shrink-0">
               <p className="text-[10px] md:text-[11px] tracking-[3px] uppercase text-black/35 font-light font-sans lg:mt-2">
-                /About Us
+                {copy.label}
               </p>
             </div>
 
             {/* 2. Header and Description */}
             <div className="max-w-xl">
               <h2 className="text-2xl md:text-4xl font-semibold text-black leading-[1.2] tracking-tight mb-4">
-                What&apos;s So Special{" "}
-                <span className="text-black/50 md:text-black">About This?</span>
+                {copy.titleLead} <span className="text-black/50 md:text-black">{copy.titleAccent}</span>
               </h2>
               <p className="text-black/55 text-[14px] md:text-[15px] leading-relaxed font-light font-sans max-w-md">
-                Save more on your trips with exclusive discounts, seasonal promotions, and
-                unbeatable deals for unforgettable adventures.
+                {copy.description}
               </p>
             </div>
           </div>
@@ -118,7 +95,7 @@ export default function AboutSection() {
           {/* 3. Right Content: Button */}
           <div className="flex-shrink-0">
             <button className="w-full sm:w-auto bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans font-medium px-8 py-4 rounded-full transition-all duration-300 hover:bg-black/80 cursor-pointer flex items-center justify-center gap-3">
-              Learn More
+              {copy.button}
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>
           </div>

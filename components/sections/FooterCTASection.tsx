@@ -3,19 +3,20 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
-
-import { navItems } from "../layout/Navbar";
-
-const footerLinks = {
-  Explore: ["Our Plans", "Top Tours", "Travel Guide", "Sustainability Commitment"],
-  "About Us": ["Our Story", "Testimonials", "Sustainability Commitment", "Careers"],
-  Support: ["FAQ", "Contact Us", "Booking Process", "Privacy Policy"],
-};
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
 export default function FooterCTASection() {
+  const { language } = useLanguage();
+  const copy = translations[language].footer;
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const footerGroups = [
+    { label: language === "en" ? "Explore" : language === "es" ? "Explorar" : "Explorer", links: copy.groups.explore },
+    { label: language === "en" ? "About Us" : language === "es" ? "Nosotros" : "À propos", links: copy.groups.aboutUs },
+    { label: language === "en" ? "Support" : language === "es" ? "Soporte" : "Assistance", links: copy.groups.support },
+  ];
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -38,19 +39,18 @@ export default function FooterCTASection() {
       <div ref={contentRef} className="px-6 md:px-10 pt-16 pb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8 border-b border-white/10">
         <div className="max-w-lg">
           <h2 className="text-3xl md:text-5xl font-semibold leading-[1.15] tracking-tight mb-2">
-            Pack Your Bags, Your{" "}
-            <span className="text-white/35 font-light italic">Adventure Awaits!</span>
+            {copy.ctaLead} <span className="text-white/35 font-light italic">{copy.ctaAccent}</span>
           </h2>
         </div>
         <button className="flex-shrink-0 bg-white text-black text-[12px] font-sans font-semibold tracking-[0.1em] uppercase px-7 py-3.5 rounded-full transition-all duration-300 hover:bg-white/90 cursor-pointer flex items-center gap-3">
-          Book a Vacation
+          {copy.ctaButton}
           <span className="bg-black/10 w-6 h-6 rounded-full flex items-center justify-center text-[9px]">›</span>
         </button>
       </div>
 
       {/* Social links */}
       <div className="px-6 md:px-10 py-6 flex items-center gap-6 border-b border-white/10">
-        {["Youtube", "Instagram", "Facebook"].map((s) => (
+        {copy.social.map((s) => (
           <a key={s} href="#" className="text-white/40 text-[12px] font-sans font-light hover:text-white transition-colors">
             {s}
           </a>
@@ -70,15 +70,15 @@ export default function FooterCTASection() {
             </div>
           </div>
           <p className="text-white/30 text-[12px] font-light font-sans leading-relaxed max-w-[160px]">
-            Crafting unforgettable journeys through Nepal's landscapes.
+            {copy.description}
           </p>
         </div>
 
-        {Object.entries(footerLinks).map(([category, links]) => (
-          <div key={category}>
-            <p className="text-white/50 text-[11px] tracking-[2px] uppercase font-sans font-light mb-4">{category}</p>
+        {footerGroups.map((group) => (
+          <div key={group.label}>
+            <p className="text-white/50 text-[11px] tracking-[2px] uppercase font-sans font-light mb-4">{group.label}</p>
             <ul className="space-y-2.5">
-              {links.map((link) => (
+              {group.links.map((link) => (
                 <li key={link}>
                   <a href="#" className="text-white/30 text-[13px] font-light font-sans hover:text-white transition-colors leading-snug block">
                     {link}
@@ -99,26 +99,7 @@ export default function FooterCTASection() {
               <path d="M5 1V9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           </div>
-          <span className="text-white/25 text-[11px] font-sans font-light">© 2025 Fantastic Adventure Nepal</span>
-        </div>
-
-        {/* Center pill nav */}
-        <div className="hidden md:flex items-center bg-white/5 border border-white/10 rounded-full px-2 py-1.5 gap-1">
-          {navItems.map((item, i) => (
-            <Link key={item.label} href={item.href} scroll={false} legacyBehavior>
-              <a
-                className={`px-3 py-1 rounded-full text-[11px] font-light tracking-wide transition-all duration-200 font-sans cursor-pointer
-                  ${i === 0 ? "bg-white/15 text-white" : "text-white/40 hover:text-white"}`}
-              >
-                {item.label}
-              </a>
-            </Link>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <span className="text-white/25 text-[11px] font-sans font-light">ENG ▾</span>
-          <button className="text-white/25 text-[11px] font-sans font-light hover:text-white transition-colors cursor-pointer">Contact Us</button>
+          <span className="text-white/25 text-[11px] font-sans font-light">{copy.copyright}</span>
         </div>
       </div>
     </footer>

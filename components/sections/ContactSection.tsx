@@ -3,8 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
 export default function ContactSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].contact;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -59,22 +63,17 @@ export default function ContactSection() {
         {/* ── LEFT — Info ── */}
         <div ref={leftRef}>
           <p className="text-[11px] tracking-[3px] uppercase text-black/35 font-light mb-3 font-sans">
-            /Contact Us
+            {copy.label}
           </p>
           <h2 className="text-3xl md:text-5xl font-semibold text-black leading-[1.15] tracking-tight mb-5">
-            Let&apos;s Plan Your{" "}
-            <span className="text-black/30 font-light italic">Perfect Adventure</span>
+            {copy.titleLead} <span className="text-black/30 font-light italic">{copy.titleAccent}</span>
           </h2>
           <p className="text-black/45 text-[14px] leading-relaxed font-light font-sans max-w-sm mb-12">
-            Ready to start your Nepal adventure? Get in touch and let our expert team craft the journey of a lifetime for you.
+            {copy.description}
           </p>
 
           <div className="space-y-0 border-t border-black/8 rounded-2xl overflow-hidden bg-black/[0.02]">
-            {[
-              { label: "Our Office", lines: ["Thamel, Kathmandu 44600", "Nepal"] },
-              { label: "Phone", lines: ["+977 1 2345678", "+977 9841234567"] },
-              { label: "Email", lines: ["info@fantasticadventurenepal.com", "bookings@fantasticadventurenepal.com"] },
-            ].map((item) => (
+            {copy.info.map((item) => (
               <div
                 key={item.label}
                 className="contact-info-item flex items-start justify-between px-6 py-5 border-b border-black/8 last:border-b-0"
@@ -95,48 +94,47 @@ export default function ContactSection() {
         {/* ── RIGHT — Form ── */}
         <div ref={rightRef} className="flex flex-col justify-center">
           <p className="text-[11px] tracking-[3px] uppercase text-black/30 font-sans font-light mb-8">
-            Send Us a Message
+              {copy.form.header}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label htmlFor="name" className={labelClass}>Full Name *</label>
-                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClass} placeholder="John Doe" />
+                  <label htmlFor="name" className={labelClass}>{copy.form.name}</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClass} placeholder={copy.form.namePlaceholder} />
               </div>
               <div>
-                <label htmlFor="email" className={labelClass}>Email Address *</label>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} placeholder="john@example.com" />
+                  <label htmlFor="email" className={labelClass}>{copy.form.email}</label>
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} placeholder={copy.form.emailPlaceholder} />
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label htmlFor="phone" className={labelClass}>Phone Number</label>
-                <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder="+977 98XXXXXXXX" />
+                  <label htmlFor="phone" className={labelClass}>{copy.form.phone}</label>
+                  <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder={copy.form.phonePlaceholder} />
               </div>
               <div>
-                <label htmlFor="destination" className={labelClass}>Destination</label>
+                  <label htmlFor="destination" className={labelClass}>{copy.form.destination}</label>
                 <select id="destination" name="destination" value={formData.destination} onChange={handleChange} className={inputClass + " cursor-pointer"}>
-                  <option value="">Select a destination</option>
-                  <option value="kathmandu">Kathmandu Valley</option>
-                  <option value="pokhara">Pokhara</option>
-                  <option value="chitwan">Chitwan National Park</option>
-                  <option value="everest">Everest Base Camp</option>
-                  <option value="annapurna">Annapurna Region</option>
-                  <option value="other">Other</option>
+                    <option value="">{copy.form.destinationPlaceholder}</option>
+                    {copy.form.options.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
             <div>
-              <label htmlFor="message" className={labelClass}>Your Message *</label>
-              <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4} className={inputClass + " resize-none"} placeholder="Tell us about your dream adventure..." />
+                <label htmlFor="message" className={labelClass}>{copy.form.message}</label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4} className={inputClass + " resize-none"} placeholder={copy.form.messagePlaceholder} />
             </div>
             <div className="pt-2">
               <button
                 type="submit"
                 className="w-full bg-black text-white text-[12px] tracking-[0.15em] uppercase font-sans font-medium py-4 rounded-xl transition-all duration-300 hover:bg-black/80 cursor-pointer"
               >
-                Send Message
+                  {copy.form.submit}
               </button>
             </div>
           </form>

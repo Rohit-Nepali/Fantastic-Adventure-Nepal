@@ -2,36 +2,21 @@
 
 import Link from "next/link";
 import { useState } from "react";
-
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-export const navItems: NavItem[] = [
-  { label: "Home", href: "#home" },
-  { label: "Destinations", href: "#destinations" },
-  { label: "About Us", href: "#about" },
-  { label: "Contact Us", href: "#contact" },
-  { label: "Testimonials", href: "#testimonials" }
-];
+import { useLanguage } from "@/provider/Language";
+import { languageOptions, translations } from "@/lib/translations";
 
 export default function Navbar() {
-
-  const [language, setLanguage] = useState("ENG");
+  const { language, changeLanguage } = useLanguage();
   const [open, setOpen] = useState(false);
-
-  const languages = [
-    { code: "English", label: "English" },
-    { code: "Spanish", label: "Spanish" },
-    { code: "French", label: "French" }
-  ];
+  const copy = translations[language];
+  const navItems = copy.navItems;
+  const currentLanguage = languageOptions.find((option) => option.code === language) ?? languageOptions[0];
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-10 py-5">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <span className="text-white text-2xl">Fantastic Advenutre Nepal</span>
+        <span className="text-white text-2xl">Fantastic Adventure Nepal</span>
       </div>
 
       {/* Center Nav */}
@@ -57,16 +42,16 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             className="text-white/70 text-[12px]"
           >
-            {language} ▾
+            {currentLanguage.label} ▾
           </button>
 
           {open && (
             <div className="absolute right-0 mt-2 w-32 rounded-lg bg-white text-black shadow-lg">
-              {languages.map((lang) => (
+              {languageOptions.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => {
-                    setLanguage(lang.code);
+                    changeLanguage(lang.code);
                     setOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-100"
@@ -79,7 +64,7 @@ export default function Navbar() {
         </div>
 
         <button className="bg-white text-black text-[11px] font-sans font-medium tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all duration-300 hover:bg-white/90 cursor-pointer">
-          Contact Us
+          {copy.navCta}
         </button>
       </div>
     </nav>

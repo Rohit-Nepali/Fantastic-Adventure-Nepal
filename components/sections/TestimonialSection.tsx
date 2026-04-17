@@ -4,17 +4,8 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-const testimonials = [
-  {
-    id: 1,
-    quote: "I've been on countless trips, but this one was different. Everything was perfectly organized, and the local insights made it truly unique.",
-    highlight: "Can't wait for my next adventure!",
-    name: "James Carter",
-    title: "Travel Enthusiast",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
-  },
-];
+import { useLanguage } from "@/provider/Language";
+import { translations } from "@/lib/translations";
 
 const avatarGroup = [
   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
@@ -23,6 +14,8 @@ const avatarGroup = [
 ];
 
 export default function TestimonialSection() {
+  const { language } = useLanguage();
+  const copy = translations[language].testimonials;
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -45,12 +38,12 @@ export default function TestimonialSection() {
     >
       <div ref={contentRef} className="max-w-4xl mx-auto text-center">
         <p className="text-[11px] tracking-[3px] uppercase text-black/30 font-light mb-8 font-sans">
-          /Testimonials
+          {copy.label}
         </p>
 
         <blockquote className="text-2xl md:text-4xl font-light text-black leading-[1.4] tracking-tight mb-3">
-          &ldquo;{testimonials[0].quote},{" "}
-          <span className="text-black/30 italic font-light">{testimonials[0].highlight}</span>&rdquo;
+          &ldquo;{copy.quote},{" "}
+          <span className="text-black/30 italic font-light">{copy.highlight}</span>&rdquo;
         </blockquote>
 
         {/* Avatars + Name */}
@@ -67,8 +60,8 @@ export default function TestimonialSection() {
             ))}
           </div>
           <div>
-            <p className="text-black text-[14px] font-semibold font-sans">{testimonials[0].name}</p>
-            <p className="text-black/40 text-[12px] font-light font-sans">{testimonials[0].title}</p>
+            <p className="text-black text-[14px] font-semibold font-sans">{copy.name}</p>
+            <p className="text-black/40 text-[12px] font-light font-sans">{copy.title}</p>
           </div>
         </div>
       </div>
