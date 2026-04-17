@@ -4,6 +4,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Atena";
+  src: url('/fonts/Atena.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Background Colors */
   --bg-primary: #ffffff;
@@ -30,8 +38,7 @@
   --section-padding-y: 8rem;
 
   /* Font System */
-  --font-sans: "SF Pro Display", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: Georgia, "Times New Roman", serif;
+  --font-heading: "Atena", Georgia, "Times New Roman", serif;
 
   /* shadcn tokens */
 
@@ -112,7 +119,7 @@ html {
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-roboto), system-ui, sans-serif;
   line-height: 1.7;
 
   -webkit-font-smoothing: antialiased;
@@ -129,7 +136,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-sans);
+  font-family: var(--font-heading) !important;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -187,5 +194,16 @@ p {
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glass-nav {
+    @apply 
+      bg-white/[0.08]
+      backdrop-blur-lg
+      border border-white/[0.18]
+      shadow-[0_8px_32px_rgba(0,0,0,0.25)]
+      ring-1 ring-white/10;
   }
 }

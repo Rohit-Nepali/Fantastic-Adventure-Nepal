@@ -20,12 +20,18 @@ export default function Navbar() {
       </div>
 
       {/* Center Nav */}
-      <div className="hidden md:flex items-center rounded-full px-2 py-1.5 gap-1">
+      <div className="glass-nav hidden md:flex items-center rounded-full px-2 py-1.5 gap-1">
         {navItems.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className="px-4 py-1.5 rounded-full text-sm font-light tracking-wide transition-all duration-200 font-sans cursor-pointer text-white/80 hover:text-white hover:bg-white/10"
+            className="
+        px-4 py-1.5 rounded-full text-sm font-light tracking-wide 
+        transition-all duration-200 font-sans cursor-pointer 
+        text-white/80 hover:text-white 
+        hover:bg-white/20
+        hover:shadow-[0_2px_10px_rgba(255,255,255,0.15)]
+      "
           >
             {item.label}
           </Link>
