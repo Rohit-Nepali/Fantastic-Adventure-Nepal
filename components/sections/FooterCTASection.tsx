@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,9 +14,9 @@ export default function FooterCTASection() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const footerGroups = [
-    { label: language === "en" ? "Explore" : language === "es" ? "Explorar" : "Explorer", links: copy.groups.explore },
-    { label: language === "en" ? "About Us" : language === "es" ? "Nosotros" : "À propos", links: copy.groups.aboutUs },
-    { label: language === "en" ? "Support" : language === "es" ? "Soporte" : "Assistance", links: copy.groups.support },
+    { label: copy.groupLabels.explore, links: copy.groups.explore },
+    { label: copy.groupLabels.aboutUs, links: copy.groups.aboutUs },
+    { label: copy.groupLabels.support, links: copy.groups.support },
   ];
 
   useEffect(() => {
@@ -51,9 +52,9 @@ export default function FooterCTASection() {
       {/* Social links */}
       <div className="px-6 md:px-10 py-6 flex items-center gap-6 border-b border-white/10">
         {copy.social.map((s) => (
-          <a key={s} href="#" className="text-white/40 text-[12px] font-sans font-light hover:text-white transition-colors">
+          <span key={s} className="text-white/40 text-[12px] font-sans font-light">
             {s}
-          </a>
+          </span>
         ))}
       </div>
 
@@ -79,10 +80,10 @@ export default function FooterCTASection() {
             <p className="text-white/50 text-[11px] tracking-[2px] uppercase font-sans font-light mb-4">{group.label}</p>
             <ul className="space-y-2.5">
               {group.links.map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-white/30 text-[13px] font-light font-sans hover:text-white transition-colors leading-snug block">
-                    {link}
-                  </a>
+                <li key={link.label}>
+                  <Link href={link.href} className="text-white/30 text-[13px] font-light font-sans hover:text-white transition-colors leading-snug block">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>

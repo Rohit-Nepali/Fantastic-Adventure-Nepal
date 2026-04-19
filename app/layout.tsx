@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import Providers from "../provider/providers";
+import Navbar from "@/components/layout/Navbar";
+import FooterCTASection from "@/components/sections/FooterCTASection";
 import "./globals.css";
-import Providers from "./providers";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,8 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={roboto.variable}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <FooterCTASection />
+        </Providers>
       </body>
-    </html>
+    </html >
   );
 }

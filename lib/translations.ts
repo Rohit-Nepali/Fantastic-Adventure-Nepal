@@ -9,18 +9,18 @@ export const languageOptions = [
 export const translations = {
   en: {
     navItems: [
-      { label: "Home", href: "#home" },
-      { label: "Destinations", href: "#destinations" },
-      { label: "About Us", href: "#about" },
-      { label: "Contact Us", href: "#contact" },
-      { label: "Testimonials", href: "#testimonials" },
+      { label: "Home", href: "/" },
+      { label: "Destinations", href: "/destinations" },
+      { label: "About Us", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Testimonials", href: "/testimonials" },
     ],
     navCta: "Contact Us",
     hero: {
       title: "Pack Your Bags, Let's Go Explore Somewhere Amazing",
       subtitle:
         "Hidden gems, breathtaking views, unforgettable adventures — where will you go next?",
-      button: "Book Now",
+      button: "Plan Your Trip",
     },
     about: {
       label: "/About Us",
@@ -209,21 +209,41 @@ export const translations = {
       ctaButton: "Book a Vacation",
       description: "Crafting unforgettable journeys through Nepal's landscapes.",
       social: ["Youtube", "Instagram", "Facebook"],
+      groupLabels: {
+        explore: "Explore",
+        aboutUs: "About Us",
+        support: "Support",
+      },
       groups: {
-        explore: ["Our Plans", "Top Tours", "Travel Guide", "Sustainability Commitment"],
-        aboutUs: ["Our Story", "Testimonials", "Sustainability Commitment", "Careers"],
-        support: ["FAQ", "Contact Us", "Booking Process", "Privacy Policy"],
+        explore: [
+          { label: "Our Plans", href: "/destinations" },
+          { label: "Top Tours", href: "/destinations" },
+          { label: "Travel Guide", href: "/about" },
+          { label: "Sustainability Commitment", href: "/about" },
+        ],
+        aboutUs: [
+          { label: "Our Story", href: "/about" },
+          { label: "Testimonials", href: "/testimonials" },
+          { label: "Sustainability Commitment", href: "/about" },
+          { label: "Careers", href: "/contact" },
+        ],
+        support: [
+          { label: "FAQ", href: "/contact" },
+          { label: "Contact Us", href: "/contact" },
+          { label: "Booking Process", href: "/contact" },
+          { label: "Privacy Policy", href: "/contact" },
+        ],
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
     },
   },
   es: {
     navItems: [
-      { label: "Inicio", href: "#home" },
-      { label: "Destinos", href: "#destinations" },
-      { label: "Nosotros", href: "#about" },
-      { label: "Contacto", href: "#contact" },
-      { label: "Testimonios", href: "#testimonials" },
+      { label: "Inicio", href: "/" },
+      { label: "Destinos", href: "/destinations" },
+      { label: "Nosotros", href: "/about" },
+      { label: "Contacto", href: "/contact" },
+      { label: "Testimonios", href: "/testimonials" },
     ],
     navCta: "Contacto",
     hero: {
@@ -368,21 +388,41 @@ export const translations = {
       ctaButton: "Reservar vacaciones",
       description: "Creamos viajes inolvidables a través de los paisajes de Nepal.",
       social: ["Youtube", "Instagram", "Facebook"],
+      groupLabels: {
+        explore: "Explorar",
+        aboutUs: "Nosotros",
+        support: "Soporte",
+      },
       groups: {
-        explore: ["Nuestros planes", "Mejores tours", "Guía de viaje", "Compromiso con la sostenibilidad"],
-        aboutUs: ["Nuestra historia", "Testimonios", "Compromiso con la sostenibilidad", "Carreras"],
-        support: ["Preguntas frecuentes", "Contacto", "Proceso de reserva", "Política de privacidad"],
+        explore: [
+          { label: "Nuestros planes", href: "/destinations" },
+          { label: "Mejores tours", href: "/destinations" },
+          { label: "Guía de viaje", href: "/about" },
+          { label: "Compromiso con la sostenibilidad", href: "/about" },
+        ],
+        aboutUs: [
+          { label: "Nuestra historia", href: "/about" },
+          { label: "Testimonios", href: "/testimonials" },
+          { label: "Compromiso con la sostenibilidad", href: "/about" },
+          { label: "Carreras", href: "/contact" },
+        ],
+        support: [
+          { label: "Preguntas frecuentes", href: "/contact" },
+          { label: "Contacto", href: "/contact" },
+          { label: "Proceso de reserva", href: "/contact" },
+          { label: "Política de privacidad", href: "/contact" },
+        ],
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
     },
   },
   fr: {
     navItems: [
-      { label: "Accueil", href: "#home" },
-      { label: "Destinations", href: "#destinations" },
-      { label: "À propos", href: "#about" },
-      { label: "Contact", href: "#contact" },
-      { label: "Témoignages", href: "#testimonials" },
+      { label: "Accueil", href: "/" },
+      { label: "Destinations", href: "/destinations" },
+      { label: "À propos", href: "/about" },
+      { label: "Contact", href: "/contact" },
+      { label: "Témoignages", href: "/testimonials" },
     ],
     navCta: "Contact",
     hero: {
@@ -393,8 +433,8 @@ export const translations = {
     },
     about: {
       label: "/À propos",
-      titleLead: "Qu'est-ce qui est si spécial",
-      titleAccent: "à propos de ça ?",
+      titleLead: "Qu'est-ce qui rend",
+      titleAccent: "cela spécial ?",
       description:
         "Économisez davantage sur vos voyages grâce à des réductions exclusives, des promotions saisonnières et des offres imbattables pour des aventures inoubliables.",
       button: "En savoir plus",
@@ -497,10 +537,30 @@ export const translations = {
       ctaButton: "Réserver un voyage",
       description: "Nous concevons des voyages inoubliables à travers les paysages du Népal.",
       social: ["Youtube", "Instagram", "Facebook"],
+      groupLabels: {
+        explore: "Explorer",
+        aboutUs: "À propos",
+        support: "Assistance",
+      },
       groups: {
-        explore: ["Nos offres", "Meilleures excursions", "Guide de voyage", "Engagement durable"],
-        aboutUs: ["Notre histoire", "Témoignages", "Engagement durable", "Carrières"],
-        support: ["FAQ", "Contact", "Processus de réservation", "Politique de confidentialité"],
+        explore: [
+          { label: "Nos offres", href: "/destinations" },
+          { label: "Meilleures excursions", href: "/destinations" },
+          { label: "Guide de voyage", href: "/about" },
+          { label: "Engagement durable", href: "/about" },
+        ],
+        aboutUs: [
+          { label: "Notre histoire", href: "/about" },
+          { label: "Témoignages", href: "/testimonials" },
+          { label: "Engagement durable", href: "/about" },
+          { label: "Carrières", href: "/contact" },
+        ],
+        support: [
+          { label: "FAQ", href: "/contact" },
+          { label: "Contact", href: "/contact" },
+          { label: "Processus de réservation", href: "/contact" },
+          { label: "Politique de confidentialité", href: "/contact" },
+        ],
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
     },

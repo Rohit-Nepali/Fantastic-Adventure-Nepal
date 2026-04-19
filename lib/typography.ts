@@ -1,9 +1,4 @@
 /**
- * DESIGN SYSTEM: Typography utilities
- * Centralized typography classes to ensure consistency across the application
- */
-
-/**
  * Typography utility class combinations
  * Use these instead of hardcoding text-* classes
  */

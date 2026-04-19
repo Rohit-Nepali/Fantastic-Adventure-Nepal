@@ -4,14 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: "Atena";
-  src: url('/fonts/Atena.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   /* Background Colors */
   --bg-primary: #ffffff;
@@ -38,7 +30,8 @@
   --section-padding-y: 8rem;
 
   /* Font System */
-  --font-heading: "Atena", Georgia, "Times New Roman", serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-heading: var(--font-roboto), Georgia, "Times New Roman", serif;
 
   /* shadcn tokens */
 
