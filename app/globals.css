@@ -4,6 +4,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Riuka";
+  src: url("/riuka/Riuka TTF.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+  size-adjust: 105%;
+}
+
 :root {
   /* Background Colors */
   --bg-primary: #ffffff;
@@ -30,8 +39,9 @@
   --section-padding-y: 8rem;
 
   /* Font System */
+  --font-riuka: "Riuka", serif;
   --font-roboto: "Roboto", sans-serif;
-  --font-heading: var(--font-roboto), Georgia, "Times New Roman", serif;
+  --font-heading: var(--font-riuka), Georgia, "Times New Roman", serif;
 
   /* shadcn tokens */
 
@@ -109,6 +119,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* hide scroll bar on the right */
+::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -129,10 +144,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-heading) !important;
+  font-family: var(--font-riuka) !important;
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.15 !important; 
 }
 
 h1 {
@@ -155,30 +170,6 @@ p {
   font-weight: 400;
 }
 
-/* ------------------------------------------------ */
-/* DARK MODE */
-/* ------------------------------------------------ */
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-
-  --accent: oklch(0.279 0.041 260.031);
-}
-
-/* SHADCN BASE */
 
 @layer base {
   * {

@@ -17,7 +17,7 @@ export const translations = {
     ],
     navCta: "Contact Us",
     hero: {
-      title: "Pack Your Bags, Let's Go Explore Somewhere Amazing",
+      title: "Pack Your Bags, Let's Go Explore",
       subtitle:
         "Hidden gems, breathtaking views, unforgettable adventures — where will you go next?",
       button: "Plan Your Trip",
@@ -75,12 +75,12 @@ export const translations = {
         "Get the best value for your trips with exclusive discounts, seasonal promotions, and deals to save while exploring the world!",
       button: "See All",
       items: [
-        { id: 1, name: "Italy", count: "12 Destinations" },
-        { id: 2, name: "Japan", count: "15 Destinations" },
-        { id: 3, name: "Indonesia", count: "14 Destinations" },
-        { id: 4, name: "Nepal", count: "18 Destinations" },
-        { id: 5, name: "Switzerland", count: "9 Destinations" },
-        { id: 6, name: "Maldives", count: "11 Destinations" },
+        { id: 1, name: "Mount Everest", count: "12 Destinations" },
+        { id: 2, name: "Machapuchare", count: "15 Destinations" },
+        { id: 3, name: "Boudha", count: "14 Destinations" },
+        { id: 4, name: "Boudha", count: "18 Destinations" },
+        { id: 5, name: "Pashupatinath", count: "9 Destinations" },
+        { id: 6, name: "Chitwan", count: "11 Destinations" },
       ],
     },
     topTours: {
@@ -305,12 +305,12 @@ export const translations = {
         "Obtén el mejor valor para tus viajes con descuentos exclusivos, promociones de temporada y ofertas para ahorrar mientras exploras el mundo.",
       button: "Ver todo",
       items: [
-        { id: 1, name: "Italia", count: "12 destinos" },
-        { id: 2, name: "Japón", count: "15 destinos" },
-        { id: 3, name: "Indonesia", count: "14 destinos" },
-        { id: 4, name: "Nepal", count: "18 destinos" },
-        { id: 5, name: "Suiza", count: "9 destinos" },
-        { id: 6, name: "Maldivas", count: "11 destinos" },
+        { id: 1, name: "Mount Everest", count: "12 destinos" },
+        { id: 2, name: "Machapuchare", count: "15 destinos" },
+        { id: 3, name: "Boudha", count: "14 destinos" },
+        { id: 4, name: "Pashupatinath", count: "18 destinos" },
+        { id: 5, name: "Chitwan", count: "9 destinos" },
+        { id: 6, name: "Lake Manasarovar", count: "11 destinos" },
       ],
     },
     topTours: {

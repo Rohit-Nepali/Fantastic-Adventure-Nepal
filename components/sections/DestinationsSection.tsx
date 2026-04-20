@@ -8,12 +8,12 @@ import { useLanguage } from "@/provider/Language";
 import { translations } from "@/lib/translations";
 
 const nepalImages = [
-  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80", // Mount Everest / Khumbu Region
-  "https://images.unsplash.com/photo-1483982258113-b72862e6cff6?w=800&q=80", // Machapuchare / Pokhara Valley
-  "https://images.unsplash.com/photo-1526481280693-3bfa7561807e?w=800&q=80", // Phewa Lake / Tal Barahi Temple
-  "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=80", // Kathmandu Durbar Square / Ancient Heritage
-  "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?w=800&q=80", // Upper Mustang / Trans-Himalayan Landscape
-  "https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?w=800&q=80"  // Swayambhunath (Monkey Temple) Stupa
+  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80", 
+  "https://images.unsplash.com/photo-1483982258113-b72862e6cff6?w=800&q=80", 
+  "https://images.unsplash.com/photo-1526481280693-3bfa7561807e?w=800&q=80", 
+  "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=80", 
+  "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?w=800&q=80", 
+  "https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?w=800&q=80" 
 ];
 
 export default function DestinationsSection() {

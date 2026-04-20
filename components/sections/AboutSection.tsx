@@ -17,6 +17,15 @@ const aboutImages = [
   "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=90",
 ];
 
+const aboutImagesSecondary = [
+  "https://images.unsplash.com/photo-1469521669194-babb45599def?w=400&q=80", // Everest detail
+  "https://images.unsplash.com/photo-1502310297702-f4b8730b5e92?w=400&q=80", // Annapurna detail
+  "https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=400&q=80", // Upper Mustang detail
+  "https://images.unsplash.com/photo-1622015663319-e97e697503ee?w=400&q=80", // Mardi Himal detail
+  "https://images.unsplash.com/photo-1533130061792-64b345e4a833?w=400&q=80", // ABC detail
+  "https://images.unsplash.com/photo-1568454537842-d933259bb258?w=400&q=80", // Chitwan detail
+];
+
 export default function AboutSection() {
   const { language } = useLanguage();
   const copy = translations[language].about;
@@ -29,6 +38,7 @@ export default function AboutSection() {
   const cards = copy.cards.map((card, index) => ({
     ...card,
     image: aboutImages[index],
+    secondaryImage: aboutImagesSecondary[index],
   }));
 
   const visibleCards = 2;
@@ -118,12 +128,32 @@ export default function AboutSection() {
                 {/* Top Row: Image and Number */}
                 <div className="flex justify-between items-start mb-8">
                   {/* Image Container - Scaled down and fixed ratio */}
-                  <div className="relative w-1/2 aspect-video rounded-lg overflow-hidden">
+                  {/* Image Container - Parallax depth effect */}
+                  <div
+                    className="relative w-1/2 aspect-video rounded-lg overflow-hidden group/img"
+                    onMouseMove={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+                      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
+                      const img = e.currentTarget.querySelector("img");
+                      if (img) {
+                        (img as HTMLElement).style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      const img = e.currentTarget.querySelector("img");
+                      if (img) {
+                        (img as HTMLElement).style.transform = "scale(1) translate(0px, 0px)";
+                        (img as HTMLElement).style.transition = "transform 0.6s ease-out";
+                      }
+                    }}
+                  >
                     <Image
                       src={card.image}
                       alt={card.title}
                       fill
                       className="object-cover"
+                      style={{ transition: "transform 0.15s ease-out" }}
                       sizes="(max-width: 768px) 40vw, 20vw"
                     />
                   </div>
