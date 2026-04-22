@@ -15,7 +15,7 @@ export const translations = {
       { label: "Contact Us", href: "/contact" },
       { label: "Testimonials", href: "/testimonials" },
     ],
-    navCta: "Contact Us",
+    navCta: "Plan Your Trip",
     hero: {
       title: "Pack Your Bags, Let's Go Explore",
       subtitle:
@@ -245,7 +245,7 @@ export const translations = {
       { label: "Contacto", href: "/contact" },
       { label: "Testimonios", href: "/testimonials" },
     ],
-    navCta: "Contacto",
+    navCta: "Planifica Tu Viaje",
     hero: {
       title: "Haz la maleta y salgamos a explorar algo increíble",
       subtitle:
@@ -424,7 +424,7 @@ export const translations = {
       { label: "Contact", href: "/contact" },
       { label: "Témoignages", href: "/testimonials" },
     ],
-    navCta: "Contact",
+    navCta: "Planifiez Votre Voyage",
     hero: {
       title: "Faites vos valises, partons explorer quelque chose d'incroyable",
       subtitle:

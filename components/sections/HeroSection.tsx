@@ -22,8 +22,9 @@ export default function HeroSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const lastWordRef = useRef<HTMLSpanElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
+  const scrollArrowsRef = useRef<HTMLDivElement>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -32,17 +33,60 @@ export default function HeroSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Animate in the overlay and content
-      
-      gsap.set(videoWrapperRef.current, { force3D: true, willChange: "transform" });
+
+      gsap.set(videoWrapperRef.current, {
+        force3D: true,
+        willChange: "transform",
+      });
       gsap.set(contentRef.current, { force3D: true, willChange: "transform" });
-      
+
       const tl = gsap.timeline({ delay: 0.4 });
 
-      tl.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" })
-        .fromTo(titleRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.1, ease: "power4.out" }, "-=0.7")
-        .to(lastWordRef.current, { color: "#f59e0b", duration: 0.8, ease: "power2.out" }, "-=0.3")
-        .fromTo(subtitleRef.current, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.5")
-        .fromTo(buttonRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.4");
+      tl.fromTo(
+        overlayRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.2, ease: "power2.out" },
+      )
+        .fromTo(
+          titleRef.current,
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 1.1, ease: "power4.out" },
+          "-=0.7",
+        )
+        .to(
+          lastWordRef.current,
+          { color: "#f59e0b", duration: 0.8, ease: "power2.out" },
+          "-=0.3",
+        )
+        .fromTo(
+          subtitleRef.current,
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.5",
+        );
+
+      if (scrollHintRef.current && scrollArrowsRef.current) {
+        gsap.fromTo(
+          scrollHintRef.current,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 1.05 },
+        );
+
+        const arrows =
+          scrollArrowsRef.current.querySelectorAll(".scroll-arrow");
+        gsap.fromTo(
+          arrows,
+          { y: -4, opacity: 0.2 },
+          {
+            y: 8,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power1.inOut",
+            repeat: -1,
+            stagger: 0.12,
+          },
+        );
+      }
 
       if (lastWordRef.current) {
         gsap.set(lastWordRef.current, {
@@ -52,7 +96,12 @@ export default function HeroSection() {
         });
 
         // Animate scale + skew instead of font-family swap
-        gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: "power1.inOut" } })
+        gsap
+          .timeline({
+            repeat: -1,
+            yoyo: true,
+            defaults: { ease: "power1.inOut" },
+          })
           .to(lastWordRef.current, {
             skewX: -6,
             scaleX: 1.04,
@@ -112,14 +161,15 @@ export default function HeroSection() {
           scrub: 0.8,
         },
       });
-
-
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-stone-900">
+    <section
+      ref={sectionRef}
+      className="relative h-screen w-full overflow-hidden bg-stone-900"
+    >
       {/* Video Background */}
       <div ref={videoWrapperRef} className="absolute inset-0">
         <video
@@ -129,30 +179,43 @@ export default function HeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover"
-        // poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80"
+          // poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80"
         >
           <source src="loading_video.mp4" type="video/mp4" />
         </video>
-        <div ref={overlayRef} className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60 opacity-0 transition-opacity duration-1000" />
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60 opacity-0 transition-opacity duration-1000"
+        />
       </div>
 
       {/* Main Content */}
-      <div ref={contentRef} className="relative z-10 h-full px-6 md:px-10 pb-16 flex flex-col justify-end">
-
+      <div
+        ref={contentRef}
+        className="relative z-10 h-full px-6 md:px-10 pb-36 flex flex-col justify-end"
+      >
         {/* Text — bottom left */}
         <div className="max-w-2xl flex-1 flex flex-col justify-end">
           {titleSecondLine ? (
-            <div className="mb-4">
+            <div className="my-4">
               <h2
-                className="text-white font-semibold leading-[1.1] tracking-tight text-[clamp(2.2rem,6vw,4.5rem)]"
-                style={{ lineHeight: "1.15", fontKerning: "none" }}
+                className="text-white font-semibold leading-[1.45] tracking-tight"
+                style={{
+                  fontSize: "clamp(2rem,5vw,4rem)",
+                  lineHeight: "1.45",
+                  fontKerning: "none",
+                }}
               >
                 {titleFirstLine},
               </h2>
               <h2
                 ref={titleRef}
-                style={{ lineHeight: "1.15", fontKerning: "none" }}
-                className="text-white font-semibold leading-[1.1] tracking-tight text-[clamp(3rem,8vw,6rem)]"
+                style={{
+                  fontSize: "clamp(2rem,6vw,6rem)",
+                  lineHeight: "1.15",
+                  fontKerning: "none",
+                }}
+                className="text-white font-semibold leading-[1.1] tracking-tight"
               >
                 {leadingTitle ? `${leadingTitle} ` : ""}
                 <span ref={lastWordRef} className="inline-block text-white">
@@ -172,17 +235,31 @@ export default function HeroSection() {
             </h2>
           )}
 
-          <p ref={subtitleRef} className="text-white/60 font-sans font-light text-[14px] md:text-base leading-relaxed max-w-sm opacity-0">
+          <p
+            ref={subtitleRef}
+            className="text-white/60 font-sans font-light text-[14px] md:text-base leading-relaxed max-w-sm opacity-0"
+          >
             {copy.subtitle}
           </p>
         </div>
-        {/* Bottom row — button pinned to right */}
-        <div ref={buttonRef} className="flex justify-end mt-8">
-          <button className="bg-white text-black font-sans font-medium text-[12px] tracking-[0.15em] uppercase px-7 py-3.5 rounded-full transition-all duration-300 hover:bg-white/90 cursor-pointer flex items-center gap-3">
-            {copy.button}
-            <span className="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px]">››</span>
-          </button>
+      </div>
+
+      <div
+        ref={scrollHintRef}
+        className="pointer-events-none absolute z-20 bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0"
+        aria-hidden="true"
+      >
+        <div
+          ref={scrollArrowsRef}
+          className="flex flex-col items-center leading-none text-white/90"
+        >
+          <span className="scroll-arrow text-[18px]">⌄</span>
+          <span className="scroll-arrow text-[18px] -mt-2">⌄</span>
+          <span className="scroll-arrow text-[18px] -mt-2">⌄</span>
         </div>
+        <p className="text-[11px] uppercase tracking-[0.18em] text-white/85 font-medium">
+          Explore more
+        </p>
       </div>
     </section>
   );

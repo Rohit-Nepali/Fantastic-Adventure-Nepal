@@ -27,10 +27,10 @@ export default function RootLayout({
       <body>
         <Providers>
           <Navbar />
-          <main>{children}</main>
+          <main className="pt-0">{children}</main>
           <FooterCTASection />
         </Providers>
       </body>
-    </html >
+    </html>
   );
 }

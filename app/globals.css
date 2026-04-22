@@ -17,20 +17,20 @@
   /* Background Colors */
   --bg-primary: #ffffff;
   --bg-secondary: #ffffff;
-  --bg-dark: #1C1917;
+  --bg-dark: #1c1917;
 
   /* Text Colors */
   --text-primary: #000000;
-  --text-secondary: #FFFFFF;
-  --text-muted: #6B7280;
+  --text-secondary: #ffffff;
+  --text-muted: #6b7280;
 
   /* Accent */
   --accent: oklch(0.968 0.007 247.896);
-  --white: #FFFFFF;
+  --white: #ffffff;
 
   /* Borders */
   --border: oklch(0.929 0.013 255.508);
-  --border-subtle: rgba(0,0,0,0.06);
+  --border-subtle: rgba(0, 0, 0, 0.06);
 
   /* Radius */
   --radius: 0.625rem;
@@ -76,7 +76,6 @@
 /* ------------------------------------------------ */
 
 @theme inline {
-
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
   --color-bg-dark: var(--bg-dark);
@@ -147,7 +146,7 @@ h6 {
   font-family: var(--font-riuka) !important;
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.15 !important; 
+  line-height: 1.15 !important;
 }
 
 h1 {
@@ -170,7 +169,6 @@ p {
   font-weight: 400;
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -183,8 +181,7 @@ p {
 
 @layer utilities {
   .glass-nav {
-    @apply 
-      bg-white/[0.08]
+    @apply bg-white/[0.08]
       backdrop-blur-lg
       border border-white/[0.18]
       shadow-[0_8px_32px_rgba(0,0,0,0.25)]

@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/provider/Language";
 import { translations } from "@/lib/translations";
+import { travelStyles } from "@/lib/travelStyles";
 
 // Social icon SVGs
 const FacebookIcon = () => (
@@ -55,15 +56,6 @@ export default function FooterCTASection() {
     { label: "Everest Base Camp", href: "/destinations" },
     { label: "Annapurna Circuit", href: "/destinations" },
     { label: "Chitwan Jungle Safari", href: "/destinations" },
-  ];
-
-  const travelStyles = [
-    { label: "Wellness Retreat", href: "/wellness" },
-    { label: "Cultural Tour", href: "/cultural" },
-    { label: "Trekking the Trails", href: "/trekking" },
-    { label: "Rafting on Rivers", href: "/rafting" },
-    { label: "Festival Focus", href: "/festivals" },
-    { label: "Wildlife Safari", href: "/wildlife" },
   ];
 
   const quickLinks = [

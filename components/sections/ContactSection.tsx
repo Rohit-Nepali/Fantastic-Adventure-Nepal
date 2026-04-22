@@ -59,7 +59,6 @@ export default function ContactSection() {
       className="relative bg-white overflow-hidden px-6 md:px-10 py-16 md:py-24"
     >
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
-
         {/* ── LEFT — Info ── */}
         <div ref={leftRef}>
           <p className="text-[11px] tracking-[3px] uppercase text-black/35 font-light mb-3 font-sans">
