@@ -131,7 +131,7 @@ export default function ContactSection() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full bg-black text-white text-[12px] tracking-[0.15em] uppercase font-sans font-medium py-4 rounded-xl transition-all duration-300 hover:bg-black/80 cursor-pointer"
+                className="w-full bg-accent text-accent-foreground text-[12px] tracking-[0.15em] uppercase font-sans font-medium py-4 rounded-xl transition-all duration-300 hover:bg-accent/90 cursor-pointer"
               >
                   {copy.form.submit}
               </button>

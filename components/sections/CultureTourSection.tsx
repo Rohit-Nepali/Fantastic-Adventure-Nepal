@@ -263,7 +263,7 @@ export default function CultureTourSection() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-black text-white text-[11px] tracking-[0.15em] uppercase px-7 py-3.5 hover:bg-black/80 transition-colors"
+            className="inline-flex items-center justify-center rounded-full bg-accent text-accent-foreground text-[11px] tracking-[0.15em] uppercase px-7 py-3.5 hover:bg-accent/90 transition-colors"
           >
             Plan This Journey
           </Link>

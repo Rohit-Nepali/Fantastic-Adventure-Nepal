@@ -41,7 +41,7 @@ const buttonVariants = cva(
 
         // Accent - Using your accent color
         accent:
-          "bg-[var(--accent)] text-[var(--text-primary)] hover:bg-[var(--accent)]/80",
+          "bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent)]/90 shadow-sm",
       },
 
       // Size variants

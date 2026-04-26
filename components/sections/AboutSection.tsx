@@ -104,7 +104,7 @@ export default function AboutSection() {
 
           {/* 3. Right Content: Button */}
           <div className="flex-shrink-0">
-            <button className="w-full sm:w-auto bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans font-medium px-8 py-4 rounded-full transition-all duration-300 hover:bg-black/80 cursor-pointer flex items-center justify-center gap-3">
+            <button className="w-full sm:w-auto bg-accent text-accent-foreground text-[11px] tracking-[0.15em] uppercase font-sans font-medium px-8 py-4 rounded-full transition-all duration-300 hover:bg-accent/90 cursor-pointer flex items-center justify-center gap-3">
               {copy.button}
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>

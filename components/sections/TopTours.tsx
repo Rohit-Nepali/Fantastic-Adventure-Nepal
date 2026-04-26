@@ -36,8 +36,8 @@ const TopTours = () => {
           <p className="text-black/45 text-sm max-w-lg">{copy.description}</p>
           {/* Navigation Controls */}
           <div className="flex gap-2">
-            <button onClick={handlePrev} className="p-2 rounded-full border border-black/10 hover:bg-black hover:text-white transition-colors"><ChevronLeft size={20}/></button>
-            <button onClick={handleNext} className="p-2 rounded-full border border-black/10 hover:bg-black hover:text-white transition-colors"><ChevronRight size={20}/></button>
+            <button onClick={handlePrev} className="p-2 rounded-full border border-black/10 hover:bg-accent hover:text-white transition-colors"><ChevronLeft size={20}/></button>
+            <button onClick={handleNext} className="p-2 rounded-full border border-black/10 hover:bg-accent hover:text-white transition-colors"><ChevronRight size={20}/></button>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ const TopTours = () => {
                   <p className="text-black/45 text-sm mb-6">{tour.desc}</p>
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-lg">from {tour.price}</span>
-                    <button className="bg-black text-white px-8 py-3 rounded-full text-xs uppercase tracking-widest hover:bg-black/80 transition-all">{copy.button}</button>
+                    <button className="bg-accent text-accent-foreground px-8 py-3 rounded-full text-xs uppercase tracking-widest hover:bg-accent/90 transition-all">{copy.button}</button>
                   </div>
                 </div>
               )}

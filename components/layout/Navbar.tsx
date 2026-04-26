@@ -196,21 +196,21 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           <span
             className={cx(
               "block h-[1.5px] w-8 transition-all duration-300 group-hover:w-8",
-              "bg-white",
+              "bg-black",
             )}
           />
           {/* Medium Line */}
           <span
             className={cx(
               "block h-[1.5px] w-5 transition-all duration-300 group-hover:w-8",
-              "bg-white",
+              "bg-black",
             )}
           />
           {/* Shortest Line */}
           <span
             className={cx(
               "block h-[1.5px] w-2 transition-all duration-300 group-hover:w-8",
-              "bg-white",
+              "bg-black",
             )}
           />
         </button>
@@ -220,7 +220,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           <span
             className={cx(
               "text-lg font-semibold tracking-wide transition-colors duration-500",
-              "text-white",
+              "text-black",
             )}
           >
             Fantastic Adventure Nepal
@@ -234,7 +234,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
               onClick={() => setLangOpen((p) => !p)}
               className={cx(
                 "text-[12px] tracking-wide font-sans transition-colors duration-500",
-                "text-white",
+                "text-black",
               )}
             >
               {currentLanguage.label} &#9662;
@@ -261,7 +261,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             href="/contact"
             className={cx(
               "hidden md:block text-[11px] font-medium tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all duration-300",
-              "bg-white text-black border border-black/20 hover:bg-white/90",
+              "bg-accent text-accent-foreground border border-transparent hover:bg-accent/90",
             )}
           >
             {copy.navCta}
@@ -319,7 +319,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                   <span
                     className={cx(
                       "font-semibold transition-colors duration-300 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-tight",
-                      hoveredIndex === i ? "text-orange-500" : "text-black",
+                      hoveredIndex === i ? "text-accent" : "text-black",
                     )}
                   >
                     {item.label}
@@ -336,7 +336,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
               <Link
                 href="/contact"
                 onClick={handleOverlayNavigation("/contact")}
-                className="inline-flex items-center gap-3 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-medium px-7 py-3.5 rounded-full hover:bg-orange-500 transition-colors duration-300"
+                className="inline-flex items-center gap-3 bg-accent text-accent-foreground text-[11px] tracking-[0.15em] uppercase font-medium px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors duration-300"
               >
                 Plan Your Trip
                 <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-[10px]">
@@ -401,7 +401,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                 className={cx(
                   "text-xs tracking-widest uppercase font-sans transition-colors duration-200",
                   language === lang.code
-                    ? "text-orange-500 font-medium"
+                    ? "text-accent font-medium"
                     : "text-black/30 hover:text-black",
                 )}
               >

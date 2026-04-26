@@ -77,7 +77,7 @@ export default function DestinationsSection() {
       {/* ── HEADER ── */}
       <div ref={headerRef} className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-10">
         <div className="max-w-2xl">
-          <p className="text-[12px] tracking-[0.25em] uppercase text-orange-600 font-medium mb-4 font-sans">
+          <p className="text-[12px] tracking-[0.25em] uppercase text-accent font-medium mb-4 font-sans">
             {copy.label || "Explore the Himalayas"}
           </p>
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.05] tracking-tight">
@@ -90,7 +90,7 @@ export default function DestinationsSection() {
             {copy.description || "From the highest peaks on Earth to lush tropical jungles, discover the diverse soul of Nepal."}
           </p>
 
-          <button className="group bg-black text-white text-[11px] tracking-[0.2em] uppercase font-bold pl-8 pr-3 py-3 rounded-full transition-all duration-500 hover:pr-8 hover:bg-orange-600 cursor-pointer flex items-center gap-6">
+          <button className="group bg-accent text-accent-foreground text-[11px] tracking-[0.2em] uppercase font-bold pl-8 pr-3 py-3 rounded-full transition-all duration-500 hover:pr-8 hover:bg-accent/90 cursor-pointer flex items-center gap-6">
             {copy.button || "View All Regions"}
             <span className="bg-white/20 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-white/40 transition-colors">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
@@ -132,13 +132,13 @@ export default function DestinationsSection() {
 
             {/* Bottom Content */}
             <div className="absolute bottom-8 left-8 right-8">
-              <p className="text-orange-400 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">
+              <p className="text-accent text-[10px] uppercase tracking-[0.3em] font-bold mb-2">
                 Destination
               </p>
               <h3 className="text-white text-3xl font-semibold tracking-tight">
                 {destination.name}
               </h3>
-              <div className="h-[2px] w-0 bg-orange-500 mt-4 group-hover:w-full transition-all duration-700 ease-in-out" />
+              <div className="h-[2px] w-0 bg-accent mt-4 group-hover:w-full transition-all duration-700 ease-in-out" />
             </div>
           </div>
         ))}

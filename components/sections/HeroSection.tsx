@@ -55,7 +55,7 @@ export default function HeroSection() {
         )
         .to(
           lastWordRef.current,
-          { color: "#f59e0b", duration: 0.8, ease: "power2.out" },
+          { color: "var(--accent)", duration: 0.8, ease: "power2.out" },
           "-=0.3",
         )
         .fromTo(
@@ -90,7 +90,7 @@ export default function HeroSection() {
 
       if (lastWordRef.current) {
         gsap.set(lastWordRef.current, {
-          color: "#f59e0b",
+          color: "var(--accent)",
           display: "inline-block",
           transformOrigin: "center bottom",
         });

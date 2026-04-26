@@ -25,8 +25,10 @@
   --text-muted: #6b7280;
 
   /* Accent */
-  --accent: oklch(0.968 0.007 247.896);
+  --accent: #009688;
   --white: #ffffff;
+
+  /* Teal token values */
 
   /* Borders */
   --border: oklch(0.929 0.013 255.508);
@@ -44,26 +46,25 @@
   --font-heading: var(--font-riuka), Georgia, "Times New Roman", serif;
 
   /* shadcn tokens */
-
-  --background: oklch(100% 0.00011 271.152);
+  --background: rgb(255, 255, 255);
   --foreground: oklch(0.129 0.042 264.695);
 
-  --card: oklch(1 0 0);
+  --card: rgb(255, 255, 255);
   --card-foreground: oklch(0.129 0.042 264.695);
 
-  --popover: oklch(1 0 0);
+  --popover: rgb(255, 255, 255);
   --popover-foreground: oklch(0.129 0.042 264.695);
 
   --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
+  --primary-foreground: rgb(248, 250, 252);
 
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: rgb(241, 245, 249);
+  --secondary-foreground: #0f172b;
 
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
+  --muted: rgb(241, 245, 249);
+  --muted-foreground: #62748e;
 
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --accent-foreground:  #ffffff;
 
   --destructive: oklch(0.577 0.245 27.325);
 
