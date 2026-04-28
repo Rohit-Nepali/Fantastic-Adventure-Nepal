@@ -127,21 +127,19 @@ export default function FooterCTASection() {
 
           {/* Brand column */}
           <div>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex items-center gap-2">
-                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 4L25 12H17L21 4Z" fill="white" opacity="0.9" />
-                  <rect x="18" y="12" width="6" height="3" fill="white" opacity="0.9" />
-                  <rect x="15" y="15" width="12" height="4" rx="1" fill="white" opacity="0.85" />
-                  <rect x="12" y="19" width="18" height="3" fill="white" opacity="0.8" />
-                  <rect x="10" y="22" width="22" height="12" rx="1" fill="white" opacity="0.75" />
-                  <rect x="17" y="28" width="8" height="6" fill="white" opacity="0.9" />
-                </svg>
-                <div>
-                  <p className="text-white font-bold text-xl tracking-wide leading-none" style={{ fontFamily: "'Georgia', serif" }}>FANTASTIC ADVENTURE NEPAL</p>
-                  <p className="text-white/60 text-[10px] italic tracking-widest">...nature, culture & adventure</p>
-                </div>
-              </div>
+            <div className="mb-5">
+              <Image
+                src="/Logo-Website.png"
+                alt="Fantastic Adventure Nepal"
+                width={260}
+                height={78}
+                className="h-14 w-auto object-contain"
+                sizes="260px"
+              />
+            </div>
+            <div>
+              <p className="text-white font-bold text-xl tracking-wide leading-none" style={{ fontFamily: "'Georgia', serif" }}>FANTASTIC ADVENTURE NEPAL</p>
+              <p className="text-white/60 text-[10px] italic tracking-widest">...nature, culture & adventure</p>
             </div>
 
             <p className="text-white/75 text-sm font-light leading-relaxed mb-8 max-w-[280px]">
@@ -241,7 +239,7 @@ export default function FooterCTASection() {
                 />
                 <p className="mt-2 text-white/70 text-[8px] tracking-wide leading-tight max-w-[220px]">
                   {affiliation.caption}
-                  {affiliation.subCaption ? ` • ${affiliation.subCaption}` : ""}
+                  {/* {affiliation.subCaption ? ` • ${affiliation.subCaption}` : ""} */}
                 </p>
               </div>
             ))}

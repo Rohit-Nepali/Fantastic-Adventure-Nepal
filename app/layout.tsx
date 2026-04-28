@@ -15,6 +15,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Fantastic Nepal",
   description: "Experience the beauty of Nepal",
+  icons: {
+    icon: "/LOGO.png",
+  },
 };
 
 export default function RootLayout({

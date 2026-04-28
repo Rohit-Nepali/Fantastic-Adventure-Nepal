@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -217,14 +218,14 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
 
         {/* Brand — centered */}
         <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-          <span
-            className={cx(
-              "text-lg font-semibold tracking-wide transition-colors duration-500",
-              "text-black",
-            )}
-          >
-            Fantastic Adventure Nepal
-          </span>
+          <Image
+            src="/LOGO.png"
+            alt="Fantastic Adventure Nepal"
+            width={240}
+            height={72}
+            priority
+            className="h-10 w-auto object-contain transition-opacity duration-500"
+          />
         </Link>
 
         {/* Right — lang + CTA */}
