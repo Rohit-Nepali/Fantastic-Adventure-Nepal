@@ -55,25 +55,23 @@ export default function FooterCTASection() {
       className: "h-10 w-auto",
     },
     {
-      name: "PATA",
-      caption: "Pacific Asia Travel Association",
-      subCaption: "Nepal Chapter",
-      src: "/affiliation_logos/pata-logo-white-f57e853e.webp",
-      alt: "PATA logo",
-      width: 180,
-      height: 72,
+      name:"KEEP",
+      caption:"Kathmandu Environmental Education Project",
+      src: "/affiliation_logos/KEEP_logo.jpg",
+      alt: "KEEP logo",
+      width: 240,
+      height: 84,
       className: "h-10 w-auto",
     },
     {
-      name: "SKAL",
-      caption: "Skål International",
-      subCaption: "Connecting Tourism Globally | Nepal",
-      src: "/affiliation_logos/skal-international-logo-white-b823b08f.png",
-      alt: "Skal International logo",
+      name:"TAAN",
+      caption:"Trekking Agents Association of Nepal",
+      src: "/affiliation_logos/taan-logo.jpg",
+      alt: "TAAN logo",
       width: 240,
-      height: 72,
-      className: "h-10 w-auto",
-    },
+      height: 84,
+      className: "h-10 w-auto cover",
+    }
   ];
 
   useEffect(() => {
@@ -95,6 +93,23 @@ export default function FooterCTASection() {
           scrollTrigger: { trigger: bigTextRef.current, start: "top 95%" },
         }
       );
+
+      gsap.fromTo(
+        ".footer-link-item",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
+      );
+
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -171,7 +186,7 @@ export default function FooterCTASection() {
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Sample Trips</p>
               <ul className="space-y-4">
                 {sampleTrips.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.label} className="footer-link-item">
                     <Link href={link.href} className="text-white text-base font-light hover:text-white/70 transition-colors">
                       {link.label}
                     </Link>
@@ -185,7 +200,7 @@ export default function FooterCTASection() {
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Travel Style</p>
               <ul className="space-y-4">
                 {travelStyles.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.label} className="footer-link-item">
                     <Link href={link.href} className="text-white text-base font-light hover:text-white/70 transition-colors">
                       {link.label}
                     </Link>
@@ -199,7 +214,7 @@ export default function FooterCTASection() {
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Quick Links</p>
               <ul className="space-y-4">
                 {quickLinks.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.label} className="footer-link-item">
                     <Link href={link.href} className="text-white text-base font-light hover:text-white/70 transition-colors">
                       {link.label}
                     </Link>

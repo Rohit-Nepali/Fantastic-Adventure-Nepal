@@ -174,7 +174,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
       {/* ── TOP BAR ── */}
       <nav
         className={cx(
-          "fixed top-0 left-0 w-full flex items-center justify-between px-6 md:px-10 py-6 z-[90] transition-all duration-500",
+          "fixed top-0 left-0 w-full flex items-center justify-between px-6 md:px-24 py-6 z-[90] transition-all duration-500",
           // Visibility logic
           isVisible ? "translate-y-0" : "-translate-y-full",
           // Background logic

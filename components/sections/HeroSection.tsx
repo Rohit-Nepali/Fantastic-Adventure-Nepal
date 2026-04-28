@@ -179,7 +179,7 @@ export default function HeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover"
-          // poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80"
+        // poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80"
         >
           <source src="loading_video.mp4" type="video/mp4" />
         </video>
@@ -192,7 +192,7 @@ export default function HeroSection() {
       {/* Main Content */}
       <div
         ref={contentRef}
-        className="relative z-10 h-full px-6 md:px-10 pb-36 flex flex-col justify-end"
+        className="relative z-10 h-full px-6 md:px-16 lg:px-24 pb-24 md:pb-32 flex flex-col justify-end"
       >
         {/* Text — bottom left */}
         <div className="max-w-2xl flex-1 flex flex-col justify-end">

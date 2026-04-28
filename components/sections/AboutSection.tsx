@@ -1,224 +1,380 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/provider/Language";
 import { translations } from "@/lib/translations";
 
-const aboutImages = [
-  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
-  "https://images.unsplash.com/photo-1526761122248-c31c93f8b2b9?w=800&q=90",
-  "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=90",
-  "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=90",
-  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=90",
-  "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=90",
-];
-
-const aboutImagesSecondary = [
-  "https://images.unsplash.com/photo-1469521669194-babb45599def?w=400&q=80", // Everest detail
-  "https://images.unsplash.com/photo-1502310297702-f4b8730b5e92?w=400&q=80", // Annapurna detail
-  "https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=400&q=80", // Upper Mustang detail
-  "https://images.unsplash.com/photo-1622015663319-e97e697503ee?w=400&q=80", // Mardi Himal detail
-  "https://images.unsplash.com/photo-1533130061792-64b345e4a833?w=400&q=80", // ABC detail
-  "https://images.unsplash.com/photo-1568454537842-d933259bb258?w=400&q=80", // Chitwan detail
+const destinationData = [
+  {
+    images: [
+      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=85",
+      "https://images.unsplash.com/photo-1469521669194-babb45599def?w=800&q=80",
+      "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80",
+      "https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=800&q=80",
+      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    ],
+    cards: [
+      { title: "Everest Base Camp", description: "We create journeys tailored to your dreams.", tag: "5,364 m" },
+      { title: "Khumbu Icefall", description: "Towering seracs and glacier formations.", tag: "Glacier" },
+      { title: "Namche Bazaar", description: "Gateway to Everest at 3,440m.", tag: "3,440 m" },
+      { title: "Himalayan Ridge", description: "Ridgeline trails above the clouds.", tag: "Trek" },
+      { title: "Tengboche", description: "Ancient monastery at 3,867m.", tag: "Culture" },
+    ],
+  },
 ];
 
 export default function AboutSection() {
   const { language } = useLanguage();
   const copy = translations[language].about;
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imgRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const kenBurnsTweens = useRef<(gsap.core.Tween | null)[]>([]);
+  const dragRef = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
+  const activeCenterIdxRef = useRef(1);
 
-  const cards = copy.cards.map((card, index) => ({
-    ...card,
-    image: aboutImages[index],
-    secondaryImage: aboutImagesSecondary[index],
-  }));
+  const dest = destinationData[0];
+  const CARD_COUNT = dest.cards.length;
 
-  const visibleCards = 2;
-  const maxIndex = cards.length - visibleCards;
-
-  const goTo = (index: number) => setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
-  const next = () => goTo(currentIndex + 1);
-  const prev = () => goTo(currentIndex - 1);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      gsap.fromTo(headingRef.current, { opacity: 0, y: 40 }, {
-        opacity: 1, y: 0, duration: 1, ease: "power4.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-      gsap.fromTo(sliderRef.current, { opacity: 0, y: 50 }, {
-        opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
+  // ── Ken Burns ──────────────────────────────────────────────────────
+  const startKenBurns = useCallback((idx: number) => {
+    const el = imgRefs.current[idx];
+    if (!el) return;
+    kenBurnsTweens.current[idx]?.kill();
+    gsap.set(el, { scale: 1 });
+    kenBurnsTweens.current[idx] = gsap.to(el, {
+      scale: 1.09,
+      duration: 7,
+      ease: "none",
+    });
   }, []);
 
+  const stopKenBurns = useCallback((idx: number) => {
+    kenBurnsTweens.current[idx]?.kill();
+    const el = imgRefs.current[idx];
+    if (el) gsap.to(el, { scale: 1, duration: 0.8, ease: "power2.out" });
+  }, []);
+
+  // ── Continuous coverflow interpolation synced to scroll position ──
+  const updateCoverflow = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+
+    let closestIdx = 0;
+    let closestDist = Infinity;
+
+    cardRefs.current.forEach((card, i) => {
+      if (!card) return;
+
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const dist = Math.abs(cardCenter - trackCenter);
+
+      const normalizedDist = Math.min(dist / (card.offsetWidth * 1.2), 1);
+      const scale = gsap.utils.interpolate(1.06, 1, normalizedDist);
+      const y = gsap.utils.interpolate(-8, 0, normalizedDist);
+      const shadowY = gsap.utils.interpolate(28, 6, normalizedDist);
+      const shadowBlur = gsap.utils.interpolate(64, 20, normalizedDist);
+      const shadowAlpha = gsap.utils.interpolate(0.22, 0.08, normalizedDist);
+      const zIndex = Math.round(gsap.utils.interpolate(30, 10, normalizedDist));
+
+      gsap.set(card, {
+        scale,
+        y,
+        zIndex,
+        boxShadow: `0 ${shadowY}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha})`,
+      });
+
+      if (dist < closestDist) {
+        closestDist = dist;
+        closestIdx = i;
+      }
+    });
+
+    if (activeCenterIdxRef.current !== closestIdx) {
+      stopKenBurns(activeCenterIdxRef.current);
+      startKenBurns(closestIdx);
+      activeCenterIdxRef.current = closestIdx;
+    }
+  }, [startKenBurns, stopKenBurns]);
+
+  // ── Drive visual interpolation every frame for buttery smoothness ─
   useEffect(() => {
-    if (!trackRef.current) return;
-    const container = trackRef.current.parentElement as HTMLElement;
-    if (!container) return;
-    const gap = 24;
-    const cardW = (container.offsetWidth - gap) / 2;
-    const offset = currentIndex * (cardW + gap);
-    gsap.to(trackRef.current, { x: -offset, duration: 0.7, ease: "power3.inOut" });
-  }, [currentIndex]);
+    const tick = () => updateCoverflow();
+    gsap.ticker.add(tick);
+    updateCoverflow();
+
+    return () => {
+      gsap.ticker.remove(tick);
+    };
+  }, [updateCoverflow]);
+
+  // ── Start Ken Burns on mount for initial center card ──────────────
+  useEffect(() => {
+    startKenBurns(activeCenterIdxRef.current);
+    return () => {
+      for (let i = 0; i < CARD_COUNT; i++) kenBurnsTweens.current[i]?.kill();
+    };
+  }, [CARD_COUNT, startKenBurns]);
+
+  // ── Drag to scroll ─────────────────────────────────────────────────
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track) return;
+    dragRef.current = {
+      isDown: true,
+      startX: e.pageX - track.offsetLeft,
+      scrollLeft: track.scrollLeft,
+    };
+    track.style.cursor = "grabbing";
+  }, []);
+
+  const onMouseLeave = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    dragRef.current.isDown = false;
+    track.style.cursor = "grab";
+  }, []);
+
+  const onMouseUp = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    dragRef.current.isDown = false;
+    track.style.cursor = "grab";
+  }, []);
+
+  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track || !dragRef.current.isDown) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - dragRef.current.startX) * 1.4;
+    track.scrollLeft = dragRef.current.scrollLeft - walk;
+  }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative overflow-hidden px-4 md:px-10 py-12 md:py-24"
-    >
-      {/* ── HEADER SECTION ── */}
-      <div ref={headingRef} className="max-w-7xl mx-auto mb-10 md:mb-16">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+    <section className="px-0 py-12 md:py-16">
+      <div className="max-w-6xl mx-auto mb-12 md:mb-16 px-4 sm:px-6 md:px-0">
+        {/* Using a grid to strictly control the space between left and right content */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
 
-          <div className="flex flex-col sm:flex-row gap-6 md:gap-20 lg:gap-32 flex-1">
-            {/* 1. Label */}
-            <div className="flex-shrink-0">
-              <p className="text-[10px] md:text-[11px] tracking-[3px] uppercase text-black/35 font-light font-sans lg:mt-2">
-                {copy.label}
+          {/* Headline Block (Spans 7 columns) */}
+          <div className="md:col-span-7">
+            <div className="flex items-center gap-3 mb-6">
+              {/* Visual anchor line to ground the label */}
+              <span className="w-10 h-[1px] bg-accent/40"></span>
+              <p className="text-[11px] tracking-[0.3em] uppercase text-accent font-bold font-sans">
+                {copy.label || "/About Us"}
               </p>
             </div>
 
-            {/* 2. Header and Description */}
-            <div className="max-w-xl">
-              <h2 className="text-2xl md:text-4xl font-semibold text-black leading-[1.2] tracking-tight mb-4">
-                {copy.titleLead} <span className="text-black/50 md:text-black">{copy.titleAccent}</span>
-              </h2>
-              <p className="text-black/55 text-[14px] md:text-[15px] leading-relaxed font-light font-sans max-w-md">
-                {copy.description}
-              </p>
-            </div>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tighter">
+              {copy.titleLead || "What's So Special"} <br />
+              <span className="text-accent italic font-serif font-light">
+                {copy.titleAccent || "About This?"}
+              </span>
+            </h2>
           </div>
 
-          {/* 3. Right Content: Button */}
-          <div className="flex-shrink-0">
-            <button className="w-full sm:w-auto bg-accent text-accent-foreground text-[11px] tracking-[0.15em] uppercase font-sans font-medium px-8 py-4 rounded-full transition-all duration-300 hover:bg-accent/90 cursor-pointer flex items-center justify-center gap-3">
-              {copy.button}
-              <ArrowRight size={14} strokeWidth={2.5} />
+          {/* Description & Button Block (Spans 5 columns) */}
+          <div className="md:col-span-5 flex flex-col items-start md:items-end gap-8">
+            {/* Right-aligned on desktop to balance the layout, but max-width kept tight for readability */}
+            <p className="text-slate-500 text-base md:text-lg leading-relaxed font-normal md:text-right max-w-sm">
+              {copy.description || "Discover stories hidden in the peaks and valleys. We curate moments that transcend standard sightseeing."}
+            </p>
+
+            <button className="group relative bg-accent text-white text-[11px] tracking-[0.2em] uppercase font-bold pl-10 pr-4 py-4 rounded-full transition-all duration-500 hover:bg-slate-900 cursor-pointer flex items-center gap-8 overflow-hidden shadow-xl shadow-accent/20">
+              <span className="relative z-10">{copy.button || "Learn More"}</span>
+              <span className="relative z-10 bg-white/20 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
+                <svg width="18" height="18" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
+                  <path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                </svg>
+              </span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* ── SLIDER SECTION ── */}
-      <div ref={sliderRef} className="max-w-7xl mx-auto">
-        <div className="overflow-hidden">
-          <div
-            ref={trackRef}
-            className="flex transition-transform duration-500 ease-out py-4"
-            style={{ gap: "24px", willChange: "transform" }}
+      {/* Outer wrapper — clips overflow, anchors edge overlays */}
+      <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
+        {/* Left edge ) shaped curve blur */}
+        <div
+          className="absolute top-4 md:top-6 left-0 z-40 pointer-events-none"
+          style={{
+            position: "absolute",
+            width: "clamp(56px, 20vw, 240px)",
+            height: "88%",
+          }}
+        >
+          <svg
+            style={{ position: "absolute", width: 0, height: 0 }}
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {cards.map((card, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                {/* Top Row: Image and Number */}
-                <div className="flex justify-between items-start mb-8">
-                  {/* Image Container - Scaled down and fixed ratio */}
-                  {/* Image Container - Parallax depth effect */}
-                  <div
-                    className="relative w-1/2 aspect-video rounded-lg overflow-hidden group/img"
-                    onMouseMove={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-                      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
-                      const img = e.currentTarget.querySelector("img");
-                      if (img) {
-                        (img as HTMLElement).style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      const img = e.currentTarget.querySelector("img");
-                      if (img) {
-                        (img as HTMLElement).style.transform = "scale(1) translate(0px, 0px)";
-                        (img as HTMLElement).style.transition = "transform 0.6s ease-out";
-                      }
-                    }}
-                  >
-                    <Image
-                      src={card.image}
-                      alt={card.title}
-                      fill
-                      className="object-cover"
-                      style={{ transition: "transform 0.15s ease-out" }}
-                      sizes="(max-width: 768px) 40vw, 20vw"
-                    />
-                  </div>
+            <defs>
+              {/* 1. Define the blur filter */}
+              <filter id="edge-fade" x="-20%" y="-20%" width="140%" height="140%">
+                {/* Manipulate stdDeviation to control how soft the curve edge is */}
+                <feGaussianBlur stdDeviation="0.02" />
+              </filter>
 
-                  {/* Number badge - Moved to the top right of the card */}
-                  <span className="text-black/80 text-lg font-medium font-sans tracking-tight">
-                    {card.number}
-                  </span>
-                </div>
+              {/* 2. Create a Mask instead of a clipPath */}
+              <mask id="paren-mask" maskContentUnits="objectBoundingBox">
+                <path
+                  d="M0,0 C0.45,0.15 0.5,0.7 0,1 L0,1 L0,0 Z"
+                  fill="white"
+                  filter="url(#edge-fade)"
+                />
+              </mask>
+            </defs>
+          </svg>
 
-                {/* Bottom Row: Text Content */}
-                <div className="space-y-3">
-                  {/* Title - Optional based on image 2, but kept for structure */}
-                  {card.title && (
-                    <h3 className="text-black font-semibold text-lg leading-tight">
-                      {card.title}
-                    </h3>
-                  )}
-                  <p className="text-black/70 text-[15px] leading-relaxed font-normal font-sans">
-                    {card.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              /* 3. Use the SVG mask here instead of clipPath */
+              mask: "url(#paren-mask)",
+              WebkitMask: "url(#paren-mask)",
+
+              background:
+                "linear-gradient(to right, rgba(255, 255, 255, 0.07) 0%, rgba(255,255,255,0.10) 65%, transparent 100%)",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(7px) saturate(1.2)",
+            }}
+          />
         </div>
 
-        {/* ── CONTROLS (Remaining the same for functionality) ── */}
-        <div className="flex items-center justify-between mt-10">
-          <div className="flex gap-2">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className="h-1.5 rounded-full bg-black transition-all duration-500 cursor-pointer border-none p-0"
-                style={{
-                  width: i === currentIndex ? "32px" : "8px",
-                  opacity: i === currentIndex ? 1 : 0.2
-                }}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
+        {/* Right edge ( shaped curve blur */}
+        <div
+          className="absolute right-[-12px] md:right-[-16px] top-4 md:top-6 z-40 pointer-events-none"
+          style={{
+            position: "absolute",
+            width: "clamp(56px, 20vw, 240px)",
+            height: "88%",
+          }}
+        >
+          <svg
+            style={{ position: "absolute", width: 0, height: 0 }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              {/* Blur filter for the right side */}
+              <filter id="right-edge-fade" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="0.02" />
+              </filter>
 
-          <div className="flex gap-3">
-            {[
-              { label: <ChevronLeft size={18} />, fn: prev, disabled: currentIndex === 0 },
-              { label: <ChevronRight size={18} />, fn: next, disabled: currentIndex === maxIndex },
-            ].map(({ label, fn, disabled }, idx) => (
-              <button
-                key={idx}
-                onClick={fn}
-                disabled={disabled}
-                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-300
-            ${disabled
-                    ? "border-black/5 text-black/10 cursor-not-allowed"
-                    : "border-black/20 text-black hover:bg-black hover:text-white cursor-pointer active:scale-95"
-                  }`}
+              {/* Mask for the ( shape */}
+              <mask id="right-paren-mask" maskContentUnits="objectBoundingBox">
+                {/* Mirrored path: Starts top-right, curves inward to the left, closes along the right edge */}
+                <path
+                  d="M1,0 C0.55,0.15 0.5,0.7 1,1 L1,1 L1,0 Z"
+                  fill="white"
+                  filter="url(#right-edge-fade)"
+                />
+              </mask>
+            </defs>
+          </svg>
+
+          {/* Soft fade mask layer */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mask: "url(#right-paren-mask)",
+              WebkitMask: "url(#right-paren-mask)",
+
+              /* Mirrored gradient: 'to left' instead of 'to right' */
+              background:
+                "linear-gradient(to left, rgba(255, 255, 255, 0.14) 0%, rgba(255,255,255,0.10) 65%, transparent 100%)",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(7px) saturate(1.2)",
+            }}
+          />
+        </div>
+
+        {/* Scroll track */}
+        <div
+          ref={trackRef}
+          className="relative z-10 flex gap-3 overflow-x-auto px-4 sm:px-6 md:px-6 py-6 md:py-8 select-none space-x-3"
+          style={{
+            scrollSnapType: "x mandatory",
+            scrollPaddingInline: "1rem",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            cursor: "grab",
+          }}
+          onMouseDown={onMouseDown}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
+          onMouseMove={onMouseMove}
+        >
+          {dest.cards.map((card, i) => (
+            <div
+              key={i}
+              ref={(el) => { cardRefs.current[i] = el; }}
+              className="relative flex-none w-[78vw] sm:w-[62vw] md:w-[42vw] lg:w-[calc(33.333%-0.5rem)] h-[320px] sm:h-[360px] md:h-[420px] rounded-xl overflow-hidden will-change-transform"
+              style={{
+                scrollSnapAlign: "center",
+                flexShrink: 0,
+                zIndex: 10,
+                transform: "scale(1)",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+              }}
+            >
+              {/* Image — Ken Burns target */}
+              <div
+                ref={(el) => { imgRefs.current[i] = el; }}
+                className="absolute inset-0"
+                style={{ willChange: "transform" }}
               >
-                {label}
-              </button>
-            ))}
-          </div>
+                <Image
+                  src={dest.images[i]}
+                  alt={card.title}
+                  fill
+                  className="object-cover"
+                  draggable={false}
+                />
+              </div>
+
+              {/* Bottom gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+              {/* Tag */}
+              <div
+                className="absolute top-3.5 right-3.5 text-white text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full"
+                style={{
+                  background: "rgba(255,255,255,0.13)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  border: "0.5px solid rgba(255,255,255,0.28)",
+                }}
+              >
+                {card.tag}
+              </div>
+
+              {/* Label */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                <h3
+                  className="text-white text-base md:text-lg font-light italic mb-0.5"
+                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                >
+                  {card.title}
+                </h3>
+                <p className="text-white/60 text-[10px] md:text-[11px] tracking-widest uppercase font-light">
+                  {card.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Scroll hint */}
+      <p className="text-center mt-2 text-[11px] tracking-widest uppercase text-gray-400 opacity-60">
+        scroll to explore →
+      </p>
     </section>
   );
 }

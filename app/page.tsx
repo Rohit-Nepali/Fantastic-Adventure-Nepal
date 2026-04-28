@@ -8,10 +8,10 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      {/* <AboutSection />
+      <AboutSection />
       <DestinationsSection />
       <CategoriesSection />
-      <TestimonialSection /> */}
+      <TestimonialSection />
     </>
   );
 }
