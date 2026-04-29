@@ -37,3 +37,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 engl , span, french 
+
+
+todo 
+- alignment 
+- footer 
+- tourisms header 

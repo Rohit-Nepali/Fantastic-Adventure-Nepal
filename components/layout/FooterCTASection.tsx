@@ -32,6 +32,7 @@ export default function FooterCTASection() {
 
   const quickLinks = [
     { label: "Our Story", href: "/about" },
+    { label: "Documents & Preparation", href: "/documents" },
     { label: "DMC", href: "/dmc" },
     { label: "What we Offer", href: "/services" },
     { label: "Contact Us", href: "/contact" },

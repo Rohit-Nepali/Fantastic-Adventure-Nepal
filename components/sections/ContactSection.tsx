@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/provider/Language";
@@ -69,6 +70,11 @@ export default function ContactSection() {
           </h2>
           <p className="text-black/45 text-[14px] leading-relaxed font-light font-sans max-w-sm mb-12">
             {copy.description}
+          </p>
+          <p className="mb-6">
+            <Link href="/documents" className="text-accent font-medium underline">
+              Documents and Preparation for Trekking in Nepal
+            </Link>
           </p>
 
           <div className="space-y-0 border-t border-black/8 rounded-2xl overflow-hidden bg-black/[0.02]">

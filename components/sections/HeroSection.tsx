@@ -168,12 +168,13 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-stone-900"
+      className="relative h-screen w-full overflow-hidden bg-white"
     >
       {/* Video Background */}
       <div ref={videoWrapperRef} className="absolute inset-0">
         <video
           ref={videoRef}
+          preload="auto"
           autoPlay
           loop
           muted
@@ -181,7 +182,7 @@ export default function HeroSection() {
           className="w-full h-full object-cover"
         // poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80"
         >
-          <source src="loading_video.mp4" type="video/mp4" />
+          <source src="Fantastic_Hero_Section.mp4" type="video/mp4" />
         </video>
         <div
           ref={overlayRef}
