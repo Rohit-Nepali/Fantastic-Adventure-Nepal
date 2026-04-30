@@ -43,3 +43,4 @@ todo
 - alignment 
 - footer 
 - tourisms header 
+- nav bar responsiveness

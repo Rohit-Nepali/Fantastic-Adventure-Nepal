@@ -6,6 +6,9 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { useLanguage } from "@/provider/Language";
 import { translations } from "@/lib/translations";
+import Button from "@/components/ui/Button";
+import SectionWrapper from "@/components/layout/SectionWrapper";
+import { ArrowRight } from "lucide-react";
 
 const destinationData = [
   {
@@ -156,10 +159,9 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section className="px-0 py-12 md:py-16">
-      <div className="max-w-6xl mx-auto mb-12 md:mb-16 px-4 sm:px-6 md:px-0">
-        {/* Using a grid to strictly control the space between left and right content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
+    <SectionWrapper size="default" padding="default" bg="white" className="overflow-hidden">
+      <div className="mx-auto mb-12 md:mb-16 max-w-7xl">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10">
 
           {/* Headline Block (Spans 7 columns) */}
           <div className="md:col-span-7">
@@ -186,20 +188,23 @@ export default function AboutSection() {
               {copy.description || "Discover stories hidden in the peaks and valleys. We curate moments that transcend standard sightseeing."}
             </p>
 
-            <Link href="/documents" className="group relative inline-flex bg-accent text-white text-[11px] tracking-[0.2em] uppercase font-bold pl-10 pr-4 py-4 rounded-full transition-all duration-500 hover:bg-slate-900 cursor-pointer items-center gap-8 overflow-hidden shadow-xl shadow-accent/20">
-              <span className="relative z-10">{copy.button || "Learn More"}</span>
-              <span className="relative z-10 bg-white/20 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
-                <svg width="18" height="18" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
-                  <path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-                </svg>
-              </span>
-            </Link>
+            <Button
+              asChild
+              variant="accent"
+              rounded="full"
+              className="group w-fit transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <Link href="/about">
+                <span className="relative z-10 text-white">{copy.button || "Learn More"}</span>
+                <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={18} />
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Outer wrapper — clips overflow, anchors edge overlays */}
-      <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
+      <div className="relative mx-auto w-full max-w-7xl overflow-hidden">
         {/* Left edge ) shaped curve blur */}
         <div
           className="absolute top-4 md:top-6 left-0 z-40 pointer-events-none"
@@ -376,6 +381,6 @@ export default function AboutSection() {
       <p className="text-center mt-2 text-[11px] tracking-widest uppercase text-gray-400 opacity-60">
         scroll to explore →
       </p>
-    </section>
+    </SectionWrapper>
   );
 }

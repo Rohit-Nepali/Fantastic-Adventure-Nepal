@@ -1,24 +1,22 @@
 "use client";
 
-import { useRef, useMemo } from "react";
 import Image from "next/image";
-import { gsap } from "gsap";
 import { Mountain, Leaf, Sun, Droplets, Footprints, Waves, Backpack, Tent, Compass, Wind, MapPin, Zap } from "lucide-react";
 
 // --- 1. Lucide React Icons (Vibe Icons) ---
 const VibeIcons = {
-  mountain: <Mountain className="w-8 h-8 text-slate-700" />,
-  leaf: <Leaf className="w-8 h-8 text-green-600" />,
-  sun: <Sun className="w-8 h-8 text-amber-500" />,
-  water: <Droplets className="w-8 h-8 text-blue-500" />,
-  hike: <Footprints className="w-8 h-8 text-orange-600" />,
-  river: <Waves className="w-8 h-8 text-cyan-500" />,
-  jacket: <Backpack className="w-8 h-8 text-indigo-600" />,
-  tent: <Tent className="w-8 h-8 text-emerald-700" />,
-  compass: <Compass className="w-8 h-8 text-red-500" />,
-  breeze: <Wind className="w-8 h-8 text-sky-400" />,
-  destination: <MapPin className="w-8 h-8 text-pink-600" />,
-  adrenaline: <Zap className="w-8 h-8 text-yellow-500" />,
+  mountain: <Mountain className="w-5 h-5 text-slate-500" />,
+  leaf: <Leaf className="w-5 h-5 text-green-600/70" />,
+  sun: <Sun className="w-5 h-5 text-amber-500/70" />,
+  water: <Droplets className="w-5 h-5 text-blue-500/70" />,
+  hike: <Footprints className="w-5 h-5 text-orange-600/70" />,
+  river: <Waves className="w-5 h-5 text-cyan-500/70" />,
+  jacket: <Backpack className="w-5 h-5 text-indigo-600/70" />,
+  tent: <Tent className="w-5 h-5 text-emerald-700/70" />,
+  compass: <Compass className="w-5 h-5 text-red-500/70" />,
+  breeze: <Wind className="w-5 h-5 text-sky-400/70" />,
+  destination: <MapPin className="w-5 h-5 text-pink-600/70" />,
+  adrenaline: <Zap className="w-5 h-5 text-yellow-500/70" />,
 };
 
 // --- 2. Dummy Data ---
@@ -55,139 +53,41 @@ const testimonials = [
 
 // --- 3. Individual Card Component ---
 const TestimonialCard = ({ data }: { data: any }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const hoverTween = useRef<gsap.core.Timeline | null>(null);
-
-  // Define the explosion coordinates for the 4 icons
-  const burstCoords = useMemo(() => [
-    { x: -60, y: -50, rotate: -25 }, // Top Left
-    { x: 60, y: -40, rotate: 20 },   // Top Right
-    { x: -50, y: 50, rotate: -15 },  // Bottom Left
-    { x: 50, y: 60, rotate: 30 },    // Bottom Right
-  ], []);
-
-  const handleMouseEnter = () => {
-    // Kill any active animations to prevent glitching
-    if (hoverTween.current) hoverTween.current.kill();
-
-    hoverTween.current = gsap.timeline();
-
-    // 1. Lift the card slightly
-    hoverTween.current.to(cardRef.current, {
-      y: -8,
-      boxShadow: "0 20px 40px -10px rgba(0,0,0,0.15)",
-      duration: 0.4,
-      ease: "power2.out",
-    }, 0);
-
-    // 2. Fade in and slide up the review text
-    hoverTween.current.to(textRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.4,
-      ease: "power2.out",
-    }, 0);
-
-    // 3. EXPLODE the vibe icons!
-    iconsRef.current.forEach((icon, i) => {
-      if (!icon) return;
-      hoverTween.current?.to(icon, {
-        scale: 1,
-        opacity: 1,
-        x: burstCoords[i].x,
-        y: burstCoords[i].y,
-        rotation: burstCoords[i].rotate,
-        duration: 0.6,
-        ease: "back.out(1.7)", // This creates the bouncy "burst" effect
-      }, i * 0.05); // slight stagger
-    });
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTween.current) hoverTween.current.kill();
-
-    hoverTween.current = gsap.timeline();
-
-    // Reset card
-    hoverTween.current.to(cardRef.current, {
-      y: 0,
-      boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)",
-      duration: 0.4,
-      ease: "power2.out",
-    }, 0);
-
-    // Hide text
-    hoverTween.current.to(textRef.current, {
-      opacity: 0,
-      y: 15,
-      duration: 0.3,
-      ease: "power2.inOut",
-    }, 0);
-
-    // Suck the icons back into the center
-    hoverTween.current.to(iconsRef.current, {
-      scale: 0,
-      opacity: 0,
-      x: 0,
-      y: 0,
-      rotation: 0,
-      duration: 0.4,
-      ease: "back.in(1.2)",
-    }, 0);
-  };
-
   return (
-    <div
-      ref={cardRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="relative bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 max-w-sm w-full mx-auto cursor-pointer transition-colors hover:bg-white"
-      style={{ boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}
-    >
-      {/* --- Profile & Exploding Icons Container --- */}
-      <div className="relative flex items-center justify-center mb-6">
-
-        {/* The hidden SVGs waiting to burst */}
-        {data.vibes.map((vibeKey: keyof typeof VibeIcons, i: number) => (
-          <div
-            key={i}
-            ref={(el) => { iconsRef.current[i] = el; }}
-            className="absolute z-0"
-            style={{
-              opacity: 0,
-              transform: "scale(0) translate(0px, 0px)" // Initial state
-            }}
-          >
-            {VibeIcons[vibeKey]}
-          </div>
-        ))}
-
-        {/* Profile Picture (sits above the icons so they shoot OUT from behind it) */}
-        <div className="relative z-10 w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
-          <Image src={data.image} alt={data.name} fill className="object-cover" />
-        </div>
+    <div className="group relative bg-white border border-slate-100 rounded-3xl p-8 w-full transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] shadow-sm flex flex-col justify-between h-full">
+      
+      {/* Quote Section */}
+      <div className="mb-8">
+        {/* Decorative Quote Mark */}
+        <span className="text-4xl text-slate-200 font-serif absolute top-6 left-6 leading-none">"</span>
+        <p className="text-slate-600 text-base leading-relaxed relative z-10 pt-4 italic">
+          {data.review}
+        </p>
       </div>
 
-      {/* --- User Info --- */}
-      <div className="text-center relative z-10">
-        <h4 className="text-xl font-bold text-slate-800 mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          {data.name}
-        </h4>
-        <p className="text-[11px] tracking-widest uppercase text-accent font-medium mb-4">
-          {data.role}
-        </p>
+      {/* Author & Vibes Section */}
+      <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-slate-50 shadow-sm shrink-0">
+            <Image src={data.image} alt={data.name} fill className="object-cover" />
+          </div>
+          <div>
+            <h4 className="text-lg font-bold text-slate-800 leading-none mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              {data.name}
+            </h4>
+            <p className="text-[10px] tracking-widest uppercase text-teal-600 font-semibold">
+              {data.role}
+            </p>
+          </div>
+        </div>
 
-        {/* --- The Hidden Review --- */}
-        <div className="overflow-hidden relative h-[100px] flex items-start justify-center">
-          <p
-            ref={textRef}
-            className="text-slate-600 text-sm leading-relaxed absolute top-0"
-            style={{ opacity: 0, transform: "translateY(15px)" }} // Initial State
-          >
-            "{data.review}"
-          </p>
+        {/* Static Vibe Icons */}
+        <div className="flex gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity">
+          {data.vibes.slice(0, 3).map((vibeKey: keyof typeof VibeIcons, i: number) => (
+            <div key={i} title={vibeKey} className="bg-slate-50 p-1.5 rounded-full">
+              {VibeIcons[vibeKey]}
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -199,17 +99,17 @@ export default function TestimonialSection() {
   return (
     <section className="py-24 bg-[#f9f8f6] overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
-
+        
         <div className="text-center mb-16">
-          <p className="text-[12px] tracking-[0.25em] uppercase text-accent font-medium mb-4 font-sans">
+          <p className="text-[12px] tracking-[0.25em] uppercase text-teal-600 font-bold mb-4 font-sans">
             / Voices of Joy
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tight">
-            Hear From Our <span className="text-accent italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Travelers</span>
+            Hear From Our <span className="text-teal-600 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Travelers</span>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {testimonials.map((testimonial, i) => (
             <TestimonialCard key={i} data={testimonial} />
           ))}

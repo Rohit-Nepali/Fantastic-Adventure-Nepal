@@ -3,121 +3,156 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLanguage } from "@/provider/Language";
+import {
+	Compass,
+	HandHeart,
+	Headphones,
+	MapPinned,
+	ShieldCheck,
+	Wallet,
+} from "lucide-react";
+import SectionWrapper from "@/components/layout/SectionWrapper";
 import { translations } from "@/lib/translations";
+import { useLanguage } from "@/provider/Language";
+
+const featureIcons = [
+	MapPinned,
+	ShieldCheck,
+	Compass,
+	HandHeart,
+	Wallet,
+	Headphones,
+];
 
 export default function WhyChooseUsSection() {
-  const { language } = useLanguage();
-  const copy = translations[language].whyChooseUs;
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+	const { language } = useLanguage();
+	const copy = translations[language].whyChooseUs;
+	const sectionRef = useRef<HTMLElement>(null);
+	const headerRef = useRef<HTMLDivElement>(null);
+	const cardsRef = useRef<HTMLDivElement>(null);
 
-  const features = copy.features;
+	useEffect(() => {
+		gsap.registerPlugin(ScrollTrigger);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+		const ctx = gsap.context(() => {
+			gsap.fromTo(
+				headerRef.current,
+				{ opacity: 0, y: 24 },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.75,
+					ease: "power2.out",
+					scrollTrigger: {
+						trigger: headerRef.current,
+						start: "top 88%",
+					},
+				}
+			);
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headerRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1, y: 0, duration: 1, ease: "power4.out",
-          scrollTrigger: { trigger: headerRef.current, start: "top 85%" },
-        }
-      );
+			gsap.fromTo(
+				".why-choose-card",
+				{ opacity: 0, y: 20 },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.55,
+					stagger: 0.08,
+					ease: "power2.out",
+					scrollTrigger: {
+						trigger: cardsRef.current,
+						start: "top 88%",
+					},
+				}
+			);
 
-      gsap.fromTo(
-        ".why-line",
-        { scaleX: 0 },
-        {
-          scaleX: 1, duration: 1.2, ease: "power4.out", transformOrigin: "left",
-          scrollTrigger: { trigger: headerRef.current, start: "top 85%" },
-        }
-      );
+			gsap.fromTo(
+				".why-choose-line",
+				{ scaleX: 0, transformOrigin: "left center" },
+				{
+					scaleX: 1,
+					duration: 0.7,
+					ease: "power2.out",
+					scrollTrigger: {
+						trigger: headerRef.current,
+						start: "top 86%",
+					},
+				}
+			);
+		}, sectionRef);
 
-      const cards = cardsRef.current?.children;
-      if (cards) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out",
-            scrollTrigger: { trigger: cardsRef.current, start: "top 80%" },
-          }
-        );
-      }
-    }, sectionRef);
+		return () => ctx.revert();
+	}, []);
 
-    return () => ctx.revert();
-  }, []);
+	return (
+		<SectionWrapper
+			id="why-choose-us"
+			ref={sectionRef}
+			size="default"
+			padding="default"
+			bg="light"
+			className="border-y border-black/5"
+		>
+			<div className="mx-auto max-w-7xl">
+				<div
+					ref={headerRef}
+					className="mb-12 grid grid-cols-1 gap-8 border-b border-black/10 pb-10 md:mb-14 md:grid-cols-12"
+				>
+					<div className="md:col-span-7">
+						<p className="mb-4 text-[11px] font-light uppercase tracking-[0.28em] text-black/40">
+							{copy.label || "Why Choose Us"}
+						</p>
 
-  return (
-    <section
-      id="why-us"
-      ref={sectionRef}
-      className="relative bg-white overflow-hidden px-16 py-20"
-    >
-      {/* Top hairline */}
-      <div className="absolute top-0 left-16 right-16 h-px bg-black/10" />
+						<h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-black md:text-5xl lg:text-6xl">
+							{copy.titleLead || "Your Adventure"}
+							<span className="block font-light italic text-black/50">
+								{copy.titleAccent || "Starts Here"}
+							</span>
+						</h2>
+					</div>
 
-      <div className="max-w-7xl mx-auto">
-        {/* HEADER  */}
-        <div ref={headerRef} className="flex items-end justify-between mb-16">
-          <div className="max-w-xl">
-            <p className="text-[11px] tracking-[4px] uppercase text-black/35 font-light mb-5 font-sans">
-              {copy.label}
-            </p>
-            <div className="why-line w-12 h-px bg-black mb-6 origin-left block" />
-            <h2 className="text-5xl lg:text-6xl font-light text-black leading-[1.1] tracking-tight">
-              {copy.titleLead} <em className="not-italic font-light text-black/40">{copy.titleAccent}</em>
-            </h2>
-          </div>
-          <p className="hidden lg:block max-w-xs text-black/45 text-[15px] leading-relaxed font-light font-sans pb-1">
-            {copy.description}
-          </p>
-        </div>
+					<div className="md:col-span-5 md:pl-8 md:pt-1">
+						<p className="max-w-md text-[14px] leading-relaxed text-black/55 md:text-[15px]">
+							{copy.description ||
+								"We go above and beyond to ensure your Nepal experience exceeds all expectations."}
+						</p>
+						<div className="why-choose-line mt-5 h-px w-24 bg-accent/50" />
+					</div>
+				</div>
 
-        {/* ── GRID ── */}
-        <div
-          ref={cardsRef}
-          className="grid md:grid-cols-2 lg:grid-cols-3"
-        >
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="group relative border-t border-l border-black/10 p-8 transition-all duration-500 hover:bg-black/10 cursor-default
-                [&:nth-child(3n+1)]:border-l-0
-                last:border-b-0"
-            >
-              {/* Bottom border for last row */}
-              <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10" />
+				<div
+					ref={cardsRef}
+					className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
+				>
+					{(copy.features || []).map((feature, index) => {
+						const Icon = featureIcons[index % featureIcons.length];
 
-              {/* Number */}
-              <p className="text-[11px] tracking-[3px] text-black/25 font-sans font-light mb-6 transition-colors duration-500 group-hover:text-white/30">
-                {feature.number}
-              </p>
+						return (
+							<article
+								key={`${feature.number}-${feature.title}`}
+								className="why-choose-card group rounded-2xl border border-black/10 bg-white/80 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-black/20 hover:shadow-[0_14px_26px_-22px_rgba(2,6,23,0.6)]"
+							>
+								<div className="mb-4 flex items-center justify-between">
+									<span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 text-black/65 transition-colors duration-300 group-hover:text-accent">
+										<Icon size={18} strokeWidth={1.8} />
+									</span>
+									<span className="text-[10px] font-light uppercase tracking-[0.22em] text-black/35">
+										{feature.number}
+									</span>
+								</div>
 
-              {/* Title */}
-              <h3 className="text-xl font-light text-black leading-snug mb-3 transition-colors duration-500 group-hover:text-white">
-                {feature.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-black/45 text-[13.5px] leading-relaxed font-light font-sans transition-colors duration-500 group-hover:text-white/60">
-                {feature.description}
-              </p>
-
-              {/* Hover: top edge reveal */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-black scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom hairline */}
-      <div className="absolute bottom-0 left-16 right-16 h-px bg-black/10" />
-    </section>
-  );
+								<h3 className="text-xl font-semibold leading-tight tracking-tight text-black">
+									{feature.title}
+								</h3>
+								<p className="mt-2 text-sm leading-relaxed text-black/55">
+									{feature.description}
+								</p>
+								<div className="mt-4 h-px w-10 bg-black/20 transition-all duration-300 group-hover:w-16 group-hover:bg-accent/60" />
+							</article>
+						);
+					})}
+				</div>
+			</div>
+		</SectionWrapper>
+	);
 }

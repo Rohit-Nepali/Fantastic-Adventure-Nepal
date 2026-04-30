@@ -8,6 +8,7 @@ import { gsap } from "gsap";
 import { useLanguage } from "@/provider/Language";
 import { languageOptions, translations } from "@/lib/translations";
 import { X } from "lucide-react";
+import Button from "../ui/Button";
 
 type NavbarProps = {
   variant?: "overlay" | "solid";
@@ -224,22 +225,24 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             width={240}
             height={72}
             priority
-            className="h-10 w-auto object-contain transition-opacity duration-500"
+            className="h-12 w-auto object-contain transition-opacity duration-500"
           />
         </Link>
 
         {/* Right — lang + CTA */}
         <div className="flex items-center gap-4">
           <div className="relative" ref={langRef}>
-            <button
+            <Button
               onClick={() => setLangOpen((p) => !p)}
+              variant={"glass"}
+              rounded={"full"}
               className={cx(
                 "text-[12px] tracking-wide font-sans transition-colors duration-500",
-                "text-black",
+                "text-white",
               )}
             >
               {currentLanguage.label} &#9662;
-            </button>
+            </Button>
             {langOpen && (
               <div className="absolute right-0 mt-2 w-32 rounded-lg bg-white/10 backdrop-blur-md text-white shadow-xl z-50 border border-white/20 overflow-hidden">
                 {languageOptions.map((lang) => (
@@ -262,7 +265,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             href="/contact"
             className={cx(
               "hidden md:block text-[11px] font-medium tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all duration-300",
-              "bg-accent text-accent-foreground border border-transparent hover:bg-accent/90",
+              "bg-accent text-white border border-transparent hover:bg-accent/80",
             )}
           >
             {copy.navCta}

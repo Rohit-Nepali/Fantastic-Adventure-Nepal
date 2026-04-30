@@ -8,21 +8,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/provider/Language";
 import { translations } from "@/lib/translations";
 import { travelStyles } from "@/lib/travelStyles";
-import { Facebook, Youtube, Linkedin, Phone, Mail } from "lucide-react";
-
-// X (Twitter) — kept as custom SVG since lucide uses the old bird icon
-const XIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-  </svg>
-);
+import { Facebook, Youtube, Linkedin, Phone, Mail, Twitter } from "lucide-react";
 
 export default function FooterCTASection() {
   const { language } = useLanguage();
   const copy = translations[language].footer;
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const bigTextRef = useRef<HTMLDivElement>(null);
 
   const sampleTrips = [
     { label: "Everest Base Camp", href: "/destinations" },
@@ -41,7 +33,7 @@ export default function FooterCTASection() {
   const socialIcons = [
     { icon: <Facebook size={16} />, href: "#" },
     { icon: <Youtube size={16} />, href: "#" },
-    { icon: <XIcon />, href: "#" },
+    { icon: <Twitter size={16} />, href: "#" },
     { icon: <Linkedin size={16} />, href: "#" },
   ];
 
@@ -56,8 +48,8 @@ export default function FooterCTASection() {
       className: "h-10 w-auto",
     },
     {
-      name:"KEEP",
-      caption:"Kathmandu Environmental Education Project",
+      name: "KEEP",
+      caption: "Kathmandu Environmental Education Project",
       src: "/affiliation_logos/KEEP_logo.jpg",
       alt: "KEEP logo",
       width: 240,
@@ -65,8 +57,8 @@ export default function FooterCTASection() {
       className: "h-10 w-auto",
     },
     {
-      name:"TAAN",
-      caption:"Trekking Agents Association of Nepal",
+      name: "TAAN",
+      caption: "Trekking Agents Association of Nepal",
       src: "/affiliation_logos/taan-logo.jpg",
       alt: "TAAN logo",
       width: 240,
@@ -84,14 +76,6 @@ export default function FooterCTASection() {
         {
           opacity: 1, y: 0, duration: 1, ease: "power4.out",
           scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
-        }
-      );
-      gsap.fromTo(
-        bigTextRef.current,
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1, y: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: bigTextRef.current, start: "top 95%" },
         }
       );
 
@@ -124,10 +108,10 @@ export default function FooterCTASection() {
     >
       <div ref={contentRef}>
         {/* Main footer content */}
-        <div className="flex justify-between px-8 md:px-14 pt-14 pb-10 mx-auto">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-10 lg:flex-row lg:justify-between lg:gap-32 xl:px-14">
 
           {/* Brand column */}
-          <div>
+          <div className="w-full lg:max-w-md">
             <div className="mb-5">
               <Image
                 src="/Logo-Website.png"
@@ -139,18 +123,32 @@ export default function FooterCTASection() {
               />
             </div>
             <div>
-              <p className="text-white font-bold text-xl tracking-wide leading-none" style={{ fontFamily: "'Georgia', serif" }}>FANTASTIC ADVENTURE NEPAL</p>
-              <p className="text-white/60 text-[10px] italic tracking-widest">...nature, culture & adventure</p>
+              {/* Effect applied here */}
+              <p 
+                className=" text-lg sm:text-4xl tracking-wide leading-none uppercase" 
+                style={{ 
+                  fontFamily: "'Georgia', serif",
+                  color: "transparent",
+                  backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80')`,
+                  backgroundSize: "cover",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  fontWeight: 900,
+                }}
+              >
+                FANTASTIC ADVENTURE NEPAL
+              </p>
+              <p className="text-white/60 text-[10px] italic tracking-[0.24em] mt-1">...nature, culture & adventure</p>
             </div>
 
-            <p className="text-white/75 text-sm font-light leading-relaxed mb-8 max-w-[280px]">
+              <p className="text-white/75 text-sm font-light leading-relaxed mb-8 mt-4 max-w-none sm:max-w-[28rem]">
               Fantastic Adventure Nepal is your dependable travel partner for journeys across Nepal. We blend deep local knowledge, seamless logistics, and global standards of service to craft meaningful and memorable holiday experiences that check off your requirement list.
             </p>
 
             {/* Social links */}
             <div className="mb-8">
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-4">Social Links</p>
-              <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                 {socialIcons.map(({ icon, href }, i) => (
                   <a
                     key={i}
@@ -179,7 +177,7 @@ export default function FooterCTASection() {
             </div>
           </div>
 
-          <div className="flex justify-between lg:gap-20 gap-10">
+          <div className="grid w-full grid-cols-1 gap-12 sm:grid-cols-2 lg:w-auto lg:grid-cols-3 lg:gap-14">
             {/* Sample Trips */}
             <div>
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Sample Trips</p>
@@ -240,7 +238,6 @@ export default function FooterCTASection() {
                 />
                 <p className="mt-2 text-white/70 text-[8px] tracking-wide leading-tight max-w-[220px]">
                   {affiliation.caption}
-                  {/* {affiliation.subCaption ? ` • ${affiliation.subCaption}` : ""} */}
                 </p>
               </div>
             ))}
@@ -248,38 +245,8 @@ export default function FooterCTASection() {
         </div>
       </div>
 
-      {/* Giant brand name at bottom */}
-      <div ref={bigTextRef} className="relative overflow-hidden" style={{ height: "clamp(100px, 18vw, 220px)" }}>
-        {/* <div
-          className="absolute inset-0 flex items-end justify-center pb-0"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80')`,
-            backgroundSize: "cover",
-            backgroundPosition: "100% 40%",
-            WebkitMaskImage: "url(#brand-mask)",
-          }}
-        /> */}
-        <p
-          className="relative z-10 text-center font-black uppercase leading-none select-none"
-          style={{
-            fontSize: "clamp(70px, 16vw, 200px)",
-            letterSpacing: "-0.01em",
-            fontFamily: "'Arial Black', 'Impact', sans-serif",
-            color: "transparent",
-            backgroundImage: `url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80')`,
-            backgroundSize: "cover",
-            backgroundPosition: "100% 59%",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            lineHeight: 1,
-          }}
-        >
-          Fantastic Adventure Nepal
-        </p>
-      </div>
-
       {/* Copyright */}
-      <div className="px-8 md:px-14 py-4 flex items-center justify-between border-t border-white/10">
+      <div className="flex flex-col gap-2 border-t border-white/10 px-4 py-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left sm:px-6 md:px-10 xl:px-14">
         <p className="text-white/30 text-[11px] font-light">{copy.copyright}</p>
       </div>
     </footer>
