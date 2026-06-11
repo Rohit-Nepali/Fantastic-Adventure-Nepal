@@ -1,8 +1,7 @@
+
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import Providers from "../provider/providers";
-import Navbar from "@/components/layout/Navbar";
-import FooterCTASection from "@/components/layout/FooterCTASection";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -28,11 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={roboto.variable}>
       <body>
-        <Providers>
-          <Navbar />
-          <main className="pt-0">{children}</main>
-          <FooterCTASection />
-        </Providers>
+        {children}
       </body>
     </html>
   );

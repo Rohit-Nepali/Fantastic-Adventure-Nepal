@@ -5,13 +5,41 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { travelStyles } from "@/lib/travelStyles";
+import SectionWrapper from "../layout/SectionWrapper";
 
-export default function CategoriesSection() {
+export interface CategoryItem {
+  label: string;
+  teaser: string;
+  image: string;
+  href: string;
+}
+
+export interface CategoriesSectionProps {
+  data: {
+    sectionTagline: string;
+    heading: string;
+    description: string;
+    categories: CategoryItem[];
+  };
+}
+
+// Helper to split array into chunks safely
+const chunkArray = (arr: CategoryItem[], size: number) => {
+  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size)
+  );
+};
+
+export default function TravelCategoriesSection({ data }: CategoriesSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const travelRows = [travelStyles.slice(0, 3), travelStyles.slice(3, 6)];
+
+  console.log("Categories : ", data);
+  // Safely fallback if data hasn't loaded yet
+  const categories = data?.categories || [];
+  // Splitting categories into balanced rows (max 4 per row for 7 items gives a clean 4 + 3 layout)
+  const travelRows = chunkArray(categories, 4);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -56,27 +84,31 @@ export default function CategoriesSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [categories]); // Re-run if categories change
+
+  if (!data) return null;
 
   return (
     <section
       ref={sectionRef}
       id="categories"
-      className="relative overflow-hidden px-6 md:px-10 py-20 md:py-24 bg-[#f4f1ea]"
+      className="relative overflow-hidden py-20 md:py-24 bg-[#f4f1ea]"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        {/* Animated Header */}
         <div ref={headerRef} className="mb-10 md:mb-14 max-w-3xl">
           <p className="text-[11px] tracking-[0.25em] uppercase text-black/35 mb-3 font-sans">
-            Travel Categories
+            {data.sectionTagline}
           </p>
           <h2 className="text-4xl md:text-6xl text-black leading-[1.05] tracking-tight mb-4">
-            Choose Your Travel Style
+            {data.heading}
           </h2>
           <p className="text-black/60 text-[15px] md:text-[17px] leading-relaxed">
-            Explore journeys shaped by how you love to travel, from culture-rich city walks to wild river adventure.
+            {data.description}
           </p>
         </div>
 
+        {/* Animated Grid Wrapper */}
         <div ref={cardsRef} className="space-y-6 lg:space-y-4">
           {travelRows.map((row, rowIndex) => (
             <div
@@ -95,15 +127,15 @@ export default function CategoriesSection() {
                     alt={style.label}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
 
+                  {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
+                  {/* Card Info Content */}
                   <div className="absolute inset-x-0 bottom-0 p-6">
-                    <p className="text-white/70 text-[10px] uppercase tracking-[0.24em] mb-2 font-sans">
-                      Travel Style
-                    </p>
+                    {/* Removed the 'Travel Style' header text per request */}
                     <h3 className="text-white text-3xl tracking-tight mb-2">
                       {style.label}
                     </h3>

@@ -1,19 +1,16 @@
-"use client";
+import AboutSection, { AboutSectionProps } from "@/components/sections/AboutSection";
+import { sanityFetch } from "@/lib/sanity/client";
+import { aboutUsQuery } from "@/lib/sanity/queries";
 
-import HeroSection from "@/components/sections/HeroSection";
-import AboutSection from "@/components/sections/AboutSection";
-import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
-import TestimonialSection from "@/components/sections/TestimonialSection";
-import ContactSection from "@/components/sections/ContactSection";
+export default async function AboutPage() {
+  let aboutUs;
+  console.log('AboutPage rendering'); 
+  try {
+    aboutUs = await sanityFetch<AboutSectionProps['aboutUs']>(aboutUsQuery);
+    console.log('Fetched aboutUs data:', aboutUs);
+  } catch (err) {
+    console.error('sanityFetch failed:', err);
+  }
 
-export default function AboutPage() {
-  return (
-    <>
-      {/* <HeroSection /> */}
-      <AboutSection />
-      <WhyChooseUsSection />
-      <TestimonialSection />
-      <ContactSection />
-    </>
-  );
+  return <AboutSection aboutUs={aboutUs} />;
 }
