@@ -4,6 +4,7 @@ import { sanityFetch } from "@/lib/sanity/client";
 import { aboutUsQuery, travelCategoriesQuery, whyChooseUsQuery } from "@/lib/sanity/queries";
 import TravelCategoriesSection, { CategoriesSectionProps } from "@/components/sections/TravelCategoriesSection";
 import WhyChooseUsSection, { WhyChooseUsProps } from "@/components/sections/WhyChooseUsSection";
+import DmcB2bSection from "@/components/sections/DmcB2bSection";
 
 export default async function Home() {
 
@@ -14,9 +15,10 @@ export default async function Home() {
   return (
     <>
       <HeroSection />
-      <AboutSection aboutUs={aboutUs} />
       <TravelCategoriesSection data={travelCategoriesData} />
       <WhyChooseUsSection data={whyChooseUsData} />
+      <AboutSection aboutUs={aboutUs} />
+      <DmcB2bSection />
       {/* <TestimonialSection /> */}
     </>
   );

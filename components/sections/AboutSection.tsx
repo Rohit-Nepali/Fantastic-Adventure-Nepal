@@ -63,15 +63,16 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
 
           {/* CTA*/}
           <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center">
+            <Button variant="accent"
+              rounded="full"
+            >
+              <Link href="/planYourTrip">Plan Your Trip</Link>
+            </Button>
             <Button
-              variant="accent"
+              variant="outline"
+              rounded="full"
             >
               <Link href="/categories">Explore Categories</Link>
-            </Button>
-
-            <Button variant="outline"
-            >
-              <Link href="/categories">Plan Your Trip</Link>
             </Button>
           </div>
         </div>

@@ -10,10 +10,10 @@ export const translations = {
   en: {
     navItems: [
       { label: "Home", href: "/" },
-      { label: "Destinations", href: "/destinations" },
-      { label: "About Us", href: "/about" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "Tours & Packages", href: "/packages" },
       { label: "Testimonials", href: "/testimonials" },
+      { label: "Plan Your Trip", href: "/planYourTrip" },
+      { label: "Contact Us", href: "/contact" },
     ],
     navCta: "Plan Your Trip",
     hero: {
@@ -22,149 +22,46 @@ export const translations = {
         "Hidden gems, breathtaking views, unforgettable adventures — where will you go next?",
       button: "Plan Your Trip",
     },
-    about: {
-      label: "/About Us",
-      titleLead: "What's So Special",
-      titleAccent: "About This?",
-      description:
-        "Save more on your trips with exclusive discounts, seasonal promotions, and unbeatable deals for unforgettable adventures.",
-      button: "Learn More",
-      cards: [
-        {
-          number: "01",
-          title: "Everest Base Camp",
-          description:
-            "We don't just plan vacations; we create journeys tailored to your dreams, ensuring every moment is unforgettable.",
-        },
-        {
-          number: "02",
-          title: "Annapurna Circuit",
-          description:
-            "With our trusted local partners, you'll discover hidden spots and cultural experiences that most travelers never get to see.",
-        },
-        {
-          number: "03",
-          title: "Upper Mustang",
-          description:
-            "Step into the 'Forbidden Kingdom' to witness ancient monasteries and a landscape that feels like another planet.",
-        },
-        {
-          number: "04",
-          title: "Mardi Himal Trek",
-          description:
-            "A short, pristine trek providing spectacular face-to-face views of the sacred Machhapuchhre peak.",
-        },
-        {
-          number: "05",
-          title: "Annapurna Base Camp",
-          description:
-            "The ABC trek takes you deep into the Annapurna Sanctuary, surrounded by a 360-degree wall of giant peaks.",
-        },
-        {
-          number: "06",
-          title: "Chitwan Jungle Safari",
-          description:
-            "Trade the mountains for the jungle. Spot one-horned rhinos, tigers, and exotic birds on a safari adventure.",
-        },
-      ],
-    },
-    destinations: {
-      label: "/Our Destination",
-      title: "Your Next Favorite Place Awaits",
-      description:
-        "Get the best value for your trips with exclusive discounts, seasonal promotions, and deals to save while exploring the world!",
-      button: "See All",
-      items: [
-        { id: 1, name: "Mount Everest", count: "12 Destinations" },
-        { id: 2, name: "Machapuchare", count: "15 Destinations" },
-        { id: 3, name: "Boudha", count: "14 Destinations" },
-        { id: 4, name: "Boudha", count: "18 Destinations" },
-        { id: 5, name: "Pashupatinath", count: "9 Destinations" },
-        { id: 6, name: "Chitwan", count: "11 Destinations" },
-      ],
-    },
-    topTours: {
-      label: "/Top Tours",
-      title: "Top Tours to Spark Your Wanderlust",
-      description:
-        "Explore our curated selection of must-visit destinations with complete detailed itineraries.",
-      button: "Book Now",
-      tours: [
-        {
-          id: 1,
-          name: "Everest Base Camp",
-          duration: "12 Days",
-          price: "$1,200",
-          desc: "Trek to the roof of the world.",
-        },
-        {
-          id: 2,
-          name: "Annapurna Circuit",
-          duration: "14 Days",
-          price: "$1,450",
-          desc: "Experience diverse cultures and landscapes.",
-        },
-        {
-          id: 3,
-          name: "Langtang Valley",
-          duration: "10 Days",
-          price: "$950",
-          desc: "The valley of glaciers awaits you.",
-        },
-      ],
-    },
-    whyChooseUs: {
-      label: "Why Choose Us",
-      titleLead: "Your Adventure",
-      titleAccent: "Starts Here",
-      description:
-        "We go above and beyond to ensure your Nepal experience exceeds all expectations.",
-      features: [
-        {
-          number: "01",
-          title: "Expert Local Guides",
-          description:
-            "Our experienced guides are born and raised in Nepal, offering insider knowledge and authentic cultural experiences.",
-        },
-        {
-          number: "02",
-          title: "Safety First",
-          description:
-            "Your safety is our top priority. We maintain the highest safety standards and always prioritize secure travel arrangements.",
-        },
-        {
-          number: "03",
-          title: "Flexible Itineraries",
-          description:
-            "We customize every trip to match your preferences, ensuring a perfect balance of adventure and relaxation.",
-        },
-        {
-          number: "04",
-          title: "Unique Experiences",
-          description:
-            "From hidden temples to remote mountain villages, we take you beyond the typical tourist paths.",
-        },
-        {
-          number: "05",
-          title: "Best Value",
-          description:
-            "Competitive pricing with no hidden costs. We offer transparent pricing and exceptional quality for your money.",
-        },
-        {
-          number: "06",
-          title: "24/7 Support",
-          description:
-            "Round-the-clock support throughout your journey. We're always just a call away whenever you need assistance.",
-        },
-      ],
-    },
-    testimonials: {
-      label: "/Testimonials",
-      quote:
-        "I've been on countless trips, but this one was different. Everything was perfectly organized, and the local insights made it truly unique.",
-      highlight: "Can't wait for my next adventure!",
-      name: "James Carter",
-      title: "Travel Enthusiast",
+    planYourTrip: {
+      title: "Plan Your Trip",
+      description: "Tell us about your dream adventure in Nepal, and our travel experts will create a personalized itinerary tailored to your interests, budget, and travel dates.",
+      submitBtn: "Submit Plan Details",
+      sections: {
+        tripInfo: "Trip Information",
+        personalInfo: "Personal Information",
+        additionalDetails: "Additional Details",
+      },
+      fields: {
+        tripName: "Trip Name / Destination",
+        tripNamePlaceholder: "e.g., Everest Base Camp Trek, Annapurna Base Camp Trek, Nepal Cultural Tour",
+        budgetRange: "Estimated Budget Range",
+        budgetPlaceholder: "Select your estimated budget range",
+        numberOfTravelers: "Number of Travelers",
+        travelersPlaceholder: "Select group size",
+        travelDate: "Preferred Travel Date",
+        duration: "Trip Duration (Days)",
+        fullName: "Full Name",
+        fullNamePlaceholder: "John Doe",
+        whatsAppNumber: "WhatsApp Number",
+        whatsAppPlaceholder: "+1 234 567 890",
+        emailAddress: "Email Address",
+        emailPlaceholder: "john@example.com",
+        streetAddress: "Street Address",
+        streetPlaceholder: "123 Adventure St",
+        country: "Country of Residence",
+        countryPlaceholder: "e.g., United States",
+        referral: "How Did You Hear About Us?",
+        referralPlaceholder: "Select an option",
+        specialRequirements: "Special Requirements",
+        specialRequirementsPlaceholder: "Please mention dietary preferences, accommodation preferences, fitness level, travel interests, or any special requests.",
+        comments: "Comments or Message",
+        commentsPlaceholder: "Any additional notes or questions for our team...",
+      },
+      options: {
+        budgets: ["Under $500", "$500 – $1,000", "$1,000 – $2,000", "$2,000 – $5,000", "Above $5,000"],
+        travelers: ["Solo Traveler", "2 People", "3–5 People", "6–10 People", "10+ People"],
+        referrals: ["Google Search", "Facebook", "Instagram", "YouTube", "Friend / Family Recommendation", "Travel Agency", "Previous Customer", "Other"],
+      },
     },
     contact: {
       label: "/Contact Us",
@@ -216,15 +113,12 @@ export const translations = {
       },
       groups: {
         explore: [
-          { label: "Our Plans", href: "/destinations" },
-          { label: "Top Tours", href: "/destinations" },
-          { label: "Travel Guide", href: "/about" },
-          { label: "Sustainability Commitment", href: "/about" },
+          { label: "Our Plans", href: "/packages" },
+          { label: "Top Tours", href: "/packages" },
+          { label: "Travel Guide", href: "/planYourTrip" },
         ],
         aboutUs: [
-          { label: "Our Story", href: "/about" },
           { label: "Testimonials", href: "/testimonials" },
-          { label: "Sustainability Commitment", href: "/about" },
           { label: "Careers", href: "/contact" },
         ],
         support: [
@@ -240,10 +134,10 @@ export const translations = {
   es: {
     navItems: [
       { label: "Inicio", href: "/" },
-      { label: "Destinos", href: "/destinations" },
-      { label: "Nosotros", href: "/about" },
-      { label: "Contacto", href: "/contact" },
+      { label: "Tours y Paquetes", href: "/packages" },
       { label: "Testimonios", href: "/testimonials" },
+      { label: "Planifica Tu Viaje", href: "/planYourTrip" },
+      { label: "Contacto", href: "/contact" },
     ],
     navCta: "Planifica Tu Viaje",
     hero: {
@@ -252,93 +146,46 @@ export const translations = {
         "Joyas ocultas, vistas impresionantes y aventuras inolvidables: ¿a dónde irás después?",
       button: "Reservar ahora",
     },
-    about: {
-      label: "/Nosotros",
-      titleLead: "¿Qué tiene de especial",
-      titleAccent: "esto?",
-      description:
-        "Ahorra más en tus viajes con descuentos exclusivos, promociones de temporada y ofertas increíbles para aventuras inolvidables.",
-      button: "Saber más",
-      cards: [
-        {
-          number: "01",
-          title: "Campo Base del Everest",
-          description:
-            "No solo planificamos vacaciones; creamos viajes adaptados a tus sueños para que cada momento sea inolvidable.",
-        },
-        {
-          number: "02",
-          title: "Circuito Annapurna",
-          description:
-            "Con nuestros socios locales de confianza descubrirás lugares ocultos y experiencias culturales que la mayoría de los viajeros nunca ve.",
-        },
-        {
-          number: "03",
-          title: "Upper Mustang",
-          description:
-            "Entra en el 'Reino Prohibido' para ver monasterios antiguos y un paisaje que parece de otro planeta.",
-        },
-        {
-          number: "04",
-          title: "Trek Mardi Himal",
-          description:
-            "Una caminata corta y pura con vistas espectaculares de frente al sagrado Machhapuchhre.",
-        },
-        {
-          number: "05",
-          title: "Campo Base Annapurna",
-          description:
-            "La ruta ABC te lleva al corazón del Santuario de Annapurna, rodeado por una pared de gigantes de 360 grados.",
-        },
-        {
-          number: "06",
-          title: "Safari por la selva de Chitwan",
-          description:
-            "Cambia las montañas por la jungla. Observa rinocerontes de un cuerno, tigres y aves exóticas en un safari.",
-        },
-      ],
-    },
-    destinations: {
-      label: "/Nuestros destinos",
-      title: "Tu próximo lugar favorito te espera",
-      description:
-        "Obtén el mejor valor para tus viajes con descuentos exclusivos, promociones de temporada y ofertas para ahorrar mientras exploras el mundo.",
-      button: "Ver todo",
-      items: [
-        { id: 1, name: "Mount Everest", count: "12 destinos" },
-        { id: 2, name: "Machapuchare", count: "15 destinos" },
-        { id: 3, name: "Boudha", count: "14 destinos" },
-        { id: 4, name: "Pashupatinath", count: "18 destinos" },
-        { id: 5, name: "Chitwan", count: "9 destinos" },
-        { id: 6, name: "Lake Manasarovar", count: "11 destinos" },
-      ],
-    },
-    topTours: {
-      label: "/Mejores tours",
-      title: "Tours destacados para despertar tus ganas de viajar",
-      description:
-        "Explora nuestra selección curada de destinos imprescindibles con itinerarios detallados.",
-      button: "Reservar ahora",
-      tours: [
-        { id: 1, name: "Campo Base del Everest", duration: "12 días", price: "$1,200", desc: "Camina hasta el techo del mundo." },
-        { id: 2, name: "Circuito Annapurna", duration: "14 días", price: "$1,450", desc: "Vive culturas y paisajes diversos." },
-        { id: 3, name: "Valle de Langtang", duration: "10 días", price: "$950", desc: "El valle de los glaciares te espera." },
-      ],
-    },
-    whyChooseUs: {
-      label: "Por qué elegirnos",
-      titleLead: "Tu aventura",
-      titleAccent: "empieza aquí",
-      description:
-        "Vamos más allá para asegurarnos de que tu experiencia en Nepal supere todas las expectativas.",
-      features: [
-        { number: "01", title: "Guías locales expertos", description: "Nuestros guías nacieron y crecieron en Nepal y ofrecen conocimiento privilegiado y experiencias culturales auténticas." },
-        { number: "02", title: "La seguridad es lo primero", description: "Tu seguridad es nuestra prioridad. Mantenemos los más altos estándares y priorizamos viajes seguros." },
-        { number: "03", title: "Itinerarios flexibles", description: "Personalizamos cada viaje según tus preferencias para equilibrar aventura y descanso." },
-        { number: "04", title: "Experiencias únicas", description: "Desde templos ocultos hasta aldeas remotas, te llevamos más allá de las rutas turísticas habituales." },
-        { number: "05", title: "Mejor valor", description: "Precios competitivos sin costes ocultos. Ofrecemos transparencia y una calidad excepcional." },
-        { number: "06", title: "Soporte 24/7", description: "Asistencia permanente durante todo tu viaje. Siempre estamos a una llamada de distancia." },
-      ],
+    planYourTrip: {
+      title: "Planifica tu Viaje",
+      description: "Cuéntanos sobre la aventura de tus sueños en Nepal y nuestros expertos en viajes crearán un itinerario personalizado adaptado a tus intereses, presupuesto y fechas de viaje.",
+      submitBtn: "Enviar detalles del plan",
+      sections: {
+        tripInfo: "Información del Viaje",
+        personalInfo: "Información Personal",
+        additionalDetails: "Detalles Adicionales",
+      },
+      fields: {
+        tripName: "Nombre del Viaje / Destino",
+        tripNamePlaceholder: "Ej: Trek del Campamento Base del Everest, Trek del Campamento Base del Annapurna",
+        budgetRange: "Rango de Presupuesto Estimado",
+        budgetPlaceholder: "Selecciona tu rango de presupuesto estimado",
+        numberOfTravelers: "Número de Viajeros",
+        travelersPlaceholder: "Selecciona el tamaño del grupo",
+        travelDate: "Fecha de Viaje Preferida",
+        duration: "Duración del Viaje (Días)",
+        fullName: "Nombre Completo",
+        fullNamePlaceholder: "Juan Pérez",
+        whatsAppNumber: "Número de WhatsApp",
+        whatsAppPlaceholder: "+34 600 000 000",
+        emailAddress: "Correo Electrónico",
+        emailPlaceholder: "juan@ejemplo.com",
+        streetAddress: "Dirección",
+        streetPlaceholder: "Calle Aventura 123",
+        country: "País de Residencia",
+        countryPlaceholder: "Ej: España",
+        referral: "¿Cómo te enteraste de nosotros?",
+        referralPlaceholder: "Selecciona una opción",
+        specialRequirements: "Requisitos Especiales",
+        specialRequirementsPlaceholder: "Por favor, menciona preferencias dietéticas, de alojamiento, nivel de condición física, intereses de viaje o cualquier solicitud especial.",
+        comments: "Comentarios o Mensaje",
+        commentsPlaceholder: "Cualquier nota adicional o pregunta para nuestro equipo...",
+      },
+      options: {
+        budgets: ["Menos de $500", "$500 – $1,000", "$1,000 – $2,000", "$2,000 – $5,000", "Más de $5,000"],
+        travelers: ["Viajero Solo", "2 Personas", "3–5 Personas", "6–10 Personnes", "10+ Personas"],
+        referrals: ["Búsqueda en Google", "Facebook", "Instagram", "YouTube", "Recomendación de Amigos / Familia", "Agencia de Viajes", "Cliente Anterior", "Otro"],
+      },
     },
     testimonials: {
       label: "/Testimonios",
@@ -395,15 +242,12 @@ export const translations = {
       },
       groups: {
         explore: [
-          { label: "Nuestros planes", href: "/destinations" },
-          { label: "Mejores tours", href: "/destinations" },
-          { label: "Guía de viaje", href: "/about" },
-          { label: "Compromiso con la sostenibilidad", href: "/about" },
+          { label: "Nuestros planes", href: "/packages" },
+          { label: "Mejores tours", href: "/packages" },
+          { label: "Guía de viaje", href: "/planYourTrip" },
         ],
         aboutUs: [
-          { label: "Nuestra historia", href: "/about" },
           { label: "Testimonios", href: "/testimonials" },
-          { label: "Compromiso con la sostenibilidad", href: "/about" },
           { label: "Carreras", href: "/contact" },
         ],
         support: [
@@ -419,10 +263,10 @@ export const translations = {
   fr: {
     navItems: [
       { label: "Accueil", href: "/" },
-      { label: "Destinations", href: "/destinations" },
-      { label: "À propos", href: "/about" },
-      { label: "Contact", href: "/contact" },
+      { label: "Circuits & Forfaits", href: "/packages" },
       { label: "Témoignages", href: "/testimonials" },
+      { label: "Planifiez Votre Voyage", href: "/planYourTrip" },
+      { label: "Contact", href: "/contact" },
     ],
     navCta: "Planifiez Votre Voyage",
     hero: {
@@ -431,63 +275,46 @@ export const translations = {
         "Trésors cachés, vues à couper le souffle, aventures inoubliables - où irez-vous ensuite ?",
       button: "Réserver",
     },
-    about: {
-      label: "/À propos",
-      titleLead: "Qu'est-ce qui rend",
-      titleAccent: "cela spécial ?",
-      description:
-        "Économisez davantage sur vos voyages grâce à des réductions exclusives, des promotions saisonnières et des offres imbattables pour des aventures inoubliables.",
-      button: "En savoir plus",
-      cards: [
-        { number: "01", title: "Camp de base de l'Everest", description: "Nous ne planifions pas seulement des vacances; nous créons des voyages adaptés à vos rêves pour que chaque instant soit inoubliable." },
-        { number: "02", title: "Circuit de l'Annapurna", description: "Avec nos partenaires locaux de confiance, vous découvrirez des lieux cachés et des expériences culturelles que la plupart des voyageurs ne voient jamais." },
-        { number: "03", title: "Upper Mustang", description: "Entrez dans le 'Royaume interdit' pour découvrir d'anciens monastères et un paysage qui semble venir d'une autre planète." },
-        { number: "04", title: "Trek de Mardi Himal", description: "Une randonnée courte et pure offrant des vues spectaculaires de Machhapuchhre, la montagne sacrée." },
-        { number: "05", title: "Camp de base de l'Annapurna", description: "Le trek ABC vous plonge au cœur du sanctuaire de l'Annapurna, entouré d'un mur de sommets géants à 360 degrés." },
-        { number: "06", title: "Safari dans la jungle de Chitwan", description: "Troquez les montagnes contre la jungle. Observez des rhinocéros unicornes, des tigres et des oiseaux exotiques lors d'un safari." },
-      ],
-    },
-    destinations: {
-      label: "/Nos destinations",
-      title: "Votre prochain endroit préféré vous attend",
-      description:
-        "Bénéficiez du meilleur rapport qualité-prix pour vos voyages avec des réductions exclusives, des promotions saisonnières et des offres pour économiser tout en explorant le monde.",
-      button: "Tout voir",
-      items: [
-        { id: 1, name: "Italie", count: "12 destinations" },
-        { id: 2, name: "Japon", count: "15 destinations" },
-        { id: 3, name: "Indonésie", count: "14 destinations" },
-        { id: 4, name: "Népal", count: "18 destinations" },
-        { id: 5, name: "Suisse", count: "9 destinations" },
-        { id: 6, name: "Maldives", count: "11 destinations" },
-      ],
-    },
-    topTours: {
-      label: "/Meilleures excursions",
-      title: "Les meilleures excursions pour éveiller votre envie d'ailleurs",
-      description:
-        "Explorez notre sélection de destinations incontournables avec des itinéraires détaillés.",
-      button: "Réserver",
-      tours: [
-        { id: 1, name: "Camp de base de l'Everest", duration: "12 jours", price: "$1,200", desc: "Marchez jusqu'au toit du monde." },
-        { id: 2, name: "Circuit de l'Annapurna", duration: "14 jours", price: "$1,450", desc: "Vivez des cultures et des paysages variés." },
-        { id: 3, name: "Vallée du Langtang", duration: "10 jours", price: "$950", desc: "La vallée des glaciers vous attend." },
-      ],
-    },
-    whyChooseUs: {
-      label: "Pourquoi nous choisir",
-      titleLead: "Votre aventure",
-      titleAccent: "commence ici",
-      description:
-        "Nous allons au-delà des attentes pour que votre expérience au Népal dépasse tout ce que vous imaginez.",
-      features: [
-        { number: "01", title: "Guides locaux experts", description: "Nos guides expérimentés sont nés et ont grandi au Népal, offrant une connaissance locale et des expériences authentiques." },
-        { number: "02", title: "La sécurité avant tout", description: "Votre sécurité est notre priorité. Nous maintenons les normes les plus élevées et privilégions des arrangements sûrs." },
-        { number: "03", title: "Itinéraires flexibles", description: "Nous personnalisons chaque voyage selon vos préférences pour trouver le bon équilibre entre aventure et détente." },
-        { number: "04", title: "Expériences uniques", description: "Des temples cachés aux villages de montagne isolés, nous vous emmenons au-delà des sentiers touristiques classiques." },
-        { number: "05", title: "Meilleur rapport qualité-prix", description: "Tarification compétitive sans frais cachés. Nous offrons une transparence totale et une qualité exceptionnelle." },
-        { number: "06", title: "Assistance 24h/24, 7j/7", description: "Un support permanent tout au long de votre voyage. Nous sommes toujours joignables." },
-      ],
+    planYourTrip: {
+      title: "Planifiez Votre Voyage",
+      description: "Parlez-nous de l'aventure de vos rêves au Népal, et nos experts en voyage créeront un itinéraire personnalisé adapté à vos intérêts, votre budget et vos dates de voyage.",
+      submitBtn: "Soumettre les détails",
+      sections: {
+        tripInfo: "Informations sur le Voyage",
+        personalInfo: "Informations Personnelles",
+        additionalDetails: "Détails Supplémentaires",
+      },
+      fields: {
+        tripName: "Nom du Voyage / Destination",
+        tripNamePlaceholder: "Ex: Trek du camp de base de l'Everest, Trek du camp de base de l'Annapurna",
+        budgetRange: "Budget Estimé",
+        budgetPlaceholder: "Sélectionnez votre tranche de budget",
+        numberOfTravelers: "Nombre de Voyageurs",
+        travelersPlaceholder: "Sélectionnez la taille du groupe",
+        travelDate: "Date de Voyage Préférée",
+        duration: "Durée du Voyage (Jours)",
+        fullName: "Nom Complet",
+        fullNamePlaceholder: "Jean Dupont",
+        whatsAppNumber: "Numéro WhatsApp",
+        whatsAppPlaceholder: "+33 6 1234 5678",
+        emailAddress: "Adresse E-mail",
+        emailPlaceholder: "jean@exemple.com",
+        streetAddress: "Adresse",
+        streetPlaceholder: "123 Rue de l'Aventure",
+        country: "Pays de Résidence",
+        countryPlaceholder: "Ex: France",
+        referral: "Comment avez-vous entendu parler de nous?",
+        referralPlaceholder: "Sélectionnez une option",
+        specialRequirements: "Exigences Particulières",
+        specialRequirementsPlaceholder: "Veuillez mentionner vos préférences alimentaires, d'hébergement, votre niveau de forme physique ou d'autres demandes spéciales.",
+        comments: "Commentaires ou Message",
+        commentsPlaceholder: "Notes supplémentaires ou questions pour notre équipe...",
+      },
+      options: {
+        budgets: ["Moins de 500 $", "500 $ – 1 000 $", "1 000 $ – 2 000 $", "2 000 $ – 5 000 $", "Plus de 5 000 $"],
+        travelers: ["Voyageur Solo", "2 Personnes", "3–5 Personnes", "6–10 Personnes", "10+ Personnes"],
+        referrals: ["Recherche Google", "Facebook", "Instagram", "YouTube", "Recommandation d'amis / famille", "Agence de Voyage", "Ancien Client", "Autre"],
+      },
     },
     testimonials: {
       label: "/Témoignages",
@@ -535,7 +362,7 @@ export const translations = {
       ctaLead: "Faites vos valises, votre",
       ctaAccent: "aventure vous attend",
       ctaButton: "Réserver un voyage",
-      description: "Nous concevons des voyages inoubliables à travers les paysages du Népal.",
+      description: "We design unforgettable journeys across Nepal's landscapes.",
       social: ["Youtube", "Instagram", "Facebook"],
       groupLabels: {
         explore: "Explorer",
@@ -544,15 +371,12 @@ export const translations = {
       },
       groups: {
         explore: [
-          { label: "Nos offres", href: "/destinations" },
-          { label: "Meilleures excursions", href: "/destinations" },
-          { label: "Guide de voyage", href: "/about" },
-          { label: "Engagement durable", href: "/about" },
+          { label: "Nos offres", href: "/packages" },
+          { label: "Meilleures excursions", href: "/packages" },
+          { label: "Guide de voyage", href: "/planYourTrip" },
         ],
         aboutUs: [
-          { label: "Notre histoire", href: "/about" },
           { label: "Témoignages", href: "/testimonials" },
-          { label: "Engagement durable", href: "/about" },
           { label: "Carrières", href: "/contact" },
         ],
         support: [

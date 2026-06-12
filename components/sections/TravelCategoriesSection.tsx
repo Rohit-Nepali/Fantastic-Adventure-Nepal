@@ -35,7 +35,6 @@ export default function TravelCategoriesSection({ data }: CategoriesSectionProps
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  console.log("Categories : ", data);
   // Safely fallback if data hasn't loaded yet
   const categories = data?.categories || [];
   // Splitting categories into balanced rows (max 4 per row for 7 items gives a clean 4 + 3 layout)

@@ -1,120 +1,114 @@
-export type CmsImage = {
+// types/index.ts
+// Single source of truth for all data types across the app
+
+// ─── Categories ────────────────────────────────────────────────────────────
+
+// Used on homepage TravelCategories component — shape unchanged from before
+export interface CategoryItem {
+  label: string;
+  teaser: string;
+  image: string;
+  href: string;
+}
+
+export interface CategoriesSectionProps {
+  data: {
+    sectionTagline: string;
+    heading: string;
+    description: string;
+    categories: CategoryItem[];
+  };
+}
+
+// Used on listing page filter tabs
+export interface Category {
+  _id: string;
+  label: string;
+  slug: { current: string };
+  teaser?: string;
+  image?: string;
+}
+
+// ─── Packages ──────────────────────────────────────────────────────────────
+
+export interface PackageCategory {
+  _id: string;
+  label: string;
+  slug: { current: string };
+}
+
+export interface PackageImage {
   url: string;
   alt?: string;
-};
+}
 
-export type CategoryItem = {
+// Used on listing page cards
+export interface PackageCard {
+  _id: string;
   title: string;
-  slug: string;
-  description: string;
-  image: CmsImage;
-};
+  slug: { current: string };
+  shortIntro: string;
+  price: number;
+  duration: string;
+  destination: string;
+  difficulty: string;
+  maxAltitude?: string;
+  groupSize?: string;
+  bestSeason?: string;
+  accommodation?: string;
+  rating?: number;
+  isFeatured?: boolean;
+  bannerImage: PackageImage;
+  category: PackageCategory;
+}
 
-export type ReviewItem = {
-  travelerName: string;
-  country: string;
-  review: string;
-  rating: number;
-  image?: CmsImage;
-  featured?: boolean;
-};
-
-export type GalleryItem = {
+// Used on detail page
+export interface ItineraryDay {
+  dayNumber: number;
   title: string;
-  caption: string;
-  image: CmsImage;
-  tags: string[];
-};
+  description?: string;
+  elevation?: string;
+  walkingHours?: string;
+  distance?: string;
+  meals?: string;
+  accommodation?: string;
+}
 
-export type OfferItem = {
+export interface EssentialInfoItem {
   title: string;
-  description: string;
-  highlights: string[];
-};
+  body: unknown[]; // Portable Text blocks
+}
 
-export type PartnerContent = {
-  title: string;
-  description: string;
-  services: string[];
-  ctaLabel: string;
-  ctaHref: string;
-};
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
 
-export type WhyChooseItem = {
-  title: string;
-  description: string;
-};
+export interface Departure {
+  date: string;
+  availability: "Available" | "Guaranteed" | "Full";
+  price?: number;
+}
 
-export type PlanTripOptionSets = {
-  destinationOptions: string[];
-  budgetRanges: string[];
-  durationOptions: string[];
-  referralSources: string[];
-};
+export interface PackageDetail extends PackageCard {
+  overview?: unknown[]; // Portable Text blocks
+  transportation?: string;
+  meals?: string;
+  gallery?: PackageImage[];
+  highlights?: string[];
+  itinerary?: ItineraryDay[];
+  costIncludes?: string[];
+  costExcludes?: string[];
+  essentialInfo?: EssentialInfoItem[];
+  faqs?: FaqItem[];
+  departures?: Departure[];
+}
 
-export type HomePageData = {
-  hero: {
-    title: string;
-    subtitle: string;
-    buttonLabel: string;
-  };
-  about: {
-    label: string;
-    titleLead: string;
-    titleAccent: string;
-    description: string;
-    buttonLabel: string;
-    cards: WhyChooseItem[];
-  };
-  categoriesIntro: {
-    label: string;
-    title: string;
-    description: string;
-  };
-  categories: CategoryItem[];
-  whyChooseUs: {
-    label: string;
-    titleLead: string;
-    titleAccent: string;
-    description: string;
-    features: WhyChooseItem[];
-  };
-  whatWeOffer: {
-    label: string;
-    title: string;
-    description: string;
-    items: OfferItem[];
-  };
-  partnerWithUs: PartnerContent;
-  storiesInEveryFrame: {
-    label: string;
-    title: string;
-    description: string;
-    ctaLabel: string;
-    ctaHref: string;
-  };
-  gallery: GalleryItem[];
-  reviewsIntro: {
-    label: string;
-    title: string;
-  };
-  reviews: ReviewItem[];
-  planYourTrip: {
-    label: string;
-    titleLead: string;
-    titleAccent: string;
-    description: string;
-    formTitle: string;
-    submitLabel: string;
-  };
-  planTripOptions: PlanTripOptionSets;
-};
+// ─── Gallery ───────────────────────────────────────────────────────────────
 
-export type SiteSettingsData = {
-  siteName: string;
-  contactEmail: string;
-  contactPhone: string;
-  officeAddress: string;
-  socialLinks: Array<{ label: string; href: string }>;
-  certifications: Array<{ title: string; caption?: string; image?: CmsImage }>;
-};
+export interface GalleryPhoto {
+  _id: string;
+  image: string;
+  caption?: string;
+  location?: string;
+}
