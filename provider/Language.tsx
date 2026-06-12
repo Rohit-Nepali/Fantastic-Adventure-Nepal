@@ -17,6 +17,7 @@ const isLanguageCode = (value: string | null): value is LanguageCode =>
   value === "en" || value === "es" || value === "fr";
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  console.log("LanguageProvider rendered");
   const [language, setLanguage] = useState<LanguageCode>(() => {
     if (typeof window === "undefined") {
       return defaultLanguage;
@@ -50,6 +51,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
 
+
+  if (!context) {
+    throw new Error(
+      "useLanguage must be used within LanguageProvider"
+    );
+  }
 
   return context;
 };

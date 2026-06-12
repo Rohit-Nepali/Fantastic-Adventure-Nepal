@@ -29,10 +29,11 @@ export interface AboutSectionProps {
 }
 
 export default function AboutSection({ aboutUs }: AboutSectionProps) {
+  if (!aboutUs) return null;
+
   const image1 = aboutUs?.images?.[0];
   const image2 = aboutUs?.images?.[1];
 
-  // Read the pre-resolved URL directly from your data payload structure
   const img1Url = image1?.asset?.url || "/api/placeholder/400/600";
   const img2Url = image2?.asset?.url || "/api/placeholder/400/600";
 
@@ -45,16 +46,17 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
         {/* Left Side: Content */}
         <div className="space-y-2 max-w-2xl mx-auto">
           <p className="text-[12px] tracking-[0.25em] uppercase text-accent font-medium mb-4 font-sans">
-            {"/ " + aboutUs?.title || "About Us"}
+            {"/ " + (aboutUs?.title || "About Us")}
           </p>
 
           <h2 className="text-xl md:text-2xl font-semibold">
-            {aboutUs.subtitle || "Welcome to Fantastic Adventure Nepal"}
+            {aboutUs?.subtitle || "Welcome to Fantastic Adventure Nepal"}
           </h2>
 
           <div className="prose prose-lg text-gray-600 max-w-none">
-            <PortableText value={aboutUs?.description} />
+            <PortableText value={aboutUs?.description || []} />
           </div>
+          
           {aboutUs?.closingLine && (
             <p className="text-lg font-medium text-gray-800 italic border-l-4 border-emerald-500 pl-4">
               {aboutUs.closingLine}
@@ -63,15 +65,10 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
 
           {/* CTA*/}
           <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center">
-            <Button variant="accent"
-              rounded="full"
-            >
+            <Button variant="accent" rounded="full">
               <Link href="/planYourTrip">Plan Your Trip</Link>
             </Button>
-            <Button
-              variant="outline"
-              rounded="full"
-            >
+            <Button variant="outline" rounded="full">
               <Link href="/categories">Explore Categories</Link>
             </Button>
           </div>

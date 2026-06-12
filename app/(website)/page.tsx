@@ -10,6 +10,7 @@ export default async function Home() {
 
   const aboutUs = await sanityFetch<AboutSectionProps['aboutUs']>(aboutUsQuery);
   const travelCategoriesData = await sanityFetch<CategoriesSectionProps['data']>(travelCategoriesQuery);
+  console.log("Fetched Travel Categories Data:", travelCategoriesData); // Debug log to verify data structure
   const whyChooseUsData = await sanityFetch<WhyChooseUsProps['data']>(whyChooseUsQuery);
 
   return (

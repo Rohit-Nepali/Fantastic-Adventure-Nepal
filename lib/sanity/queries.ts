@@ -38,7 +38,7 @@ const imageFragment = `{
 // categories[] now dereferenced from standalone category documents.
 
 export const travelCategoriesQuery = groq`
-  *[_type == "travelCategoriesSection"][0] {
+  *[_type == "travelCategories"][0] {
     sectionTagline,
     heading,
     description,
