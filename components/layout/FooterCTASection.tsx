@@ -18,17 +18,18 @@ export default function FooterCTASection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const sampleTrips = [
-    { label: "Everest Base Camp", href: "/destinations" },
-    { label: "Annapurna Circuit", href: "/destinations" },
-    { label: "Chitwan Jungle Safari", href: "/destinations" },
+  const exploreLinks = [
+    { label: "Tours & Packages", href: "/packages" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Testimonials", href: "/testimonials" },
+    { label: "Plan Your Trip", href: "/planYourTrip" },
   ];
 
   const quickLinks = [
     { label: "Our Story", href: "/about" },
     { label: "Documents & Preparation", href: "/documents" },
-    { label: "DMC", href: "/whatwedo" },
-    { label: "What we Offer", href: "/whatwedo" },
+    { label: "DMC", href: "/" },
+    { label: "What we Offer", href: "/whatweoffer" },
     { label: "Contact Us", href: "/contact" },
   ];
 
@@ -219,11 +220,11 @@ export default function FooterCTASection() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-12 sm:grid-cols-2 lg:w-auto lg:grid-cols-3 lg:gap-14">
-            {/* Sample Trips */}
+            {/* Explore */}
             <div>
-              <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Sample Trips</p>
+              <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Explore</p>
               <ul className="space-y-4">
-                {sampleTrips.map((link) => (
+                {exploreLinks.map((link) => (
                   <li key={link.label} className="footer-link-item">
                     <Link href={link.href} className="text-white text-base font-light hover:text-white/70 transition-colors">
                       {link.label}
