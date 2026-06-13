@@ -30,7 +30,7 @@ export const translations = {
     hero: {
       title: "Pack Your Bags, Let's Go Explore",
       subtitle:
-        "Hidden gems, breathtaking views, unforgettable adventures — where will you go next?",
+        "Experience the breathtaking Himalayas, ancient cultures, vibrant festivals, and unforgettable adventures with Fantastic Adventure Nepal.\n\nWhether you're seeking high-altitude adventure, spiritual discovery, or a family holiday, our experienced local team designs journeys that combine safety, authenticity, and exceptional service.",
       button: "Plan Your Trip",
     },
     planYourTrip: {
@@ -165,7 +165,7 @@ export const translations = {
     hero: {
       title: "Haz la maleta y salgamos a explorar algo increíble",
       subtitle:
-        "Joyas ocultas, vistas impresionantes y aventuras inolvidables: ¿a dónde irás después?",
+        "Descubre los impresionantes Himalayas, culturas ancestrales, festivales vibrantes y aventuras inolvidables con Fantastic Adventure Nepal. \n\nYa sea que busques una aventura de alta montaña, un viaje espiritual o unas vacaciones en familia, nuestro experimentado equipo local diseña recorridos que combinan seguridad, autenticidad y un servicio excepcional.",
       button: "Reservar ahora",
     },
     planYourTrip: {
@@ -301,11 +301,10 @@ export const translations = {
       { label: "Planifiez Votre Voyage", href: "/planYourTrip" },
       { label: "Contact", href: "/contact" },
     ],
-    navCta: "Planifiez Votre Voyage",
     hero: {
       title: "Faites vos valises, partons explorer quelque chose d'incroyable",
       subtitle:
-        "Trésors cachés, vues à couper le souffle, aventures inoubliables - où irez-vous ensuite ?",
+        "Découvrez les majestueux Himalayas, des cultures ancestrales, des festivals colorés et des aventures inoubliables avec Fantastic Adventure Nepal.\n\nQue vous recherchiez une aventure en haute altitude, une découverte spirituelle ou des vacances en famille, notre équipe locale expérimentée conçoit des voyages alliant sécurité, authenticité et qualité de service exceptionnelle.",
       button: "Réserver",
     },
     planYourTrip: {

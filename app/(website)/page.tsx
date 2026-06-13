@@ -8,6 +8,7 @@ import WhyChooseUsSection, { WhyChooseUsProps } from "@/components/sections/WhyC
 import GalleryScroll from "@/components/gallery/GalleryScroll";
 import TestimonialSection, { TestimonialSectionProps } from "@/components/sections/TestimonialSection";
 import DmcB2bSection from "@/components/services";
+import WhatWeOfferSection from "@/components/sections/WhatWeOfferSection";
 
 export default async function Home() {
 
@@ -24,6 +25,7 @@ export default async function Home() {
       <GalleryScroll items={galleryItems} />
       <AboutSection aboutUs={aboutUs} />
       <DmcB2bSection />
+      <WhatWeOfferSection/>
       <WhyChooseUsSection data={whyChooseUsData} />
       <TestimonialSection data={reviews || undefined} />
     </>

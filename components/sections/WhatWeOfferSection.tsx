@@ -64,10 +64,10 @@ const LOCALIZED_CONTENT = {
       ]
     },
     cta: {
-      title: "Ready to Blueprint Your Expedition?",
-      desc: "Connect with our design desks to transform your initial criteria into a production-ready operational timeline.",
-      btnPlan: "Launch Trip Planner",
-      btnContact: "Talk to an Expert"
+      title: "Ready to Explore Your Own Way?",
+      desc: "Whether you're dreaming of mountain adventures, cultural discoveries, wildlife encounters, or a personalized holiday, our local travel experts are here to design the perfect journey for you.",
+      btnPlan: "Plan Your Trip",
+      btnContact: "Contact Our Experts",
     }
   },
   es: {
@@ -123,10 +123,10 @@ const LOCALIZED_CONTENT = {
       ]
     },
     cta: {
-      title: "¿Listo para Planificar su Expedición?",
-      desc: "Conéctese con nuestros diseñadores de viajes para estructurar su itinerario ideal hoy mismo.",
-      btnPlan: "Iniciar Planificador",
-      btnContact: "Contactar a un Experto"
+      title: "¿Listo para Explorar a Tu Manera?",
+      desc: "Ya sea que sueñes con aventuras en la montaña, descubrimientos culturales, encuentros con la vida silvestre o unas vacaciones personalizadas, nuestros expertos locales están aquí para diseñar el viaje perfecto para ti.",
+      btnPlan: "Planifica Tu Viaje",
+      btnContact: "Contacta a Nuestros Expertos",
     }
   },
   fr: {
@@ -182,10 +182,10 @@ const LOCALIZED_CONTENT = {
       ]
     },
     cta: {
-      title: "Prêt à Concevoir Votre Voyage ?",
-      desc: "Contactez nos conseillers locaux pour transformer vos idées en un itinéraire parfaitement optimisé.",
-      btnPlan: "Lancer le Planificateur",
-      btnContact: "Parler à un Conseiller"
+      title: "Prêt à Explorer à Votre Façon ?",
+      desc: "Que vous rêviez d’aventures en montagne, de découvertes culturelles, de rencontres avec la faune sauvage ou de vacances sur mesure, nos experts locaux sont là pour concevoir le voyage idéal pour vous.",
+      btnPlan: "Planifiez Votre Voyage",
+      btnContact: "Contactez Nos Experts",
     }
   }
 };
@@ -272,7 +272,7 @@ export default function WhatWeOfferSection() {
 
       {/* PERSISTENT ENGAGEMENT SECTION */}
       <section className="max-w-4xl mx-auto mt-16 px-4 text-center">
-        <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-8 sm:p-12 rounded-3xl text-white shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-950 p-8 sm:p-12 rounded-3xl text-white shadow-xl relative overflow-hidden">
           <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#2CC1DA]/10 rounded-full blur-2xl" />
           <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">{t.cta.title}</h2>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8">{t.cta.desc}</p>
