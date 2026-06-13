@@ -26,6 +26,16 @@ export const whyChooseUsQuery = groq` *[_type == "whyChooseUs"][0]{
     }
   }`
 
+export const reviewsQuery = groq`*[_type == "review"] | order(_createdAt desc)[0...3] {
+  travelerName,
+  country,
+  review,
+  rating,
+  "image": image.asset->url,
+  imageAlt,
+  featured
+}`;
+
 // ─── Travel Categories (Homepage) ──────────────────────────────────────────
 // Output shape is IDENTICAL to before — CategoryItem interface unchanged.
 // categories[] now dereferenced from standalone category documents.
