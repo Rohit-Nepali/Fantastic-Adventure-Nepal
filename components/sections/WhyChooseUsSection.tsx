@@ -121,8 +121,8 @@ export default function WhyChooseUsSection({ data }: WhyChooseUsProps) {
           className="mb-12 grid grid-cols-1 gap-8 md:mb-14 md:grid-cols-12"
         >
           <div className="md:col-span-7">
-            <p className="mb-4 text-[11px] font-light uppercase tracking-[0.28em] text-black/40">
-              {data?.label || "Why Choose Us"}
+            <p className="mb-4 text-xs font-light uppercase tracking-[0.2em] text-accent">
+              {"/ " + (data?.label || "Why Choose Us")}
             </p>
 
             <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-black md:text-5xl lg:text-6xl">

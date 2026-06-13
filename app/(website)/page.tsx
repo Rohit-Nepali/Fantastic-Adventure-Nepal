@@ -5,9 +5,9 @@ import { aboutUsQuery, ALL_GALLERY_ITEMS_QUERY, reviewsQuery, travelCategoriesQu
 import TravelCategoriesSection, { CategoriesSectionProps } from "@/components/sections/TravelCategoriesSection";
 import { GalleryItem } from "@/lib/sanity/types";
 import WhyChooseUsSection, { WhyChooseUsProps } from "@/components/sections/WhyChooseUsSection";
-import DmcB2bSection from "@/components/sections/DmcB2bSection";
 import GalleryScroll from "@/components/gallery/GalleryScroll";
 import TestimonialSection, { TestimonialSectionProps } from "@/components/sections/TestimonialSection";
+import DmcB2bSection from "@/components/services";
 
 export default async function Home() {
 

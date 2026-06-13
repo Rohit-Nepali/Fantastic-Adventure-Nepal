@@ -82,7 +82,7 @@ const TestimonialCard = ({ data }: { data: ReviewItem }) => {
           >
             {data.travelerName}
           </h4>
-          <p className="text-[10px] tracking-widest uppercase text-teal-600 font-semibold">
+          <p className="text-[10px] tracking-widest uppercase text-accent font-semibold">
             {data.country}
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function TestimonialSection({ data, intro }: TestimonialSectionPr
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-[12px] tracking-[0.25em] uppercase text-teal-600 font-bold mb-4">
+          <p className="text-[12px] tracking-[0.25em] uppercase text-accent font-bold mb-4">
             {label}
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tight">

@@ -1,8 +1,8 @@
 // components/packages/CategoryTabs.tsx
 "use client";
 
+import { Category } from "@/lib/sanity/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Category } from "@/types";
 
 interface Props {
   categories: Category[];
@@ -28,7 +28,7 @@ export default function CategoryTabs({ categories, activeSlug }: Props) {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => handleSelect(null)}
-          className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+          className={`px-5 py-2 rounded-full text-sm text-black/60 font-medium transition-all duration-200 ${
             !activeSlug
               ? "bg-[#00b5c4] text-white shadow-sm"
               : "bg-white text-[#444] border border-[#ddd] hover:border-[#00b5c4] hover:text-[#00b5c4]"
@@ -41,7 +41,7 @@ export default function CategoryTabs({ categories, activeSlug }: Props) {
           <button
             key={cat._id}
             onClick={() => handleSelect(cat.slug.current)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+            className={`px-5 py-2 rounded-full text-sm text-black/60 font-medium transition-all duration-200 ${
               activeSlug === cat.slug.current
                 ? "bg-[#00b5c4] text-white shadow-sm"
                 : "bg-white text-[#444] border border-[#ddd] hover:border-[#00b5c4] hover:text-[#00b5c4]"
