@@ -43,7 +43,6 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -99,47 +98,36 @@ export default function ContactSection() {
         {/* ── RIGHT — Form ── */}
         <div ref={rightRef} className="flex flex-col justify-center">
           <p className="text-[11px] tracking-[3px] uppercase text-black/30 font-sans font-light mb-8">
-              {copy.form.header}
+            {copy.form.header}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid md:grid-cols-1 gap-5">
               <div>
-                  <label htmlFor="name" className={labelClass}>{copy.form.name}</label>
-                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClass} placeholder={copy.form.namePlaceholder} />
+                <label htmlFor="name" className={labelClass}>{copy.form.name}</label>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClass} placeholder={copy.form.namePlaceholder} />
               </div>
               <div>
-                  <label htmlFor="email" className={labelClass}>{copy.form.email}</label>
-                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} placeholder={copy.form.emailPlaceholder} />
+                <label htmlFor="email" className={labelClass}>{copy.form.email}</label>
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} placeholder={copy.form.emailPlaceholder} />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid md:grid-cols-1 gap-5">
               <div>
-                  <label htmlFor="phone" className={labelClass}>{copy.form.phone}</label>
-                  <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder={copy.form.phonePlaceholder} />
-              </div>
-              <div>
-                  <label htmlFor="destination" className={labelClass}>{copy.form.destination}</label>
-                <select id="destination" name="destination" value={formData.destination} onChange={handleChange} className={inputClass + " cursor-pointer"}>
-                    <option value="">{copy.form.destinationPlaceholder}</option>
-                    {copy.form.options.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                </select>
+                <label htmlFor="phone" className={labelClass}>{copy.form.phone}</label>
+                <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder={copy.form.phonePlaceholder} />
               </div>
             </div>
             <div>
-                <label htmlFor="message" className={labelClass}>{copy.form.message}</label>
-                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4} className={inputClass + " resize-none"} placeholder={copy.form.messagePlaceholder} />
+              <label htmlFor="message" className={labelClass}>{copy.form.message}</label>
+              <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4} className={inputClass + " resize-none"} placeholder={copy.form.messagePlaceholder} />
             </div>
             <div className="pt-2">
               <button
                 type="submit"
                 className="w-full bg-accent text-accent-foreground text-[12px] tracking-[0.15em] uppercase font-sans font-medium py-4 rounded-xl transition-all duration-300 hover:bg-accent/90 cursor-pointer"
               >
-                  {copy.form.submit}
+                {copy.form.submit}
               </button>
             </div>
           </form>

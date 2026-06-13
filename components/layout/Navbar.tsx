@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { useLanguage } from "@/provider/Language";
 import { languageOptions, translations } from "@/lib/translations";
-import { X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import Button from "../ui/Button";
 
 type NavbarProps = {
@@ -37,7 +37,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const copy = translations[language];
+  const copy = translations[language] || translations.en;
   const navItems = copy.navItems;
   const currentLanguage =
     languageOptions.find((o) => o.code === language) ?? languageOptions[0];
@@ -180,7 +180,9 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           // Visibility logic
           isVisible ? "translate-y-0" : "-translate-y-full",
           // Background logic
-          useOverlayStyle ? "bg-transparent" : "bg-white/10 backdrop-blur",
+          useOverlayStyle
+            ? "bg-transparent"
+            : "bg-white/90 shadow-sm backdrop-blur",
         )}
       >
         {/* Hamburger */}
@@ -198,21 +200,21 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           <span
             className={cx(
               "block h-[1.5px] w-8 transition-all duration-300 group-hover:w-8",
-              "bg-black",
+              useOverlayStyle ? "bg-white" : "bg-black",
             )}
           />
           {/* Medium Line */}
           <span
             className={cx(
               "block h-[1.5px] w-5 transition-all duration-300 group-hover:w-8",
-              "bg-black",
+              useOverlayStyle ? "bg-white" : "bg-black",
             )}
           />
           {/* Shortest Line */}
           <span
             className={cx(
               "block h-[1.5px] w-2 transition-all duration-300 group-hover:w-8",
-              "bg-black",
+              useOverlayStyle ? "bg-white" : "bg-black",
             )}
           />
         </button>
@@ -225,7 +227,10 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             width={240}
             height={72}
             priority
-            className="h-12 w-auto object-contain transition-opacity duration-500"
+            className={cx(
+              "h-12 w-auto object-contain transition-all duration-500",
+              useOverlayStyle ? "brightness-0 invert" : "",
+            )}
           />
         </Link>
 
@@ -234,17 +239,26 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           <div className="relative" ref={langRef}>
             <Button
               onClick={() => setLangOpen((p) => !p)}
-              variant={"glass"}
+              variant={useOverlayStyle ? "glass" : "outline"}
               rounded={"full"}
               className={cx(
                 "text-[12px] tracking-wide font-sans transition-colors duration-500",
-                "text-white",
+                useOverlayStyle
+                  ? "text-white border-white/25"
+                  : "text-black border-black/10",
               )}
             >
               {currentLanguage.label} &#9662;
             </Button>
             {langOpen && (
-              <div className="absolute right-0 mt-2 w-32 rounded-lg bg-white/10 backdrop-blur-md text-white shadow-xl z-50 border border-white/20 overflow-hidden">
+              <div
+                className={cx(
+                  "absolute right-0 mt-2 w-32 rounded-lg shadow-xl z-50 border overflow-hidden backdrop-blur-md",
+                  useOverlayStyle
+                    ? "bg-black/40 text-white border-white/10"
+                    : "bg-white text-black border-gray-200",
+                )}
+              >
                 {languageOptions.map((lang) => (
                   <button
                     key={lang.code}
@@ -252,7 +266,12 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                       changeLanguage(lang.code);
                       setLangOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm duration-200 hover:bg-white/10"
+                    className={cx(
+                      "block w-full text-left px-4 py-2 text-sm duration-200",
+                      useOverlayStyle
+                        ? "hover:bg-white/10"
+                        : "hover:bg-gray-100",
+                    )}
                   >
                     {lang.label}
                   </button>
@@ -262,7 +281,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
           </div>
 
           <Link
-            href="/contact"
+            href="/planYourTrip"
             className={cx(
               "hidden md:block text-[11px] font-medium tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all duration-300",
               "bg-accent text-white border border-transparent hover:bg-accent/80",
@@ -297,7 +316,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
         </div>
 
         {/* Thin divider */}
-        <div className="mx-6 md:mx-10 h-[1px] bg-black/8 flex-shrink-0" />
+        <div className="mx-6 md:mx-10 h-[1px] bg-black/5 flex-shrink-0" />
 
         <div className="flex flex-1 overflow-hidden px-6 md:px-10 pb-10 gap-16">
           {/* Nav Links */}
@@ -330,7 +349,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                   </span>
                 </Link>
                 {i < navItems.length - 1 && (
-                  <div className="ml-10 h-[1px] bg-black/6" />
+                  <div className="ml-10 h-[1px] bg-black/5" />
                 )}
               </div>
             ))}
@@ -338,14 +357,12 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             {/* CTA inside menu */}
             <div className="nav-item opacity-0 mt-6 ml-10">
               <Link
-                href="/contact"
-                onClick={handleOverlayNavigation("/contact")}
-                className="inline-flex items-center gap-3 bg-accent text-accent-foreground text-[11px] tracking-[0.15em] uppercase font-medium px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors duration-300"
+                href="/planYourTrip"
+                onClick={handleOverlayNavigation("/planYourTrip")}
+                className="inline-flex items-center gap-3 bg-accent text-white text-[11px] tracking-[0.15em] uppercase font-medium px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors duration-300"
               >
-                Plan Your Trip
-                <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-[10px]">
-                  ›
-                </span>
+                {copy.navCta}
+                <ArrowRight className="w-4 h-4 text-white" />
               </Link>
             </div>
           </div>
@@ -358,7 +375,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
             <div className="relative w-full h-[460px] rounded-2xl overflow-hidden">
               <img
                 src={
-                  hoveredIndex !== null
+                  hoveredIndex !== null && hoveredIndex < menuImages.length
                     ? menuImages[hoveredIndex]
                     : menuImages[0]
                 }
@@ -372,7 +389,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                 </p>
                 <p className="text-white text-lg font-semibold">
                   {hoveredIndex !== null
-                    ? navItems[hoveredIndex].label
+                    ? navItems[hoveredIndex]?.label
                     : "Nepal"}
                 </p>
               </div>
@@ -381,12 +398,12 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
         </div>
 
         {/* Footer strip */}
-        <div className="mx-6 md:mx-10 h-[1px] bg-black/8 flex-shrink-0" />
+        <div className="mx-6 md:mx-10 h-[1px] bg-black/5 flex-shrink-0" />
         <div
           ref={menuFooterRef}
           className="flex items-center justify-between px-6 md:px-10 py-4 opacity-0 flex-shrink-0"
         >
-          <div className="flex gap-6">
+          {/* <div className="flex gap-6">
             {["Instagram", "Facebook", "Youtube"].map((s) => (
               <a
                 key={s}
@@ -396,8 +413,8 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                 {s}
               </a>
             ))}
-          </div>
-          <div className="flex gap-4">
+          </div> */}
+          {/* <div className="flex gap-4">
             {languageOptions.map((lang) => (
               <button
                 key={lang.code}
@@ -412,7 +429,7 @@ export default function Navbar({ variant = "overlay" }: NavbarProps) {
                 {lang.code.toUpperCase()}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

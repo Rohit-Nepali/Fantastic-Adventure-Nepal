@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useAutoSlide } from "@/lib/useAutoSlide";
+import { urlForImage } from "@/lib/sanity/image";
 
 const cultureStories = [
   {
@@ -79,12 +80,11 @@ function CultureStoryImageSlider({ images, title, meta }: CultureStoryImageSlide
             className="relative h-full w-full shrink-0"
           >
             <Image
-              src={image}
+              src={urlForImage(image, 1200)}
               alt={title}
               fill
-              className={`object-cover transition-transform duration-[7000ms] ease-in-out ${
-                imageIndex === activeSlide ? "scale-110" : "scale-105"
-              }`}
+              className={`object-cover transition-transform duration-[7000ms] ease-in-out ${imageIndex === activeSlide ? "scale-110" : "scale-105"
+                }`}
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority={imageIndex === 0}
             />
@@ -205,9 +205,8 @@ export default function CultureTourSection() {
                 ref={(el) => {
                   rowRefs.current[index] = el;
                 }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center ${
-                  reverse ? "" : ""
-                }`}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center ${reverse ? "" : ""
+                  }`}
               >
                 <div
                   ref={(el) => {

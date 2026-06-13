@@ -3,30 +3,33 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/provider/Language";
-import { translations } from "@/lib/translations";
+import { translations, getSafe } from "@/lib/translations";
 import { travelStyles } from "@/lib/travelStyles";
 import { Facebook, Youtube, Linkedin, Phone, Mail, Twitter } from "lucide-react";
 
 export default function FooterCTASection() {
+  const pathname = usePathname();
   const { language } = useLanguage();
-  const copy = translations[language].footer;
+  const copy = getSafe("footer", language, translations.en.footer);
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const sampleTrips = [
-    { label: "Everest Base Camp", href: "/destinations" },
-    { label: "Annapurna Circuit", href: "/destinations" },
-    { label: "Chitwan Jungle Safari", href: "/destinations" },
+  const exploreLinks = [
+    { label: "Tours & Packages", href: "/packages" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Testimonials", href: "/testimonials" },
+    { label: "Plan Your Trip", href: "/planYourTrip" },
   ];
 
   const quickLinks = [
     { label: "Our Story", href: "/about" },
     { label: "Documents & Preparation", href: "/documents" },
-    { label: "DMC", href: "/dmc" },
-    { label: "What we Offer", href: "/services" },
+    { label: "DMC", href: "/" },
+    { label: "What we Offer", href: "/whatweoffer" },
     { label: "Contact Us", href: "/contact" },
   ];
 
@@ -68,19 +71,39 @@ export default function FooterCTASection() {
   ];
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const content = contentRef.current;
+    if (!section || !content) return;
+
     gsap.registerPlugin(ScrollTrigger);
+
+    const revealIfInView = () => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.85) {
+        gsap.set(content, { opacity: 1, y: 0 });
+        gsap.set(section.querySelectorAll(".footer-link-item"), { opacity: 1, y: 0 });
+      }
+    };
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        contentRef.current,
+        content,
         { opacity: 0, y: 30 },
         {
-          opacity: 1, y: 0, duration: 1, ease: "power4.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
         }
       );
 
       gsap.fromTo(
-        ".footer-link-item",
+        section.querySelectorAll(".footer-link-item"),
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -89,15 +112,34 @@ export default function FooterCTASection() {
           ease: "power3.out",
           stagger: 0.08,
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 80%",
+            once: true,
           },
         }
       );
-
     }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+
+    // After route changes, layout height shifts before ScrollTrigger recalculates.
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      revealIfInView();
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) revealIfInView();
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      ctx.revert();
+    };
+  }, [pathname]);
 
   return (
     <footer
@@ -108,7 +150,7 @@ export default function FooterCTASection() {
     >
       <div ref={contentRef}>
         {/* Main footer content */}
-        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-10 lg:flex-row lg:justify-between lg:gap-32 xl:px-14">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-10 lg:flex-row lg:justify-between lg:gap-32 xl:px-4">
 
           {/* Brand column */}
           <div className="w-full lg:max-w-md">
@@ -178,11 +220,11 @@ export default function FooterCTASection() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-12 sm:grid-cols-2 lg:w-auto lg:grid-cols-3 lg:gap-14">
-            {/* Sample Trips */}
+            {/* Explore */}
             <div>
-              <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Sample Trips</p>
+              <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-6">Explore</p>
               <ul className="space-y-4">
-                {sampleTrips.map((link) => (
+                {exploreLinks.map((link) => (
                   <li key={link.label} className="footer-link-item">
                     <Link href={link.href} className="text-white text-base font-light hover:text-white/70 transition-colors">
                       {link.label}

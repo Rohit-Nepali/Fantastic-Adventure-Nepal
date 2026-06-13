@@ -30,6 +30,7 @@ export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
 
+  
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Animate in the overlay and content
@@ -238,7 +239,7 @@ export default function HeroSection() {
 
           <p
             ref={subtitleRef}
-            className="text-white/60 font-sans font-light text-[14px] md:text-base leading-relaxed max-w-sm opacity-0"
+            className="text-white/60 font-sans font-light text-[14px] md:text-base leading-relaxed opacity-0"
           >
             {copy.subtitle}
           </p>

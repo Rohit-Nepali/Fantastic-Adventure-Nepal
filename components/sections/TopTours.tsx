@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from "@/provider/Language";
-import { translations } from "@/lib/translations";
+import { translations, getSafe } from "@/lib/translations";
 
 const tourImages = [
   "https://images.unsplash.com/photo-1544735716-39742fc067b8?q=80&w=800",
@@ -15,7 +15,7 @@ const tourImages = [
 
 const TopTours = () => {
   const { language } = useLanguage();
-  const copy = translations[language].topTours;
+  const copy = getSafe("topTours", language, translations.en.topTours);
   const [activeIndex, setActiveIndex] = useState(1);
 
   const tours = copy.tours.map((tour, index) => ({
