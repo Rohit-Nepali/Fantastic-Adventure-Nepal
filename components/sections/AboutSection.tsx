@@ -63,7 +63,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: titleRef.current,
               start: "top 88%",
             },
-          }
+          },
         );
       }
 
@@ -81,7 +81,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: subtitleRef.current,
               start: "top 88%",
             },
-          }
+          },
         );
       }
 
@@ -99,7 +99,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: descriptionRef.current,
               start: "top 88%",
             },
-          }
+          },
         );
       }
 
@@ -117,7 +117,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: closingRef.current,
               start: "top 90%",
             },
-          }
+          },
         );
       }
 
@@ -135,7 +135,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: ctaRef.current,
               start: "top 90%",
             },
-          }
+          },
         );
       }
 
@@ -153,7 +153,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: image1Ref.current,
               start: "top 85%",
             },
-          }
+          },
         );
       }
 
@@ -172,7 +172,7 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
               trigger: image2Ref.current,
               start: "top 85%",
             },
-          }
+          },
         );
       }
     }, sectionRef);
@@ -194,10 +194,12 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
       className="relative overflow-hidden py-20 md:py-24 max-w-7xl mx-auto"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center md:px-2">
-
         {/* Left Side: Content */}
         <div className="space-y-2 max-w-2xl mx-auto">
-          <p ref={titleRef} className="text-[12px] tracking-[0.25em] uppercase text-accent font-medium mb-4 font-sans">
+          <p
+            ref={titleRef}
+            className="text-[12px] tracking-[0.25em] uppercase text-accent font-medium mb-4 font-sans"
+          >
             {"/ " + (aboutUs?.title || "About Us")}
           </p>
 
@@ -205,23 +207,32 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
             {aboutUs?.subtitle || "Welcome to Fantastic Adventure Nepal"}
           </h2>
 
-          <div ref={descriptionRef} className="prose prose-lg text-gray-600 max-w-none">
+          <div
+            ref={descriptionRef}
+            className="prose prose-lg text-gray-600 max-w-none"
+          >
             <PortableText value={aboutUs?.description || []} />
           </div>
-          
+
           {aboutUs?.closingLine && (
-            <p ref={closingRef} className="text-lg font-medium text-gray-800 italic border-l-4 border-emerald-500 pl-4">
+            <p
+              ref={closingRef}
+              className="text-lg font-medium text-gray-800 italic border-l-4 border-emerald-500 pl-4"
+            >
               {aboutUs.closingLine}
             </p>
           )}
 
           {/* CTA*/}
-          <div ref={ctaRef} className="pt-4 flex flex-col sm:flex-row gap-4 items-center">
+          <div
+            ref={ctaRef}
+            className="pt-4 flex flex-col sm:flex-row gap-4 items-center"
+          >
             <Button variant="accent" rounded="full">
               <Link href="/planYourTrip">Plan Your Trip</Link>
             </Button>
             <Button variant="outline" rounded="full">
-              <Link href="/categories">Explore Categories</Link>
+              <Link href="/packages">Explore Categories</Link>
             </Button>
           </div>
         </div>
@@ -229,7 +240,10 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
         {/* Right Side: Two Images */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full pt-16 lg:pt-24">
           {/* Image 1 */}
-          <div ref={image1Ref} className="relative h-64 sm:h-96 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+          <div
+            ref={image1Ref}
+            className="relative h-64 sm:h-96 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+          >
             <img
               src={img1Url}
               alt={image1?.alt || "Trek Adventure Nepal"}
@@ -237,7 +251,10 @@ export default function AboutSection({ aboutUs }: AboutSectionProps) {
             />
           </div>
           {/* Image 2 */}
-          <div ref={image2Ref} className="relative h-64 sm:h-96 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 lg:translate-y-6">
+          <div
+            ref={image2Ref}
+            className="relative h-64 sm:h-96 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 lg:translate-y-6"
+          >
             <img
               src={img2Url}
               alt={image2?.alt || "Trek Adventure Nepal 2"}

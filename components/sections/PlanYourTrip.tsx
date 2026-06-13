@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MapPin,
   DollarSign,
@@ -21,14 +21,17 @@ import {
   ShieldCheck,
   Star,
   AlertCircle,
-} from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+} from "lucide-react";
+import { useLanguage } from "@/provider/Language";
+import { translations, getSafe } from "@/lib/translations";
+import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ToastState {
   show: boolean;
-  type: 'success' | 'error' | null;
+  type: "success" | "error" | null;
   title: string;
   message: string;
 }
@@ -51,13 +54,35 @@ type FormFields = {
 
 type FieldErrors = Partial<Record<keyof FormFields, string>>;
 
-// ─── Step config ──────────────────────────────────────────────────────────────
+// ─── Step config (labels are dynamic) ────────────────────────────────────────
 
-const STEPS = [
-  { id: 1, label: 'Trip Details' },
-  { id: 2, label: 'About You' },
-  { id: 3, label: 'Extras' },
-];
+const STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
+const SELECT_CHEVRON =
+  "bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2362748e%27 stroke-width=%272.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%276 9 12 15 18 9%27/%3E%3C/svg%3E')] bg-[length:12px] bg-no-repeat bg-[right_0.75rem_center]";
+
+const inputBase =
+  "w-full rounded-xl border border-border bg-muted text-sm text-foreground outline-none transition-[border-color,box-shadow,background] duration-200 focus:border-accent focus:bg-background focus:ring-[3px] focus:ring-accent/15 placeholder:text-muted-foreground/70 appearance-none";
+
+const inputIconClass = cn(inputBase, "py-3 pr-3.5 pl-9");
+const inputPlainClass = cn(inputBase, "px-3.5 py-3");
+const selectIconClass = cn(
+  inputIconClass,
+  SELECT_CHEVRON,
+  "cursor-pointer pr-8",
+);
+const selectPlainClass = cn(
+  inputPlainClass,
+  SELECT_CHEVRON,
+  "cursor-pointer pr-8",
+);
+const textareaClass = cn(
+  inputPlainClass,
+  "min-h-[4.5rem] resize-y leading-relaxed",
+);
+
+const inputErrorClass =
+  "border-destructive bg-red-50/50 focus:border-destructive focus:ring-destructive/15";
 
 // ─── Validation rules ─────────────────────────────────────────────────────────
 
@@ -71,28 +96,26 @@ function validateStep1(data: FormFields): FieldErrors {
   today.setHours(0, 0, 0, 0);
 
   if (!data.tripName.trim()) {
-    errors.tripName = 'Please enter a destination or trip name.';
+    errors.tripName = "Please enter a destination or trip name.";
   }
   if (!data.budgetRange) {
-    errors.budgetRange = 'Please select a budget range.';
+    errors.budgetRange = "Please select a budget range.";
   }
   if (!data.numberOfTravelers) {
-    errors.numberOfTravelers = 'Please select the number of travelers.';
+    errors.numberOfTravelers = "Please select the number of travelers.";
   }
   if (!data.travelDate) {
-    errors.travelDate = 'Please pick a travel date.';
+    errors.travelDate = "Please pick a travel date.";
   } else {
     const picked = new Date(data.travelDate);
     if (isNaN(picked.getTime())) {
-      errors.travelDate = 'That date looks invalid — please re-enter it.';
+      errors.travelDate = "That date looks invalid — please re-enter it.";
     } else if (picked < today) {
-      errors.travelDate = 'Travel date must be today or in the future.';
+      errors.travelDate = "Travel date must be today or in the future.";
     }
   }
   if (!data.duration) {
-    errors.duration = 'Please enter the trip duration.';
-  } else if (Number(data.duration) < 1 || !Number.isInteger(Number(data.duration))) {
-    errors.duration = 'Duration must be a whole number of at least 1 day.';
+    errors.duration = "Please enter the trip duration.";
   }
 
   return errors;
@@ -102,22 +125,23 @@ function validateStep2(data: FormFields): FieldErrors {
   const errors: FieldErrors = {};
 
   if (!data.fullName.trim()) {
-    errors.fullName = 'Your full name is required.';
+    errors.fullName = "Your full name is required.";
   } else if (data.fullName.trim().length < 2) {
-    errors.fullName = 'Please enter your full name (at least 2 characters).';
+    errors.fullName = "Please enter your full name (at least 2 characters).";
   }
   if (!data.whatsAppNumber.trim()) {
-    errors.whatsAppNumber = 'A WhatsApp number is required so we can reach you.';
+    errors.whatsAppNumber =
+      "A WhatsApp number is required so we can reach you.";
   } else if (!PHONE_RE.test(data.whatsAppNumber.trim())) {
-    errors.whatsAppNumber = 'Enter a valid phone number, e.g. +1 234 567 890.';
+    errors.whatsAppNumber = "Enter a valid phone number, e.g. +1 234 567 890.";
   }
   if (!data.emailAddress.trim()) {
-    errors.emailAddress = 'Email address is required.';
+    errors.emailAddress = "Email address is required.";
   } else if (!EMAIL_RE.test(data.emailAddress.trim())) {
-    errors.emailAddress = 'Please enter a valid email address.';
+    errors.emailAddress = "Please enter a valid email address.";
   }
   if (!data.country.trim()) {
-    errors.country = 'Country of residence is required.';
+    errors.country = "Country of residence is required.";
   }
 
   return errors;
@@ -126,20 +150,12 @@ function validateStep2(data: FormFields): FieldErrors {
 function validateStep3(data: FormFields): FieldErrors {
   const errors: FieldErrors = {};
   if (!data.referral) {
-    errors.referral = 'Please tell us how you found us.';
+    errors.referral = "Please tell us how you found us.";
   }
   return errors;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function InputIcon({ icon: Icon }: { icon: React.ElementType }) {
-  return (
-    <span className="pyt-input-icon">
-      <Icon size={15} strokeWidth={1.8} />
-    </span>
-  );
-}
 
 function Field({
   label,
@@ -156,17 +172,30 @@ function Field({
   children: React.ReactNode;
   full?: boolean;
 }) {
+  const Icon = icon;
+
   return (
-    <div className={full ? 'pyt-field pyt-field--full' : 'pyt-field'}>
-      <label className="pyt-label">{label}</label>
-      {hint && <p className="pyt-hint">{hint}</p>}
-      <div className="pyt-input-wrap">
-        {icon && <InputIcon icon={icon} />}
+    <div className={cn("flex flex-col gap-1.5", full && "col-span-full")}>
+      <label className="text-[0.8125rem] font-semibold tracking-tight text-foreground">
+        {label}
+      </label>
+      {hint && (
+        <p className="m-0 text-xs leading-snug text-muted-foreground">{hint}</p>
+      )}
+      <div className="relative flex items-center">
+        {Icon && (
+          <span className="pointer-events-none absolute left-3 flex items-center text-muted-foreground">
+            <Icon size={15} strokeWidth={1.8} />
+          </span>
+        )}
         {children}
       </div>
       {error && (
-        <span className="pyt-field-error" role="alert">
-          <AlertCircle size={12} strokeWidth={2.2} style={{ flexShrink: 0, marginTop: '1px' }} />
+        <span
+          className="mt-0.5 flex items-start gap-1 text-xs font-medium text-destructive"
+          role="alert"
+        >
+          <AlertCircle size={12} strokeWidth={2.2} className="mt-px shrink-0" />
           {error}
         </span>
       )}
@@ -177,22 +206,91 @@ function Field({
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function PlanYourTripSection() {
+  const { language } = useLanguage();
+  const t = getSafe("planYourTrip", language, translations.en.planYourTrip);
+
+  const ERRORS = {
+    en: {
+      tripName: "Please enter a destination or trip name.",
+      budgetRange: "Please select a budget range.",
+      numberOfTravelers: "Please select the number of travelers.",
+      travelDate: "Please pick a travel date.",
+      travelDateInvalid: "That date looks invalid — please re-enter it.",
+      travelDatePast: "Travel date must be today or in the future.",
+      duration: "Please enter the trip duration.",
+      durationInvalid: "Duration must be a whole number of at least 1 day.",
+      fullName: "Your full name is required.",
+      fullNameShort: "Please enter your full name (at least 2 characters).",
+      whatsAppNumber: "A WhatsApp number is required so we can reach you.",
+      whatsAppInvalid: "Enter a valid phone number, e.g. +1 234 567 890.",
+      emailAddress: "Email address is required.",
+      emailInvalid: "Please enter a valid email address.",
+      country: "Country of residence is required.",
+      referral: "Please tell us how you found us.",
+    },
+    es: {
+      tripName: "Por favor, ingrese un destino o nombre de viaje.",
+      budgetRange: "Por favor, seleccione un rango de presupuesto.",
+      numberOfTravelers: "Por favor, seleccione el número de viajeros.",
+      travelDate: "Por favor, elija una fecha de viaje.",
+      travelDateInvalid: "Esa fecha no es válida, por favor corríjala.",
+      travelDatePast: "La fecha de viaje debe ser hoy o en el futuro.",
+      duration: "Por favor, ingrese la duración del viaje.",
+      durationInvalid:
+        "La duración debe ser un número entero de al menos 1 día.",
+      fullName: "Su nombre completo es requerido.",
+      fullNameShort:
+        "Por favor, ingrese su nombre completo (al menos 2 caracteres).",
+      whatsAppNumber: "Se requiere un número de WhatsApp para contactarle.",
+      whatsAppInvalid:
+        "Ingrese un número de teléfono válido, ej. +34 600 000 000.",
+      emailAddress: "Se requiere correo electrónico.",
+      emailInvalid: "Por favor, ingrese un correo electrónico válido.",
+      country: "País de residencia es requerido.",
+      referral: "Por favor, díganos cómo nos encontró.",
+    },
+    fr: {
+      tripName: "Veuillez entrer une destination ou un nom de voyage.",
+      budgetRange: "Veuillez sélectionner une tranche de budget.",
+      numberOfTravelers: "Veuillez sélectionner le nombre de voyageurs.",
+      travelDate: "Veuillez choisir une date de voyage.",
+      travelDateInvalid: "Cette date semble invalide, veuillez la corriger.",
+      travelDatePast:
+        "La date de voyage doit être aujourd'hui ou dans le futur.",
+      duration: "Veuillez entrer la durée du voyage.",
+      durationInvalid: "La durée doit être un nombre entier d'au moins 1 jour.",
+      fullName: "Votre nom complet est requis.",
+      fullNameShort:
+        "Veuillez entrer votre nom complet (au moins 2 caractères).",
+      whatsAppNumber: "Un numéro WhatsApp est requis pour vous contacter.",
+      whatsAppInvalid:
+        "Entrez un numéro de téléphone valide, ex. +33 6 1234 5678.",
+      emailAddress: "L'adresse e-mail est requise.",
+      emailInvalid: "Veuillez entrer une adresse e-mail valide.",
+      country: "Pays de résidence requis.",
+      referral: "Veuillez nous dire comment vous avez entendu parler de nous.",
+    },
+  };
+
+  const err =
+    language === "en" ? ERRORS.en : language === "es" ? ERRORS.es : ERRORS.fr;
+
   const [currentStep, setCurrentStep] = useState(1);
 
   const [formData, setFormData] = useState<FormFields>({
-    tripName: '',
-    budgetRange: '',
-    numberOfTravelers: '',
-    travelDate: '',
-    duration: '',
-    fullName: '',
-    whatsAppNumber: '',
-    emailAddress: '',
-    streetAddress: '',
-    country: '',
-    referral: '',
-    specialRequirements: '',
-    comments: '',
+    tripName: "",
+    budgetRange: "",
+    numberOfTravelers: "",
+    travelDate: "",
+    duration: "",
+    fullName: "",
+    whatsAppNumber: "",
+    emailAddress: "",
+    streetAddress: "",
+    country: "",
+    referral: "",
+    specialRequirements: "",
+    comments: "",
   });
 
   // Per-field errors; only shown after the user attempts to advance/submit
@@ -205,8 +303,8 @@ export default function PlanYourTripSection() {
   const [toast, setToast] = useState<ToastState>({
     show: false,
     type: null,
-    title: '',
-    message: '',
+    title: "",
+    message: "",
   });
 
   useEffect(() => {
@@ -232,13 +330,19 @@ export default function PlanYourTripSection() {
   }, [formData, currentStep, touched]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const triggerToast = (type: 'success' | 'error', title: string, message: string) => {
+  const triggerToast = (
+    type: "success" | "error",
+    title: string,
+    message: string,
+  ) => {
     setToast({ show: true, type, title, message });
   };
 
@@ -275,9 +379,9 @@ export default function PlanYourTripSection() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/plan-your-trip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/plan-your-trip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -285,38 +389,39 @@ export default function PlanYourTripSection() {
 
       if (response.ok && data.success) {
         triggerToast(
-          'success',
-          'Inquiry Submitted!',
-          'Your dream itinerary requests have been successfully delivered to our specialized guides.'
+          "success",
+          "Inquiry Submitted!",
+          "Your dream itinerary requests have been successfully delivered to our specialized guides.",
         );
         setFormData({
-          tripName: '',
-          budgetRange: '',
-          numberOfTravelers: '',
-          travelDate: '',
-          duration: '',
-          fullName: '',
-          whatsAppNumber: '',
-          emailAddress: '',
-          streetAddress: '',
-          country: '',
-          referral: '',
-          specialRequirements: '',
-          comments: '',
+          tripName: "",
+          budgetRange: "",
+          numberOfTravelers: "",
+          travelDate: "",
+          duration: "",
+          fullName: "",
+          whatsAppNumber: "",
+          emailAddress: "",
+          streetAddress: "",
+          country: "",
+          referral: "",
+          specialRequirements: "",
+          comments: "",
         });
         setErrors({});
         setTouched({ 1: false, 2: false, 3: false });
         setCurrentStep(1);
       } else {
-        throw new Error(data.error || 'Failed to sync form entry parameters.');
+        throw new Error(data.error || "Failed to sync form entry parameters.");
       }
     } catch (error: any) {
       triggerToast(
-        'error',
-        'Submission Failed',
-        error.message || 'We could not route your request via SMTP. Check your connectivity.'
+        "error",
+        "Submission Failed",
+        error.message ||
+          "We could not route your request via SMTP. Check your connectivity.",
       );
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -325,658 +430,322 @@ export default function PlanYourTripSection() {
   // ── Utility: input class based on error state ──────────────────────────────
 
   const ic = (field: keyof FormFields, base: string) =>
-    errors[field] ? `${base} pyt-input--error` : base;
+    cn(base, errors[field] && inputErrorClass);
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="pyt-root">
-
-      {/* ── Scoped styles ─────────────────────────────────────────────────── */}
-      <style>{`
-        /* ── Root / page ── */
-        .pyt-root {
-          min-height: 100vh;
-          padding: 7rem 1rem;
-          background: #f4f1ea;
-          position: relative;
-          font-family: inherit;
-        }
-
-        /* ── Layout shell ── */
-        .pyt-shell {
-          max-width: 1080px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr 300px;
-          gap: 2rem;
-          align-items: start;
-        }
-        @media (max-width: 860px) {
-          .pyt-shell { grid-template-columns: 1fr; }
-          .pyt-sidebar { order: -1; }
-        }
-
-        /* ── Card ── */
-        .pyt-card {
-          background: #ffffff;
-          border-radius: 1.25rem;
-          border: 1px solid #e8e3d8;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-          overflow: hidden;
-        }
-
-        /* ── Card header ── */
-        .pyt-card-header {
-          padding: 2.25rem 2.25rem 0;
-          text-align: center;
-        }
-        .pyt-card-header h1 {
-          font-size: 1.875rem;
-          font-weight: 700;
-          color: #111111;
-          letter-spacing: -0.025em;
-          margin: 0 0 0.5rem;
-        }
-        .pyt-card-header p {
-          font-size: 0.9375rem;
-          color: #6b6456;
-          max-width: 480px;
-          margin: 0 auto;
-          line-height: 1.6;
-        }
-
-        /* ── Stepper ── */
-        .pyt-stepper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0;
-          padding: 1.75rem 2.25rem 0;
-        }
-        .pyt-step {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.375rem;
-          position: relative;
-          flex: 1;
-        }
-        .pyt-step-pill {
-          width: 2.125rem;
-          height: 2.125rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.8125rem;
-          font-weight: 700;
-          transition: background 0.25s, border-color 0.25s, color 0.25s;
-          position: relative;
-          z-index: 1;
-          border: 2px solid #d9d3c6;
-          background: #f4f1ea;
-          color: #9b9285;
-        }
-        .pyt-step--active .pyt-step-pill {
-          background: #00b5c4;
-          border-color: #00b5c4;
-          color: #ffffff;
-          box-shadow: 0 0 0 4px rgba(0,181,196,0.18);
-        }
-        .pyt-step--done .pyt-step-pill {
-          background: #111111;
-          border-color: #111111;
-          color: #ffffff;
-        }
-        .pyt-step-label {
-          font-size: 0.6875rem;
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-          color: #9b9285;
-          white-space: nowrap;
-        }
-        .pyt-step--active .pyt-step-label { color: #00b5c4; }
-        .pyt-step--done   .pyt-step-label { color: #111111; }
-        /* connector line */
-        .pyt-step:not(:last-child)::after {
-          content: '';
-          position: absolute;
-          top: 1.0625rem;
-          left: calc(50% + 1.0625rem);
-          width: calc(100% - 2.125rem);
-          height: 2px;
-          background: #d9d3c6;
-          transition: background 0.25s;
-          z-index: 0;
-        }
-        .pyt-step--done:not(:last-child)::after { background: #111111; }
-
-        /* ── Form body ── */
-        .pyt-form-body {
-          padding: 1.75rem 2.25rem 2.25rem;
-        }
-
-        /* ── Section heading ── */
-        .pyt-section-heading {
-          font-size: 0.6875rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: #9b9285;
-          margin: 0 0 1.25rem;
-          padding-bottom: 0.625rem;
-          border-bottom: 1px solid #e8e3d8;
-        }
-
-        /* ── Grid ── */
-        .pyt-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.125rem;
-        }
-        @media (max-width: 560px) {
-          .pyt-grid { grid-template-columns: 1fr; }
-        }
-
-        /* ── Field ── */
-        .pyt-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.3125rem;
-        }
-        .pyt-field--full {
-          grid-column: 1 / -1;
-          display: flex;
-          flex-direction: column;
-          gap: 0.3125rem;
-        }
-        .pyt-label {
-          font-size: 0.8125rem;
-          font-weight: 600;
-          color: #2a2520;
-          letter-spacing: -0.005em;
-        }
-        .pyt-hint {
-          font-size: 0.75rem;
-          color: #9b9285;
-          line-height: 1.45;
-          margin: 0;
-        }
-
-        /* ── Inline field error ── */
-        .pyt-field-error {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.3rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: #c0392b;
-          line-height: 1.4;
-          margin-top: 0.125rem;
-          animation: pyt-err-in 0.18s ease-out both;
-        }
-        @keyframes pyt-err-in {
-          from { opacity: 0; transform: translateY(-4px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Input wrap ── */
-        .pyt-input-wrap {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-        .pyt-input-icon {
-          position: absolute;
-          left: 0.75rem;
-          color: #9b9285;
-          pointer-events: none;
-          display: flex;
-          align-items: center;
-          line-height: 1;
-        }
-
-        /* ── Shared input/select/textarea chrome ── */
-        .pyt-input,
-        .pyt-select,
-        .pyt-textarea {
-          width: 100%;
-          border-radius: 0.75rem;
-          border: 1.5px solid #d9d3c6;
-          background: #faf9f6;
-          color: #111111;
-          font-size: 0.9rem;
-          transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
-          outline: none;
-          appearance: none;
-          -webkit-appearance: none;
-        }
-        .pyt-input:focus,
-        .pyt-select:focus,
-        .pyt-textarea:focus {
-          border-color: #00b5c4;
-          box-shadow: 0 0 0 3px rgba(0,181,196,0.15);
-          background: #ffffff;
-        }
-        .pyt-input::placeholder,
-        .pyt-textarea::placeholder { color: #b8b0a4; }
-
-        /* ── Error state overrides ── */
-        .pyt-input--error,
-        .pyt-input--error:focus,
-        .pyt-select--error,
-        .pyt-select--error:focus,
-        .pyt-textarea--error,
-        .pyt-textarea--error:focus {
-          border-color: #e04343 !important;
-          box-shadow: 0 0 0 3px rgba(224,67,67,0.12) !important;
-          background: #fffafa !important;
-        }
-
-        /* ── Input padding variants ── */
-        .pyt-input--icon  { padding: 0.75rem 0.875rem 0.75rem 2.375rem; }
-        .pyt-input--plain { padding: 0.75rem 0.875rem; }
-        .pyt-select--icon {
-          padding: 0.75rem 2rem 0.75rem 2.375rem;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b9285' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 0.75rem center;
-          cursor: pointer;
-        }
-        .pyt-select--plain {
-          padding: 0.75rem 2rem 0.75rem 0.875rem;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b9285' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 0.75rem center;
-          cursor: pointer;
-        }
-        .pyt-textarea {
-          padding: 0.75rem 0.875rem;
-          resize: vertical;
-          min-height: 4.5rem;
-          line-height: 1.55;
-        }
-
-/* ── Nav buttons ── */
-        .pyt-nav {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: 1.75rem;
-          padding-top: 1.25rem;
-          border-top: 1px solid #e8e3d8;
-        }
-
-        /* ── Sidebar ── */
-        .pyt-sidebar {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-        .pyt-trust-card {
-          background: #ffffff;
-          border-radius: 1.25rem;
-          border: 1px solid #e8e3d8;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-          padding: 1.5rem;
-        }
-        .pyt-trust-card h3 {
-          font-size: 0.8125rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #9b9285;
-          margin: 0 0 1rem;
-        }
-        .pyt-trust-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.75rem;
-          padding: 0.625rem 0;
-          border-bottom: 1px solid #f0ece3;
-        }
-        .pyt-trust-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .pyt-trust-icon {
-          width: 2rem;
-          height: 2rem;
-          border-radius: 0.5rem;
-          background: #f0fafb;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          color: #00b5c4;
-        }
-        .pyt-trust-text strong {
-          display: block;
-          font-size: 0.8125rem;
-          font-weight: 700;
-          color: #111111;
-          margin-bottom: 0.125rem;
-        }
-        .pyt-trust-text span { font-size: 0.75rem; color: #9b9285; line-height: 1.4; }
-        .pyt-whatsapp-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          width: 100%;
-          padding: 0.75rem;
-          border-radius: 0.875rem;
-          background: #25D366;
-          color: #ffffff;
-          font-size: 0.875rem;
-          font-weight: 700;
-          border: none;
-          cursor: pointer;
-          text-decoration: none;
-          transition: background 0.18s, box-shadow 0.18s;
-        }
-        .pyt-whatsapp-btn:hover {
-          background: #1da851;
-          box-shadow: 0 4px 14px rgba(37,211,102,0.35);
-        }
-        .pyt-rating-row {
-          display: flex;
-          align-items: center;
-          gap: 0.375rem;
-          margin-top: 0.75rem;
-        }
-        .pyt-stars { display: flex; gap: 2px; color: #f5a623; }
-        .pyt-rating-text { font-size: 0.75rem; color: #9b9285; font-weight: 500; }
-
-        /* ── Toast ── */
-        .pyt-toast-wrap {
-          position: fixed;
-          top: 1.5rem;
-          right: 1.5rem;
-          z-index: 9999;
-          max-width: 22rem;
-          width: 100%;
-          pointer-events: none;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 0.75rem;
-        }
-        .pyt-toast {
-          pointer-events: auto;
-          width: 100%;
-          border-radius: 0.875rem;
-          background: #ffffff;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.14);
-          overflow: hidden;
-          animation: pyt-slide-in 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
-        }
-        .pyt-toast--success { border: 1.5px solid #b2e8ed; }
-        .pyt-toast--error   { border: 1.5px solid #fcc2c2; }
-        .pyt-toast-inner {
-          padding: 1rem 1rem 0.875rem;
-          display: flex;
-          align-items: flex-start;
-          gap: 0.75rem;
-        }
-        .pyt-toast-icon { flex-shrink: 0; margin-top: 1px; }
-        .pyt-toast-icon--success { color: #00b5c4; }
-        .pyt-toast-icon--error   { color: #e04343; }
-        .pyt-toast-body { flex: 1; min-width: 0; }
-        .pyt-toast-body strong {
-          display: block;
-          font-size: 0.875rem;
-          font-weight: 700;
-          color: #111111;
-          margin-bottom: 0.2rem;
-        }
-        .pyt-toast-body span { font-size: 0.75rem; color: #6b6456; line-height: 1.45; }
-        .pyt-toast-close {
-          flex-shrink: 0;
-          background: none;
-          border: none;
-          color: #b8b0a4;
-          cursor: pointer;
-          padding: 0;
-          display: flex;
-          align-items: center;
-          transition: color 0.15s;
-        }
-        .pyt-toast-close:hover { color: #111111; }
-        .pyt-toast-bar { height: 3px; background: #f0ece3; }
-        .pyt-toast-bar-fill { height: 100%; animation: pyt-countdown 5s linear forwards; }
-        .pyt-toast--success .pyt-toast-bar-fill { background: #00b5c4; }
-        .pyt-toast--error   .pyt-toast-bar-fill { background: #e04343; }
-
-        @keyframes pyt-slide-in {
-          from { transform: translateX(110%); opacity: 0; }
-          to   { transform: translateX(0);    opacity: 1; }
-        }
-        @keyframes pyt-countdown {
-          from { width: 100%; }
-          to   { width: 0%; }
-        }
-      `}</style>
-
-      {/* ── Toast ───────────────────────────────────────────────────────── */}
-      <div className="pyt-toast-wrap">
+    <section className="relative min-h-screen bg-secondary px-4 py-28">
+      {/* Toast */}
+      <div className="pointer-events-none fixed top-6 right-6 z-[9999] flex w-full max-w-sm flex-col items-end gap-3">
         {toast.show && (
-          <div className={`pyt-toast pyt-toast--${toast.type}`}>
-            <div className="pyt-toast-inner">
-              <div className="pyt-toast-icon">
-                {toast.type === 'success' ? (
-                  <CheckCircle2 size={20} className="pyt-toast-icon--success" />
-                ) : (
-                  <svg className="pyt-toast-icon--error" width="20" height="20" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )}
-              </div>
-              <div className="pyt-toast-body">
-                <strong>{toast.title}</strong>
-                <span>{toast.message}</span>
+          <div
+            className={cn(
+              "pointer-events-auto w-full overflow-hidden rounded-xl bg-card shadow-xl animate-in slide-in-from-right-full duration-300",
+              toast.type === "success" && "border border-accent/30",
+              toast.type === "error" && "border border-destructive/30",
+            )}
+          >
+            <div className="flex items-start gap-3 p-4">
+              {toast.type === "success" ? (
+                <CheckCircle2
+                  size={20}
+                  className="mt-px shrink-0 text-accent"
+                />
+              ) : (
+                <AlertCircle
+                  size={20}
+                  className="mt-px shrink-0 text-destructive"
+                />
+              )}
+              <div className="min-w-0 flex-1">
+                <strong className="mb-0.5 block text-sm font-bold text-foreground">
+                  {toast.title}
+                </strong>
+                <span className="text-xs leading-snug text-muted-foreground">
+                  {toast.message}
+                </span>
               </div>
               <button
                 type="button"
-                className="pyt-toast-close"
+                className="flex shrink-0 items-center text-muted-foreground transition-colors hover:text-foreground"
                 onClick={() => setToast((prev) => ({ ...prev, show: false }))}
                 aria-label="Close notification"
               >
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             </div>
-            <div className="pyt-toast-bar"><div className="pyt-toast-bar-fill" /></div>
           </div>
         )}
       </div>
 
-      {/* ── Main shell ──────────────────────────────────────────────────── */}
-      <div className="pyt-shell">
-
-        {/* ── Form card ─────────────────────────────────────────────────── */}
-        <div className="pyt-card">
-
-          {/* Header */}
-          <div className="pyt-card-header">
-            <h1>Plan Your Trip</h1>
-            <p>Tell us about your dream adventure in Nepal and our travel experts will craft a personalised itinerary for you.</p>
+      <div className="mx-auto grid max-w-[1080px] grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_300px]">
+        {/* Form card */}
+        <div className="overflow-hidden rounded-[1.25rem] border border-border bg-card shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+          <div className="px-9 pt-9 text-center">
+            <h1 className="!mb-2 !text-3xl !font-bold tracking-tight text-foreground">
+              {t.title}
+            </h1>
+            <p className="mx-auto max-w-md text-[0.9375rem] leading-relaxed text-muted-foreground">
+              {t.description}
+            </p>
           </div>
 
           {/* Stepper */}
-          <div className="pyt-stepper" aria-label="Form progress">
-            {STEPS.map((step) => {
+          <div
+            className="flex items-center justify-center px-9 pt-7"
+            aria-label="Form progress"
+          >
+            {STEPS.map((step, index) => {
               const done = currentStep > step.id;
               const active = currentStep === step.id;
+              const isLast = index === STEPS.length - 1;
+              const stepLabels = [
+                t.sections?.tripInfo,
+                t.sections?.personalInfo,
+                t.sections?.additionalDetails,
+              ];
+
               return (
                 <div
                   key={step.id}
-                  className={`pyt-step${active ? ' pyt-step--active' : ''}${done ? ' pyt-step--done' : ''}`}
-                  aria-current={active ? 'step' : undefined}
+                  className={cn(
+                    "relative flex flex-1 flex-col items-center gap-1.5",
+                    !isLast &&
+                      "after:absolute after:top-[1.0625rem] after:left-[calc(50%+1.0625rem)] after:z-0 after:h-0.5 after:w-[calc(100%-2.125rem)] after:bg-border after:transition-colors after:content-['']",
+                    done && !isLast && "after:bg-foreground",
+                  )}
+                  aria-current={active ? "step" : undefined}
                 >
-                  <div className="pyt-step-pill">
+                  <div
+                    className={cn(
+                      "relative z-10 flex size-[2.125rem] items-center justify-center rounded-full border-2 text-[0.8125rem] font-bold transition-all",
+                      active &&
+                        "border-accent bg-accent text-accent-foreground shadow-[0_0_0_4px_rgba(44,193,218,0.18)]",
+                      done && "border-foreground bg-foreground text-background",
+                      !active &&
+                        !done &&
+                        "border-border bg-secondary text-muted-foreground",
+                    )}
+                  >
                     {done ? <CheckCircle2 size={14} /> : step.id}
                   </div>
-                  <span className="pyt-step-label">{step.label}</span>
+                  <span
+                    className={cn(
+                      "text-[0.6875rem] font-semibold tracking-wider whitespace-nowrap uppercase",
+                      active && "text-accent",
+                      done && "text-foreground",
+                      !active && !done && "text-muted-foreground",
+                    )}
+                  >
+                    {stepLabels[index]}
+                  </span>
                 </div>
               );
             })}
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} noValidate>
-            <div className="pyt-form-body">
-
-              {/* ── Step 1: Trip Details ── */}
+            <div className="px-9 pt-7 pb-9">
               {currentStep === 1 && (
                 <>
-                  <p className="pyt-section-heading">Trip Information</p>
-                  <div className="pyt-grid">
-
-                    <Field label="Trip Name / Destination" icon={MapPin} error={errors.tripName} full>
+                  <p className="mb-5 border-b border-border pb-2.5 text-[0.6875rem] font-bold tracking-widest text-muted-foreground uppercase">
+                    {t.sections?.tripInfo}
+                  </p>
+                  <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">
+                    <Field
+                      label={t.fields?.tripName}
+                      icon={MapPin}
+                      error={errors.tripName}
+                      full
+                    >
                       <input
                         type="text"
                         name="tripName"
                         id="tripName"
-                        placeholder="e.g., Everest Base Camp Trek"
+                        placeholder={t.fields?.tripNamePlaceholder}
                         value={formData.tripName}
                         onChange={handleChange}
-                        className={ic('tripName', 'pyt-input pyt-input--icon')}
+                        className={ic("tripName", inputIconClass)}
                         aria-invalid={!!errors.tripName}
                       />
                     </Field>
 
-                    <Field label="Estimated Budget (USD)" icon={DollarSign} error={errors.budgetRange}>
+                    <Field
+                      label={t.fields?.budgetRange}
+                      icon={DollarSign}
+                      error={errors.budgetRange}
+                    >
                       <select
                         name="budgetRange"
                         id="budgetRange"
                         value={formData.budgetRange}
                         onChange={handleChange}
-                        className={ic('budgetRange', 'pyt-select pyt-select--icon')}
+                        className={ic("budgetRange", selectIconClass)}
                         aria-invalid={!!errors.budgetRange}
                       >
-                        <option value="">Select a range</option>
-                        <option value="Under $500">Under $500</option>
-                        <option value="$500 – $1,000">$500 – $1,000</option>
-                        <option value="$1,000 – $2,000">$1,000 – $2,000</option>
-                        <option value="$2,000 – $5,000">$2,000 – $5,000</option>
-                        <option value="Above $5000">Above $5,000</option>
+                        <option value="">{t.fields?.budgetPlaceholder}</option>
+                        {t.options?.budgets?.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </Field>
 
-                    <Field label="Number of Travelers" icon={Users} error={errors.numberOfTravelers}>
+                    <Field
+                      label={t.fields?.numberOfTravelers}
+                      icon={Users}
+                      error={errors.numberOfTravelers}
+                    >
                       <select
                         name="numberOfTravelers"
                         id="numberOfTravelers"
                         value={formData.numberOfTravelers}
                         onChange={handleChange}
-                        className={ic('numberOfTravelers', 'pyt-select pyt-select--icon')}
+                        className={ic("numberOfTravelers", selectIconClass)}
                         aria-invalid={!!errors.numberOfTravelers}
                       >
-                        <option value="">Select travelers</option>
-                        <option value="Solo Traveler">Solo Traveler</option>
-                        <option value="2 People">2 People</option>
-                        <option value="3–5 People">3–5 People</option>
-                        <option value="6–10 People">6–10 People</option>
-                        <option value="10+ People">10+ People</option>
+                        <option value="">
+                          {t.fields?.travelersPlaceholder}
+                        </option>
+                        {t.options?.travelers?.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </Field>
 
-                    <Field label="Preferred Travel Date" icon={CalendarDays} error={errors.travelDate}>
+                    <Field
+                      label={t.fields?.travelDate}
+                      icon={CalendarDays}
+                      error={errors.travelDate}
+                    >
                       <input
                         type="date"
                         name="travelDate"
                         id="travelDate"
                         value={formData.travelDate}
                         onChange={handleChange}
-                        min={new Date().toISOString().split('T')[0]}
-                        className={ic('travelDate', 'pyt-input pyt-input--icon')}
+                        min={new Date().toISOString().split("T")[0]}
+                        className={ic("travelDate", inputIconClass)}
                         aria-invalid={!!errors.travelDate}
                       />
                     </Field>
 
-                    <Field label="Trip Duration (Days)" icon={Clock} error={errors.duration}>
+                    <Field
+                      label="Trip Duration (Days)"
+                      icon={Clock}
+                      error={errors.duration}
+                    >
                       <input
-                        type="number"
                         name="duration"
                         id="duration"
                         min="1"
                         placeholder="e.g., 14"
                         value={formData.duration}
                         onChange={handleChange}
-                        className={ic('duration', 'pyt-input pyt-input--icon')}
+                        className={ic("duration", inputIconClass)}
                         aria-invalid={!!errors.duration}
                       />
-</Field>
+                    </Field>
+                  </div>
 
-                </div>
+                  <div className="mt-7 flex items-center justify-end border-t border-border pt-5">
+                    <Button type="button" onClick={goToStep2}>
+                      Next <ChevronRight size={15} />
+                    </Button>
+                  </div>
+                </>
+              )}
 
-                <div className="pyt-nav" style={{ justifyContent: 'flex-end' }}>
-                  <Button type="button" onClick={goToStep2}>
-                    Next <ChevronRight size={15} />
-                  </Button>
-                </div>
-              </>
-            )}
-
-              {/* ── Step 2: Personal Information ── */}
               {currentStep === 2 && (
                 <>
-                  <p className="pyt-section-heading">Personal Information</p>
-                  <div className="pyt-grid">
-
-                    <Field label="Full Name" icon={User} error={errors.fullName} full>
+                  <p className="mb-5 border-b border-border pb-2.5 text-[0.6875rem] font-bold tracking-widest text-muted-foreground uppercase">
+                    {t.sections?.personalInfo}
+                  </p>
+                  <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">
+                    <Field
+                      label={t.fields?.fullName}
+                      icon={User}
+                      error={errors.fullName}
+                      full
+                    >
                       <input
                         type="text"
                         name="fullName"
                         id="fullName"
-                        placeholder="Your full name"
+                        placeholder={t.fields?.fullNamePlaceholder}
                         value={formData.fullName}
                         onChange={handleChange}
-                        className={ic('fullName', 'pyt-input pyt-input--icon')}
+                        className={ic("fullName", inputIconClass)}
                         aria-invalid={!!errors.fullName}
                       />
                     </Field>
 
-                    <Field label="WhatsApp Number" icon={Phone} error={errors.whatsAppNumber}>
+                    <Field
+                      label={t.fields?.whatsAppNumber}
+                      icon={Phone}
+                      error={errors.whatsAppNumber}
+                    >
                       <input
                         type="tel"
                         name="whatsAppNumber"
                         id="whatsAppNumber"
-                        placeholder="+1 234 567 890"
+                        placeholder={t.fields?.whatsAppPlaceholder}
                         value={formData.whatsAppNumber}
                         onChange={handleChange}
-                        className={ic('whatsAppNumber', 'pyt-input pyt-input--icon')}
+                        className={ic("whatsAppNumber", inputIconClass)}
                         aria-invalid={!!errors.whatsAppNumber}
                       />
                     </Field>
 
-                    <Field label="Email Address" icon={Mail} error={errors.emailAddress}>
+                    <Field
+                      label={t.fields?.emailAddress}
+                      icon={Mail}
+                      error={errors.emailAddress}
+                    >
                       <input
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="you@example.com"
+                        placeholder={t.fields?.emailPlaceholder}
                         value={formData.emailAddress}
                         onChange={handleChange}
-                        className={ic('emailAddress', 'pyt-input pyt-input--icon')}
+                        className={ic("emailAddress", inputIconClass)}
                         aria-invalid={!!errors.emailAddress}
                       />
                     </Field>
 
-                    <Field label="Street Address" icon={Home}>
+                    <Field label={t.fields?.streetAddress} icon={Home}>
                       <input
                         type="text"
                         name="streetAddress"
                         id="streetAddress"
-                        placeholder="Optional"
+                        placeholder={t.fields?.streetPlaceholder}
                         value={formData.streetAddress}
                         onChange={handleChange}
-                        className="pyt-input pyt-input--icon"
+                        className={inputIconClass}
                       />
                     </Field>
 
-<Field label="Country of Residence" icon={Globe} error={errors.country}>
+                    <Field
+                      label={t.fields?.country}
+                      icon={Globe}
+                      error={errors.country}
+                    >
                       <input
                         type="text"
                         name="country"
@@ -984,16 +753,22 @@ export default function PlanYourTripSection() {
                         placeholder="e.g., United States"
                         value={formData.country}
                         onChange={handleChange}
-                        className={ic('country', 'pyt-input pyt-input--icon')}
+                        className={ic("country", inputIconClass)}
                         aria-invalid={!!errors.country}
                       />
                     </Field>
-
                   </div>
 
-                  <div className="pyt-nav">
-                    <Button type="button" variant="ghost" onClick={() => goBack(2)}>
-                      <ChevronLeft size={15} /> Back
+                  <div className="mt-7 flex items-center justify-between border-t border-border pt-5">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => goBack(2)}
+                    >
+                      <ChevronLeft size={15} />{" "}
+                      {t.sections?.tripInfo?.includes("Trip")
+                        ? "Back"
+                        : "Volver"}
                     </Button>
                     <Button type="button" onClick={goToStep3}>
                       Next <ChevronRight size={15} />
@@ -1002,36 +777,39 @@ export default function PlanYourTripSection() {
                 </>
               )}
 
-              {/* ── Step 3: Additional Details ── */}
               {currentStep === 3 && (
                 <>
-                  <p className="pyt-section-heading">Additional Details</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
-
-                    <Field label="How did you hear about us?" error={errors.referral}>
+                  <p className="mb-5 border-b border-border pb-2.5 text-[0.6875rem] font-bold tracking-widest text-muted-foreground uppercase">
+                    {t.sections?.additionalDetails}
+                  </p>
+                  <div className="flex flex-col gap-4.5">
+                    <Field label={t.fields?.referral} error={errors.referral}>
                       <select
                         name="referral"
                         id="referral"
                         value={formData.referral}
                         onChange={handleChange}
-                        className={ic('referral', 'pyt-select pyt-select--plain')}
+                        className={ic("referral", selectPlainClass)}
                         aria-invalid={!!errors.referral}
                       >
-                        <option value="">Select an option</option>
-                        <option value="Google Search">Google Search</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="YouTube">YouTube</option>
-                        <option value="Friend / Family Recommendation">Friend / Family Recommendation</option>
-                        <option value="Travel Agency">Travel Agency</option>
-                        <option value="Previous Customer">Previous Customer</option>
-                        <option value="Other">Other</option>
+                        <option value="">
+                          {t.fields?.referralPlaceholder}
+                        </option>
+                        {t.options?.referrals?.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </Field>
 
                     <Field
-                      label="Special Requirements"
-                      hint="Dietary preferences, accommodation type, fitness level, or anything else we should know."
+                      label={t.fields?.specialRequirements}
+                      hint={
+                        t.fields?.specialRequirementsPlaceholder?.split(
+                          ".",
+                        )[0] + "."
+                      }
                     >
                       <textarea
                         name="specialRequirements"
@@ -1039,25 +817,28 @@ export default function PlanYourTripSection() {
                         rows={3}
                         value={formData.specialRequirements}
                         onChange={handleChange}
-                        className="pyt-textarea"
+                        className={textareaClass}
                       />
                     </Field>
 
-                    <Field label="Comments or Message">
+                    <Field label={t.fields?.comments}>
                       <textarea
                         name="comments"
                         id="comments"
                         rows={4}
                         value={formData.comments}
                         onChange={handleChange}
-                        className="pyt-textarea"
+                        className={textareaClass}
                       />
-</Field>
-
+                    </Field>
                   </div>
 
-                  <div className="pyt-nav" style={{ borderBottom: 'none' }}>
-                    <Button type="button" variant="ghost" onClick={() => goBack(2)}>
+                  <div className="mt-7 flex items-center justify-between pt-5">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => goBack(2)}
+                    >
                       <ChevronLeft size={15} /> Back
                     </Button>
                   </div>
@@ -1065,71 +846,94 @@ export default function PlanYourTripSection() {
                   <Button
                     type="submit"
                     variant="accent"
+                    width="full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Sending request…' : 'Submit Plan Details'}
+                    {isSubmitting ? "Sending request…" : "Submit Plan Details"}
                   </Button>
                 </>
               )}
-
             </div>
           </form>
         </div>
 
-        {/* ── Sidebar ───────────────────────────────────────────────────── */}
-        <div className="pyt-sidebar">
-
-          <div className="pyt-trust-card">
-            <h3>Why book with us</h3>
-            <div className="pyt-trust-item">
-              <div className="pyt-trust-icon"><Clock3 size={16} /></div>
-              <div className="pyt-trust-text">
-                <strong>Reply within 24 hours</strong>
-                <span>Our team responds to every inquiry, every day.</span>
+        {/* Sidebar */}
+        <div className="order-first flex flex-col gap-4 lg:order-none">
+          <div className="rounded-[1.25rem] border border-border bg-card p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+            <h3 className="!mb-4 !text-[0.8125rem] !font-bold tracking-widest text-muted-foreground uppercase">
+              Why book with us
+            </h3>
+            <div className="flex items-start gap-3 border-b border-border/60 py-2.5">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                <Clock3 size={16} />
+              </div>
+              <div>
+                <strong className="mb-0.5 block text-[0.8125rem] font-bold text-foreground">
+                  Reply within 24 hours
+                </strong>
+                <span className="text-xs leading-snug text-muted-foreground">
+                  Our team responds to every inquiry, every day.
+                </span>
               </div>
             </div>
-            <div className="pyt-trust-item">
-              <div className="pyt-trust-icon"><ShieldCheck size={16} /></div>
-              <div className="pyt-trust-text">
-                <strong>Fully customised trips</strong>
-                <span>No cookie-cutter packages — built around your schedule and budget.</span>
+            <div className="flex items-start gap-3 border-b border-border/60 py-2.5">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                <ShieldCheck size={16} />
+              </div>
+              <div>
+                <strong className="mb-0.5 block text-[0.8125rem] font-bold text-foreground">
+                  Fully customised trips
+                </strong>
+                <span className="text-xs leading-snug text-muted-foreground">
+                  No cookie-cutter packages — built around your schedule and
+                  budget.
+                </span>
               </div>
             </div>
-            <div className="pyt-trust-item">
-              <div className="pyt-trust-icon"><Star size={16} /></div>
-              <div className="pyt-trust-text">
-                <strong>10+ years of experience</strong>
-                <span>Thousands of trekkers guided safely across Nepal.</span>
+            <div className="flex items-start gap-3 py-2.5 pb-0">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                <Star size={16} />
+              </div>
+              <div>
+                <strong className="mb-0.5 block text-[0.8125rem] font-bold text-foreground">
+                  10+ years of experience
+                </strong>
+                <span className="text-xs leading-snug text-muted-foreground">
+                  Thousands of trekkers guided safely across Nepal.
+                </span>
               </div>
             </div>
-            <div className="pyt-rating-row">
-              <div className="pyt-stars">
+            <div className="mt-3 flex items-center gap-1.5">
+              <div className="flex gap-0.5 text-amber-500">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={13} fill="currentColor" strokeWidth={0} />
                 ))}
               </div>
-              <span className="pyt-rating-text">4.9 · 600+ reviews</span>
+              <span className="text-xs font-medium text-muted-foreground">
+                4.9 · 600+ reviews
+              </span>
             </div>
           </div>
 
-          <div className="pyt-trust-card" style={{ textAlign: 'center' }}>
-            <h3>Prefer to chat directly?</h3>
+          <div className="rounded-[1.25rem] border border-border bg-card p-6 text-center shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+            <h3 className="!mb-4 !text-[0.8125rem] !font-bold tracking-widest text-muted-foreground uppercase">
+              Prefer to chat directly?
+            </h3>
             <a
               href="https://wa.me/9779800000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="pyt-whatsapp-btn"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 py-3 text-sm font-bold text-white no-underline transition hover:bg-[#1da851] hover:shadow-[0_4px_14px_rgba(37,211,102,0.35)]"
             >
               <MessageCircle size={17} />
               Message us on WhatsApp
             </a>
-            <p style={{ fontSize: '0.75rem', color: '#9b9285', marginTop: '0.625rem', lineHeight: 1.4 }}>
+            <p className="mt-2.5 text-xs leading-snug text-muted-foreground">
               Available 7 days a week · Usually replies within minutes
             </p>
           </div>
-
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -3,16 +3,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/provider/Language";
-import { translations } from "@/lib/translations";
+import { translations, getSafe } from "@/lib/translations";
 import { travelStyles } from "@/lib/travelStyles";
 import { Facebook, Youtube, Linkedin, Phone, Mail, Twitter } from "lucide-react";
 
 export default function FooterCTASection() {
+  const pathname = usePathname();
   const { language } = useLanguage();
-  const copy = translations[language].footer;
+  const copy = getSafe("footer", language, translations.en.footer);
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -68,19 +70,39 @@ export default function FooterCTASection() {
   ];
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const content = contentRef.current;
+    if (!section || !content) return;
+
     gsap.registerPlugin(ScrollTrigger);
+
+    const revealIfInView = () => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.85) {
+        gsap.set(content, { opacity: 1, y: 0 });
+        gsap.set(section.querySelectorAll(".footer-link-item"), { opacity: 1, y: 0 });
+      }
+    };
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        contentRef.current,
+        content,
         { opacity: 0, y: 30 },
         {
-          opacity: 1, y: 0, duration: 1, ease: "power4.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
         }
       );
 
       gsap.fromTo(
-        ".footer-link-item",
+        section.querySelectorAll(".footer-link-item"),
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -89,15 +111,34 @@ export default function FooterCTASection() {
           ease: "power3.out",
           stagger: 0.08,
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 80%",
+            once: true,
           },
         }
       );
-
     }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+
+    // After route changes, layout height shifts before ScrollTrigger recalculates.
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      revealIfInView();
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) revealIfInView();
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      ctx.revert();
+    };
+  }, [pathname]);
 
   return (
     <footer

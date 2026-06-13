@@ -6,6 +6,17 @@ export const languageOptions = [
   { code: "fr", label: "Français" },
 ] as const satisfies ReadonlyArray<{ code: LanguageCode; label: string }>;
 
+export function getSafe<T extends keyof typeof translations.en>(
+  key: T,
+  language: LanguageCode,
+  fallback?: Partial<typeof translations.en[T]>
+): typeof translations.en[T] {
+  const enVal = translations.en[key];
+  const langVal = (translations[language] as Partial<typeof translations.en>)?.[key];
+  if (langVal === undefined) return enVal;
+  return (langVal ?? fallback ?? enVal) as typeof translations.en[T];
+}
+
 export const translations = {
   en: {
     navItems: [
@@ -129,6 +140,17 @@ export const translations = {
         ],
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
+    },
+    topTours: {
+      label: "Top Tours",
+      title: "Featured Journeys",
+      description: "Hand-picked adventures across Nepal's landscapes.",
+      button: "View Details",
+      tours: [
+        { id: "everest", name: "Everest Base Camp Trek", duration: "14 Days", price: "$1,299", desc: "Iconic trek to the roof of the world" },
+        { id: "annapurna", name: "Annapurna Circuit", duration: "12 Days", price: "$999", desc: "Diverse trails through the Annapurna range" },
+        { id: "langtang", name: "Langtang Valley", duration: "8 Days", price: "$799", desc: "Short yet spectacular mountain adventure" }
+      ]
     },
   },
   es: {
@@ -259,6 +281,17 @@ export const translations = {
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
     },
+    topTours: {
+      label: "Mejores Tours",
+      title: "Viajes Destacados",
+      description: "Aventuras seleccionadas a través de los paisajes de Nepal.",
+      button: "Ver Detalles",
+      tours: [
+        { id: "everest", name: "Trek Campamento Base del Everest", duration: "14 Días", price: "$1,299", desc: "Trek icónico hacia el techo del mundo" },
+        { id: "annapurna", name: "Circuito Annapurna", duration: "12 Días", price: "$999", desc: "Senderos diversos a través del rango Annapurna" },
+        { id: "langtang", name: "Valle Langtang", duration: "8 Días", price: "$799", desc: "Aventura de montaña corta pero espectacular" }
+      ]
+    },
   },
   fr: {
     navItems: [
@@ -387,6 +420,17 @@ export const translations = {
         ],
       },
       copyright: "© 2025 Fantastic Adventure Nepal",
+    },
+    topTours: {
+      label: "Top Tours",
+      title: "Voyages Sélectionnés",
+      description: "Aventures choisies à travers les paysages du Népal.",
+      button: "Voir Détails",
+      tours: [
+        { id: "everest", name: "Trek Camp de Base de l'Everest", duration: "14 Jours", price: "$1,299", desc: "Trek iconique vers le toit du monde" },
+        { id: "annapurna", name: "Circuit de l'Annapurna", duration: "12 Jours", price: "$999", desc: "Sentiers divers à travers le massif de l'Annapurna" },
+        { id: "langtang", name: "Vallée de Langtang", duration: "8 Jours", price: "$799", desc: "Aventure de montagne courte mais spectaculaire" }
+      ]
     },
   },
 } as const;

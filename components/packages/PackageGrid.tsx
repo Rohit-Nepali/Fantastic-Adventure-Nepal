@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { PackageCard } from "@/types";
+import { PackageCard } from "@/lib/sanity/types";
+
 
 function difficultyColor(difficulty: string) {
   const map: Record<string, string> = {
-    "Easy":            "bg-emerald-100 text-emerald-700",
-    "Easy-Moderate":   "bg-lime-100 text-lime-700",
-    "Moderate":        "bg-yellow-100 text-yellow-700",
-    "Moderate-Hard":   "bg-orange-100 text-orange-700",
-    "Hard":            "bg-red-100 text-red-700",
-    "Extreme":         "bg-purple-100 text-purple-700",
+    "Easy": "bg-emerald-100 text-emerald-700",
+    "Easy-Moderate": "bg-lime-100 text-lime-700",
+    "Moderate": "bg-yellow-100 text-yellow-700",
+    "Moderate-Hard": "bg-orange-100 text-orange-700",
+    "Hard": "bg-red-100 text-red-700",
+    "Extreme": "bg-purple-100 text-purple-700",
   };
   return map[difficulty] ?? "bg-gray-100 text-gray-600";
 }
