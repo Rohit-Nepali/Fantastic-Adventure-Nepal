@@ -106,9 +106,11 @@ export interface PackageDetail extends PackageCard {
 
 // ─── Gallery ───────────────────────────────────────────────────────────────
 
-export interface GalleryPhoto {
+export interface GalleryItem {
   _id: string;
-  image: string;
+  title: string;
   caption?: string;
-  location?: string;
+  tags?: string[];
+  image: any;
+  imageAlt?: string;
 }

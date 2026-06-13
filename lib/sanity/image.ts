@@ -3,16 +3,22 @@ import { sanityClient } from "@/lib/sanity/client";
 
 const builder = createImageUrlBuilder(sanityClient);
 
-export function urlForImage(source: any): string {
+export function urlForImage(source: any, size = 900): string {
   if (!source) return "";
-  
-  try {
-    // If you passed the whole image object containing { asset: {...} }
-    const imageAsset = source.asset ? source.asset : source;
-    
-    if (!imageAsset) return "";
 
-    return builder.image(imageAsset).auto("format").fit("crop").url() || "";
+  // Plain string (fallback items) - return as-is
+  if (typeof source === "string") return source;
+
+  if (!source.asset) return "";
+
+  try {
+    return builder
+      .image(source) // pass whole object so hotspot/crop apply
+      .width(size)
+      .height(size)
+      .fit("crop")
+      .auto("format")
+      .url();
   } catch (error) {
     console.error("Sanity image builder failed:", error);
     return "";

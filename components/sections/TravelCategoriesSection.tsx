@@ -101,8 +101,8 @@ export default function TravelCategoriesSection({ data }: CategoriesSectionProps
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         {/* Animated Header */}
         <div ref={headerRef} className="mb-10 md:mb-14 max-w-3xl">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-black/35 mb-3 font-sans">
-            {data?.sectionTagline || "Explore"}
+          <p className="text-xs tracking-[0.25em] uppercase text-accent mb-3 font-sans">
+            {"/ " + data?.sectionTagline || "Explore"}
           </p>
           <h2 className="text-4xl md:text-6xl text-black leading-[1.05] tracking-tight mb-4">
             {data?.heading || "Categories"}

@@ -3,8 +3,6 @@ import { sanityClient } from "@/lib/sanity/client";
 import { sanityEnv } from "@/lib/sanity/env";
 import { fallbackHomePageData, fallbackSiteSettings } from "@/lib/sanity/fallbackContent";
 import { urlForImage } from "@/lib/sanity/image";
-import { homePageQuery, siteSettingsQuery } from "@/lib/sanity/queries";
-import type { HomePageData, SiteSettingsData } from "@/lib/sanity/types";
 
 type ImageLike = {
   image?: Image;

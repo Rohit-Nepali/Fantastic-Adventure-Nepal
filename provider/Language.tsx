@@ -17,7 +17,6 @@ const isLanguageCode = (value: string | null): value is LanguageCode =>
   value === "en" || value === "es" || value === "fr";
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  console.log("LanguageProvider rendered");
   const [language, setLanguage] = useState<LanguageCode>(() => {
     if (typeof window === "undefined") {
       return defaultLanguage;

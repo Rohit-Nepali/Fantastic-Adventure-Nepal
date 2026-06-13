@@ -1,25 +1,28 @@
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection, { AboutSectionProps } from "@/components/sections/AboutSection";
 import { sanityFetch } from "@/lib/sanity/client";
-import { aboutUsQuery, travelCategoriesQuery, whyChooseUsQuery } from "@/lib/sanity/queries";
+import { aboutUsQuery, ALL_GALLERY_ITEMS_QUERY, travelCategoriesQuery, whyChooseUsQuery } from "@/lib/sanity/queries";
 import TravelCategoriesSection, { CategoriesSectionProps } from "@/components/sections/TravelCategoriesSection";
+import { GalleryItem } from "@/lib/sanity/types";
 import WhyChooseUsSection, { WhyChooseUsProps } from "@/components/sections/WhyChooseUsSection";
 import DmcB2bSection from "@/components/sections/DmcB2bSection";
+import GalleryScroll from "@/components/gallery/GalleryScroll";
 
 export default async function Home() {
 
   const aboutUs = await sanityFetch<AboutSectionProps['aboutUs']>(aboutUsQuery);
   const travelCategoriesData = await sanityFetch<CategoriesSectionProps['data']>(travelCategoriesQuery);
-  console.log("Fetched Travel Categories Data:", travelCategoriesData); // Debug log to verify data structure
+  const galleryItems = await sanityFetch<GalleryItem[]>(ALL_GALLERY_ITEMS_QUERY);
   const whyChooseUsData = await sanityFetch<WhyChooseUsProps['data']>(whyChooseUsQuery);
 
   return (
     <>
       <HeroSection />
       <TravelCategoriesSection data={travelCategoriesData} />
-      <WhyChooseUsSection data={whyChooseUsData} />
+      <GalleryScroll items={galleryItems} />
       <AboutSection aboutUs={aboutUs} />
       <DmcB2bSection />
+      <WhyChooseUsSection data={whyChooseUsData} />
       {/* <TestimonialSection /> */}
     </>
   );

@@ -108,7 +108,7 @@ export default function FooterCTASection() {
     >
       <div ref={contentRef}>
         {/* Main footer content */}
-        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-10 lg:flex-row lg:justify-between lg:gap-32 xl:px-14">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-10 lg:flex-row lg:justify-between lg:gap-32 xl:px-4">
 
           {/* Brand column */}
           <div className="w-full lg:max-w-md">

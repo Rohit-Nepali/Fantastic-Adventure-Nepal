@@ -30,7 +30,6 @@ export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
 
-  console.log("Hero rendered");
   
   useEffect(() => {
     const ctx = gsap.context(() => {

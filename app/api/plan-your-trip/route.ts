@@ -33,10 +33,10 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
       port: parseInt(process.env.SMTP_PORT || "465"),
-      secure: process.env.SMTP_SECURE === "true" || true, // true for 465, false for other ports
+      secure: process.env.SMTP_SECURE === "true" || true, 
       auth: {
-        user: process.env.SMTP_USER, // Your Gmail account email address
-        pass: process.env.SMTP_PASS, // Your Gmail App Password
+        user: process.env.SMTP_USER, 
+        pass: process.env.SMTP_PASS, 
       },
     });
 

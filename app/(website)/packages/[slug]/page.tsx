@@ -3,10 +3,10 @@
 import { notFound } from "next/navigation";
 import { sanityFetch } from "@/lib/sanity/client";
 import { PACKAGE_BY_SLUG_QUERY, ALL_PACKAGE_SLUGS_QUERY } from "@/lib/sanity/queries";
-import { PackageDetail } from "@/types";
 import PackageHero from "@/components/packages/detail/packageHero";
 import PackageTabs from "@/components/packages/detail/packageTabs";
 import PackageSidebar from "@/components/packages/detail/packageSidebar";
+import { PackageDetail } from "@/lib/sanity/types";
 
 export const revalidate = 60;
 

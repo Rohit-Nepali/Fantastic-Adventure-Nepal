@@ -1,10 +1,10 @@
 // components/packages/detail/PackageSidebar.tsx
 "use client";
 
+import { PackageDetail } from "@/lib/sanity/types";
 import Link from "next/link";
-import { PackageDetail } from "@/types";
 
-const WHATSAPP_NUMBER = "9779800000000"; // ← replace with your number
+const WHATSAPP_NUMBER = "9779800000000"; 
 
 export default function PackageSidebar({ pkg }: { pkg: PackageDetail }) {
   const whatsappMessage = encodeURIComponent(
@@ -67,12 +67,20 @@ export default function PackageSidebar({ pkg }: { pkg: PackageDetail }) {
       <div className="px-6 py-5 space-y-3">
         <a
           href="#inquiry"
+          onClick={(event) => {
+            event.preventDefault();
+            window.alert("Booking is not connected yet. For now, please contact us through the inquiry form and our team will confirm availability.");
+          }}
           className="block w-full text-center px-6 py-3 bg-[#00b5c4] text-white rounded-full text-sm font-medium hover:bg-[#009aaa] transition-colors"
         >
           Book Now
         </a>
         <Link
-          href="/plan-your-trip"
+          href="/planYourTrip"
+          onClick={(event) => {
+            event.preventDefault();
+            window.alert("Trip customization is coming soon. For now, please contact us directly and we will help you plan your itinerary.");
+          }}
           className="block w-full text-center px-6 py-3 border border-[#ddd] text-[#333] rounded-full text-sm font-medium hover:border-[#00b5c4] hover:text-[#00b5c4] transition-colors"
         >
           Customize This Trip
@@ -81,6 +89,10 @@ export default function PackageSidebar({ pkg }: { pkg: PackageDetail }) {
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(event) => {
+            event.preventDefault();
+            window.alert("WhatsApp booking is not connected yet. Please contact us through the website inquiry form for now.");
+          }}
           className="flex items-center justify-center gap-2 w-full px-6 py-3 border border-[#25d366] text-[#25d366] rounded-full text-sm font-medium hover:bg-[#25d366] hover:text-white transition-colors"
         >
           <WhatsAppIcon /> WhatsApp Us

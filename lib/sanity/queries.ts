@@ -26,13 +26,6 @@ export const whyChooseUsQuery = groq` *[_type == "whyChooseUs"][0]{
     }
   }`
 
-const imageFragment = `{
-    asset->{ _id, url },
-    hotspot,
-    crop,
-    alt
-  }`
-
 // ─── Travel Categories (Homepage) ──────────────────────────────────────────
 // Output shape is IDENTICAL to before — CategoryItem interface unchanged.
 // categories[] now dereferenced from standalone category documents.
@@ -227,11 +220,13 @@ export const ALL_PACKAGE_SLUGS_QUERY = groq`
 
 // ─── Gallery ───────────────────────────────────────────────────────────────
 
-export const ALL_GALLERY_PHOTOS_QUERY = groq`
-  *[_type == "galleryPhoto"] | order(order asc) {
+export const ALL_GALLERY_ITEMS_QUERY = groq`
+  *[_type == "galleryItem"] | order(order asc, _createdAt desc) {
     _id,
-    "image": image.asset->url,
+    title,
     caption,
-    location
+    tags,
+    "image": image.asset->url,
+    "imageAlt": coalesce(imageAlt, image.asset->altText, title)
   }
 `;

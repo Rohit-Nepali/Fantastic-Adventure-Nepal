@@ -3,15 +3,16 @@
 
 import { useState } from "react";
 import { PortableText } from "@portabletext/react";
-import { PackageDetail, Departure } from "@/types";
+import { PackageDetail, Departure } from "@/lib/sanity/types";
+import { ChevronDown, CheckIcon, Check, XIcon } from "lucide-react";
 
 const TABS = [
-  { id: "overview",    label: "Overview" },
-  { id: "itinerary",  label: "Itinerary" },
-  { id: "cost",       label: "Cost" },
-  { id: "essential",  label: "Essential Info" },
+  { id: "overview", label: "Overview" },
+  { id: "itinerary", label: "Itinerary" },
+  { id: "cost", label: "Cost" },
+  { id: "essential", label: "Essential Info" },
   { id: "departures", label: "Fixed Departures" },
-  { id: "faqs",       label: "FAQs" },
+  { id: "faqs", label: "FAQs" },
 ];
 
 export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
@@ -22,17 +23,16 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
   return (
     <div>
       {/* ── Tab Bar ── */}
-      <div className="sticky top-[64px] z-20 bg-white border-b border-[#eee] -mx-4 md:-mx-6 px-4 md:px-6 mb-8">
-        <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+      <div className=" top-[64px] z-30 bg-white border-b border-[#eee] -mx-4 px-4 md:-mx-0 md:px-0 mb-8">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide py-1">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`shrink-0 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === tab.id
-                  ? "border-[#00b5c4] text-[#00b5c4]"
-                  : "border-transparent text-[#666] hover:text-[#111]"
-              }`}
+              className={`shrink-0 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
+                ? "border-[#00b5c4] text-[#00b5c4]"
+                : "border-transparent text-[#666] hover:text-[#111]"
+                }`}
             >
               {tab.label}
             </button>
@@ -57,7 +57,7 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
                     key={i}
                     className="flex items-start gap-3 p-4 bg-[#f8f6f2] rounded-xl"
                   >
-                    <span className="text-[#00b5c4] mt-0.5 shrink-0">✓</span>
+                    <CheckIcon className="w-4 h-4 text-[#00b5c4] shrink-0" />
                     <span className="text-[#333] text-sm">{h}</span>
                   </div>
                 ))}
@@ -144,14 +144,16 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
           {/* Includes */}
           <div>
             <h2 className="font-display text-xl font-bold text-[#111] mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">✓</span>
+              <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">
+                <CheckIcon className="w-4 h-4 text-emerald-500 shrink-0" />
+              </span>
               Cost Includes
             </h2>
             {pkg.costIncludes && pkg.costIncludes.length > 0 ? (
               <ul className="space-y-2">
                 {pkg.costIncludes.map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[#333]">
-                    <span className="text-emerald-500 shrink-0 mt-0.5">✓</span>
+                    <CheckIcon className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                     {item}
                   </li>
                 ))}
@@ -164,14 +166,16 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
           {/* Excludes */}
           <div>
             <h2 className="font-display text-xl font-bold text-[#111] mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xs">✗</span>
+              <span className="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xs">
+                <XIcon className="w-4 h-4 text-red-500" />
+              </span>
               Cost Excludes
             </h2>
             {pkg.costExcludes && pkg.costExcludes.length > 0 ? (
               <ul className="space-y-2">
                 {pkg.costExcludes.map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[#333]">
-                    <span className="text-red-400 shrink-0 mt-0.5">✗</span>
+                    <XIcon className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                     {item}
                   </li>
                 ))}
@@ -198,9 +202,7 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
                     className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f6f2] transition-colors"
                   >
                     <span className="font-medium text-[#111] text-sm">{item.title}</span>
-                    <span className={`text-[#00b5c4] transition-transform duration-200 ${openAccordion === i ? "rotate-180" : ""}`}>
-                      ▾
-                    </span>
+                    <ChevronDown className={`w-4 h-4 text-[#00b5c4] transition-transform duration-200 ${openAccordion === i ? "rotate-180" : ""}`} />
                   </button>
                   {openAccordion === i && (
                     <div className="px-5 pb-5 prose prose-sm prose-neutral max-w-none text-[#555]">
@@ -263,9 +265,7 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
                     className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f6f2] transition-colors"
                   >
                     <span className="font-medium text-[#111] text-sm pr-4">{faq.question}</span>
-                    <span className={`text-[#00b5c4] shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`}>
-                      ▾
-                    </span>
+                    <ChevronDown className={`w-4 h-4 text-[#00b5c4] shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
                   </button>
                   {openFaq === i && (
                     <div className="px-5 pb-5 text-[#555] text-sm leading-relaxed">
@@ -296,9 +296,9 @@ function Chip({ icon, label }: { icon: string; label: string }) {
 
 function DepartureRow({ dep, basePrice }: { dep: Departure; basePrice: number }) {
   const availabilityStyle: Record<string, string> = {
-    Available:  "bg-emerald-100 text-emerald-700",
+    Available: "bg-emerald-100 text-emerald-700",
     Guaranteed: "bg-blue-100 text-blue-700",
-    Full:       "bg-red-100 text-red-600",
+    Full: "bg-red-100 text-red-600",
   };
 
   const formattedDate = new Date(dep.date).toLocaleDateString("en-US", {
