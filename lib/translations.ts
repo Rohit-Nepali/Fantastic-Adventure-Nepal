@@ -152,6 +152,17 @@ export const translations = {
         { id: "langtang", name: "Langtang Valley", duration: "8 Days", price: "$799", desc: "Short yet spectacular mountain adventure" }
       ]
     },
+    packageTabs: {
+      overview: "Overview",
+      itinerary: "Itinerary",
+      cost: "Cost",
+      includes: "Cost Includes",
+      excludes: "Cost Excludes",
+      essential: "Essential Information",
+      departures: "Fixed Departures",
+      faqs: "FAQs",
+      joinDeparture: "Join Departure",
+    },
   },
   es: {
     navItems: [
@@ -292,6 +303,17 @@ export const translations = {
         { id: "langtang", name: "Valle Langtang", duration: "8 Días", price: "$799", desc: "Aventura de montaña corta pero espectacular" }
       ]
     },
+    packageTabs: {
+      overview: "Resumen",
+      itinerary: "Itinerario",
+      cost: "Costo",
+      includes: "Incluye el costo",
+      excludes: "Excluye el costo",
+      essential: "Información esencial",
+      departures: "Salidas fijas",
+      faqs: "Preguntas frecuentes",
+      joinDeparture: "Unirse a la salida",
+    },
   },
   fr: {
     navItems: [
@@ -301,6 +323,7 @@ export const translations = {
       { label: "Planifiez Votre Voyage", href: "/planYourTrip" },
       { label: "Contact", href: "/contact" },
     ],
+    navCta: "Planifiez Votre Voyage",
     hero: {
       title: "Faites vos valises, partons explorer quelque chose d'incroyable",
       subtitle:
@@ -430,6 +453,17 @@ export const translations = {
         { id: "annapurna", name: "Circuit de l'Annapurna", duration: "12 Jours", price: "$999", desc: "Sentiers divers à travers le massif de l'Annapurna" },
         { id: "langtang", name: "Vallée de Langtang", duration: "8 Jours", price: "$799", desc: "Aventure de montagne courte mais spectaculaire" }
       ]
+    },
+    packageTabs: {
+      overview: "Vue d'ensemble",
+      itinerary: "Itinéraire",
+      cost: "Coût",
+      includes: "Le coût comprend",
+      excludes: "Le coût exclut",
+      essential: "Informations essentielles",
+      departures: "Départs fixes",
+      faqs: "FAQ",
+      joinDeparture: "Rejoindre le départ",
     },
   },
 } as const;

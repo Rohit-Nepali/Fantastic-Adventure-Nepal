@@ -2,17 +2,8 @@
 
 import * as React from "react";
 import Image from "next/image";
+import type { ReviewItem } from "@/lib/sanity/types";
 import { fallbackHomePageData } from "@/lib/sanity/fallbackContent";
-
-export interface ReviewItem {
-  travelerName: string;
-  country: string;
-  review: string;
-  rating: number;
-  image?: string;
-  imageAlt?: string;
-  featured?: boolean;
-}
 
 export interface TestimonialSectionProps {
   data?: ReviewItem[];
@@ -33,7 +24,8 @@ const TestimonialCard = ({ data }: { data: ReviewItem }) => {
     .map((part) => part[0]?.toUpperCase())
     .join("");
 
-  const showImage = data.image && typeof data.image === "string" && !imageError;
+  const imageUrl = typeof data.image === "string" ? data.image : data.image?.url;
+  const showImage = Boolean(imageUrl) && !imageError;
 
   return (
     <div className="group relative bg-white border border-slate-100 rounded-3xl p-8 w-full min-w-[320px] md:min-w-[420px] transition-all duration-300 hover:border-slate-200 hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.05)] shadow-sm flex flex-col justify-between">
@@ -62,8 +54,8 @@ const TestimonialCard = ({ data }: { data: ReviewItem }) => {
         {showImage ? (
           <div className="relative w-12 h-12 rounded-full overflow-hidden border border-slate-100 shadow-sm">
             <Image
-              src={data.image!}
-              alt={data.imageAlt || data.travelerName}
+              src={imageUrl!}
+              alt={data.image && typeof data.image !== "string" ? data.image.alt || data.imageAlt || data.travelerName : data.imageAlt || data.travelerName}
               fill
               className="object-cover"
               onError={() => setImageError(true)}
@@ -113,7 +105,7 @@ export default function TestimonialSection({ data, intro }: TestimonialSectionPr
 
         {/* Horizontal Scroll Container */}
         <div className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 px-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
-          {reviews.map((review, index) => (
+          {reviews.map((review: ReviewItem, index: number) => (
             <div key={`${review.travelerName}-${index}`} className="snap-start">
               <TestimonialCard data={review} />
             </div>

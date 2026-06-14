@@ -36,7 +36,7 @@ export default function PackageTabs({ pkg }: { pkg: PackageDetail }) {
   };
 
   // Use the nullish coalescing operator (??) to fallback to defaults if getSafe returns undefined
-  const t = (getSafe("packageTabs", language, defaultTranslations) ??
+  const t = (getSafe("packageTabs", language) ??
     defaultTranslations) as unknown as TranslationKeys;
 
   const [activeTab, setActiveTab] = useState("overview");
