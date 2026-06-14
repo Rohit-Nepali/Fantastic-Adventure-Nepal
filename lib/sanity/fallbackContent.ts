@@ -95,7 +95,7 @@ export const fallbackHomePageData: HomePageData = {
   categories: [
     {
       title: "Trekking Adventures",
-      slug: "trekking-adventures",
+      slug: { current: "trekking-adventures" },
       description:
         "Walk through spectacular Himalayan landscapes, remote mountain villages, and world-famous trails.",
       image: {
@@ -105,7 +105,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Cultural & Heritage Tours",
-      slug: "cultural-heritage-tours",
+      slug: { current: "cultural-heritage-tours" },
       description:
         "Discover UNESCO sites, temples, and centuries-old living traditions across Nepal.",
       image: {
@@ -115,7 +115,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Wildlife & Jungle Safari",
-      slug: "wildlife-jungle-safari",
+      slug: { current: "wildlife-jungle-safari" },
       description:
         "Experience the biodiversity of Chitwan and Bardia national parks with expert naturalists.",
       image: {
@@ -125,7 +125,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Peak Climbing & Mountaineering",
-      slug: "peak-climbing-mountaineering",
+      slug: { current: "peak-climbing-mountaineering" },
       description:
         "Take on Nepal's iconic trekking peaks with professional climbing support.",
       image: {
@@ -135,7 +135,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Adventure Sports",
-      slug: "adventure-sports",
+      slug: { current: "adventure-sports" },
       description:
         "Add adrenaline with rafting, canyoning, paragliding, bungee, and mountain biking.",
       image: {
@@ -145,7 +145,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Luxury Holidays",
-      slug: "luxury-holidays",
+      slug: { current: "luxury-holidays" },
       description:
         "Travel in comfort with premium stays, curated experiences, and personalized service.",
       image: {
@@ -155,7 +155,7 @@ export const fallbackHomePageData: HomePageData = {
     },
     {
       title: "Festival & Spiritual Journeys",
-      slug: "festival-spiritual-journeys",
+      slug: { current: "festival-spiritual-journeys" },
       description:
         "Immerse in sacred sites, colorful festivals, monasteries, and spiritual traditions.",
       image: {

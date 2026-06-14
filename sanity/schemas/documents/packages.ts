@@ -235,9 +235,11 @@ export const packageSchema = defineType({
           ],
           preview: {
             select: { title: "title", subtitle: "dayNumber" },
-            prepare({ title, subtitle }: { title: string; subtitle: number }) {
-              return { title: `Day ${subtitle}: ${title}` };
-            },
+            prepare({ title, subtitle }) {
+              return { 
+                title: subtitle ? `Day ${subtitle}: ${title || "Untitled"}` : `${title || "New Day"}` 
+              };
+            }
           },
         },
       ],
