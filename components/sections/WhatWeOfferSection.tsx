@@ -210,8 +210,13 @@ export default function WhatWeOfferSection() {
     <div className="bg-slate-50 min-h-screen text-slate-800 font-sans pb-12 overflow-x-hidden">
 
       {/* HERO BANNER SECTION */}
+      {/* HERO BANNER SECTION */}
       <section className="bg-gradient-to-r from-emerald-900 to-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="absolute inset-0 opacity-15 bg-[url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center" />
+        {/* Fixed the typo in the URL string format here */}
+        <div
+          className="absolute inset-0 opacity-15 bg-cover bg-center"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1920&q=100')" }}
+        />
         <div className="relative max-w-4xl mx-auto">
           <span className="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 ">
             {t.hero.badge}
@@ -272,7 +277,7 @@ export default function WhatWeOfferSection() {
 
       {/* PERSISTENT ENGAGEMENT SECTION */}
       <section className="max-w-4xl mx-auto mt-16 px-4 text-center">
-        <div className="bg-gradient-to-br from-slate-800 to-slate-950 p-8 sm:p-12 rounded-3xl text-white shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-700  via-slate-800 to-[#0a1f2b] p-8 sm:p-12 rounded-3xl text-white shadow-xl relative overflow-hidden">
           <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#2CC1DA]/10 rounded-full blur-2xl" />
           <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">{t.cta.title}</h2>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8">{t.cta.desc}</p>

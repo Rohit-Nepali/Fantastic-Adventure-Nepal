@@ -71,9 +71,14 @@ export default function FooterCTASection() {
   ];
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
     const section = sectionRef.current;
     const content = contentRef.current;
     if (!section || !content) return;
+
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -122,7 +127,6 @@ export default function FooterCTASection() {
 
     // After route changes, layout height shifts before ScrollTrigger recalculates.
     const frame = requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
       revealIfInView();
     });
 
@@ -166,9 +170,9 @@ export default function FooterCTASection() {
             </div>
             <div>
               {/* Effect applied here */}
-              <p 
-                className=" text-lg sm:text-4xl tracking-wide leading-none uppercase" 
-                style={{ 
+              <p
+                className=" text-lg sm:text-4xl tracking-wide leading-none uppercase"
+                style={{
                   fontFamily: "'Georgia', serif",
                   color: "transparent",
                   backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80')`,
@@ -183,14 +187,14 @@ export default function FooterCTASection() {
               <p className="text-white/60 text-[10px] italic tracking-[0.24em] mt-1">...nature, culture & adventure</p>
             </div>
 
-              <p className="text-white/75 text-sm font-light leading-relaxed mb-8 mt-4 max-w-none sm:max-w-[28rem]">
+            <p className="text-white/75 text-sm font-light leading-relaxed mb-8 mt-4 max-w-none sm:max-w-[28rem]">
               Fantastic Adventure Nepal is your dependable travel partner for journeys across Nepal. We blend deep local knowledge, seamless logistics, and global standards of service to craft meaningful and memorable holiday experiences that check off your requirement list.
             </p>
 
             {/* Social links */}
             <div className="mb-8">
               <p className="text-white/50 text-[10px] tracking-[3px] uppercase mb-4">Social Links</p>
-                <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 {socialIcons.map(({ icon, href }, i) => (
                   <a
                     key={i}

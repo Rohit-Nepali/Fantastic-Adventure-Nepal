@@ -303,11 +303,10 @@ export default function GalleryGrid({
               rounded="full"
               className="group px-6 py-3 text-sm font-medium tracking-wide border-gray-300 hover:border-accent text-gray-700 hover:text-accent transition-all duration-300 flex items-center gap-3 shadow-sm hover:shadow-md"
             >
-              <span>Load More</span>
 
               {/* Remaining Items Badge */}
-              <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full font-mono group-hover:bg-accent/10 group-hover:text-accent transition-colors duration-300">
-                {galleryItems.length - visibleCount}
+              <span className=" text-gray-600 text-xs px-2 py-0.5 rounded-full group-hover:bg-accent/10 group-hover:text-accent transition-colors duration-300">
+                {"Load More (" + (galleryItems.length - visibleCount) + ")"}
               </span>
 
               {/* Animated Arrow Icon */}
