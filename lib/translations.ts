@@ -163,6 +163,11 @@ export const translations = {
       faqs: "FAQs",
       joinDeparture: "Join Departure",
     },
+  notFound: {
+      title: "Page Not Found",
+      description: "The page you're looking for doesn't exist or has been moved.",
+      button: "Go Back Home",
+    },
   },
   es: {
     navItems: [
@@ -314,6 +319,11 @@ export const translations = {
       faqs: "Preguntas frecuentes",
       joinDeparture: "Unirse a la salida",
     },
+    notFound: {
+      title: "Página No Encontrada",
+      description: "La página que buscas no existe o se ha movido.",
+      button: "Volver al Inicio",
+    },
   },
   fr: {
     navItems: [
@@ -464,6 +474,11 @@ export const translations = {
       departures: "Départs fixes",
       faqs: "FAQ",
       joinDeparture: "Rejoindre le départ",
+    },
+    notFound: {
+      title: "Page Non Trouvée",
+      description: "La page que vous recherchez n'existe pas ou a été déplacée.",
+      button: "Retour à l'Accueil",
     },
   },
 } as const;
